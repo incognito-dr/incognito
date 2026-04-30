@@ -151,7 +151,7 @@
     }
 
     .hero-content {
-      position: relative; z-index: 2;
+      position: relative; z-index: 3;
       display: flex; flex-direction: column;
       align-items: center; text-align: center;
     }
@@ -240,7 +240,15 @@
       50%       { opacity: 1;   transform: scaleY(0.6); }
     }
 
-    /* TICKER */
+    /* FOG CANVAS */
+    #fog-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
     .ticker-wrap {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -602,6 +610,7 @@
 
   <!-- HERO -->
   <section class="hero">
+    <canvas id="fog-canvas"></canvas>
     <div class="hero-content">
       <p class="hero-tag">Santo Domingo, RD &mdash; <span>Events &amp; Concerts</span></p>
 
@@ -764,6 +773,70 @@
       });
     }, { threshold: 0.12 });
     reveals.forEach(el => obs.observe(el));
+  </script>
+  <script>
+    // FOG
+    const fogCanvas = document.getElementById('fog-canvas');
+    const fogCtx = fogCanvas.getContext('2d');
+    function resizeFog() {
+      fogCanvas.width = fogCanvas.offsetWidth;
+      fogCanvas.height = fogCanvas.offsetHeight;
+    }
+    resizeFog();
+    window.addEventListener('resize', resizeFog);
+    class FogBlob {
+      constructor() { this.reset(true); }
+      reset(initial) {
+        this.x = Math.random() * fogCanvas.width;
+        this.y = initial ? Math.random() * fogCanvas.height : fogCanvas.height + 80;
+        this.rx = 140 + Math.random() * 260;
+        this.ry = 70 + Math.random() * 130;
+        this.vx = (Math.random() - 0.5) * 0.14;
+        this.vy = -(0.05 + Math.random() * 0.12);
+        this.alpha = 0;
+        this.targetAlpha = 0.012 + Math.random() * 0.028;
+        this.life = 0;
+        this.maxLife = 400 + Math.random() * 500;
+        this.warm = Math.random() < 0.25;
+        this.angle = Math.random() * Math.PI;
+      }
+      update() {
+        this.life++;
+        this.x += this.vx + Math.sin(this.life * 0.008 + this.x * 0.002) * 0.1;
+        this.y += this.vy;
+        this.angle += 0.0008;
+        if (this.life < 80) this.alpha += (this.targetAlpha - this.alpha) * 0.025;
+        else if (this.life > this.maxLife - 100) this.alpha -= this.targetAlpha / 100;
+        if (this.alpha < 0) this.alpha = 0;
+        if (this.life > this.maxLife) this.reset(false);
+      }
+      draw() {
+        fogCtx.save();
+        fogCtx.translate(this.x, this.y);
+        fogCtx.rotate(this.angle);
+        const g = fogCtx.createRadialGradient(0, 0, 0, 0, 0, this.rx);
+        const col = this.warm
+          ? `rgba(255,235,160,${this.alpha})`
+          : `rgba(210,215,230,${this.alpha})`;
+        g.addColorStop(0, col);
+        g.addColorStop(0.5, col.replace(/[\d.]+\)$/, (this.alpha * 0.4) + ')'));
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        fogCtx.scale(1, this.ry / this.rx);
+        fogCtx.fillStyle = g;
+        fogCtx.beginPath();
+        fogCtx.arc(0, 0, this.rx, 0, Math.PI * 2);
+        fogCtx.fill();
+        fogCtx.restore();
+      }
+    }
+    const isMobile = window.innerWidth < 768;
+    const fogBlobs = Array.from({length: isMobile ? 16 : 32}, (_, i) => new FogBlob());
+    function drawFog() {
+      fogCtx.clearRect(0, 0, fogCanvas.width, fogCanvas.height);
+      fogBlobs.forEach(b => { b.update(); b.draw(); });
+      requestAnimationFrame(drawFog);
+    }
+    drawFog();
   </script>
 </body>
 </html>
