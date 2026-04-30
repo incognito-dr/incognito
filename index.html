@@ -111,6 +111,100 @@
       transition: opacity 0.2s;
     }
     .nav-cta:hover { opacity: 0.8; }
+    .nav-guest {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .nav-guest:hover { border-color: var(--white); }
+
+    /* GUEST LIST MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+      backdrop-filter: blur(6px);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      width: 100%; max-width: 520px;
+      padding: 3rem 3.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+    .modal-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none; color: var(--dim);
+      font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      cursor: pointer; transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal-tag {
+      font-family: var(--font-mono); font-size: 9px;
+      letter-spacing: 0.35em; color: var(--accent);
+      text-transform: uppercase; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .modal-tag::after { content: ''; width: 30px; height: 1px; background: var(--accent); opacity: 0.4; }
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 900; line-height: 0.95;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .modal-title em { font-style: normal; color: var(--accent); }
+    .modal-note {
+      font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.05em; color: var(--dim);
+      line-height: 1.7; margin-bottom: 2rem;
+      border-left: 1px solid rgba(255,255,255,0.1);
+      padding-left: 1rem;
+    }
+    .modal-field {
+      margin-bottom: 1.4rem;
+      position: relative;
+    }
+    .modal-field label {
+      display: block; font-family: var(--font-mono);
+      font-size: 9px; letter-spacing: 0.25em;
+      color: var(--dim); text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .modal-field input {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 1px solid rgba(255,255,255,0.15);
+      color: var(--white); font-family: 'Helvetica Neue', sans-serif;
+      font-size: 15px; padding: 8px 0;
+      outline: none; transition: border-color 0.2s;
+    }
+    .modal-field input:focus { border-bottom-color: var(--accent); }
+    .modal-field input::placeholder { color: rgba(255,255,255,0.2); font-size: 13px; }
+    .modal-submit {
+      width: 100%; margin-top: 2rem;
+      background: var(--accent); border: none;
+      color: #000; font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.2em;
+      text-transform: uppercase; padding: 16px;
+      cursor: pointer; transition: opacity 0.2s;
+      font-weight: 700;
+    }
+    .modal-submit:hover { opacity: 0.85; }
 
     /* HERO */
     .hero {
@@ -272,7 +366,77 @@
     }
     .ticker-item .dot { color: var(--accent); margin-right: 0.5rem; }
 
-    /* SECTION BASE */
+    /* ARTISTS MARQUEE */
+    .artists-wrap {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 0;
+      position: relative;
+    }
+    .artists-label {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      z-index: 2;
+      display: flex; align-items: center;
+      padding: 0 1.5rem;
+      background: var(--black);
+      border-right: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.3em;
+      color: var(--dim);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .artists-track {
+      display: flex;
+      padding-left: 160px;
+    }
+    .artists-inner {
+      display: inline-flex;
+      align-items: center;
+      animation: artistsScroll 30s linear infinite;
+      white-space: nowrap;
+    }
+    .artists-inner:hover { animation-play-state: paused; }
+    @keyframes artistsScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .artist-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      padding: 1.4rem 0;
+    }
+    .artist-name {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.15);
+      transition: color 0.3s;
+      padding: 0 2rem;
+      cursor: default;
+    }
+    .artist-name:hover { color: var(--white); }
+    .artist-sep {
+      color: var(--accent);
+      font-size: 8px;
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* GLITCH EFFECT */
+    .glitch {
+      position: relative;
+      display: inline-block;
+      font-family: var(--font-mono);
+      letter-spacing: 0.05em;
+    }
+
     section { padding: 8rem 2.5rem; }
     .section-label {
       font-family: var(--font-mono);
@@ -604,7 +768,10 @@
       <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
-    <a href="#eventos" class="nav-cta">Tickets</a>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="nav-guest" onclick="openModal()">Guest List</button>
+      <a href="#eventos" class="nav-cta">Tickets</a>
+    </div>
   </nav>
 
   <!-- HERO -->
@@ -640,18 +807,18 @@
   <!-- TICKER -->
   <div class="ticker-wrap">
     <div class="ticker-inner">
-<span class="ticker-item"><span class="dot">◆</span>We don't do basic.</span>
-<span class="ticker-item"><span class="dot">◆</span>Made for the few.</span>
-<span class="ticker-item"><span class="dot">◆</span>You had to be there.</span>
-<span class="ticker-item"><span class="dot">◆</span>Where the island shows off.</span>
-<span class="ticker-item"><span class="dot">◆</span>Moments don't happen. We build them.</span>
-<span class="ticker-item"><span class="dot">◆</span>Fewer guests. More intention.</span>
-<span class="ticker-item"><span class="dot">◆</span>We don't do basic.</span>
-<span class="ticker-item"><span class="dot">◆</span>Made for the few.</span>
-<span class="ticker-item"><span class="dot">◆</span>You had to be there.</span>
-<span class="ticker-item"><span class="dot">◆</span>Where the island shows off.</span>
-<span class="ticker-item"><span class="dot">◆</span>Moments don't happen. We build them.</span>
-<span class="ticker-item"><span class="dot">◆</span>Fewer guests. More intention.</span>
+      <span class="ticker-item"><span class="dot">◆</span>We don't do basic.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Made for the few.</span>
+      <span class="ticker-item"><span class="dot">◆</span>You had to be there.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Where the island shows off.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Moments don't happen. We build them.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Fewer guests. More intention.</span>
+      <span class="ticker-item"><span class="dot">◆</span>We don't do basic.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Made for the few.</span>
+      <span class="ticker-item"><span class="dot">◆</span>You had to be there.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Where the island shows off.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Moments don't happen. We build them.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Fewer guests. More intention.</span>
     </div>
   </div>
 
@@ -665,7 +832,7 @@
       <div class="event-row reveal">
         <span class="event-num">001</span>
         <div class="event-info">
-          <span class="event-name">**a* **u**</span>
+          <span class="event-name"><span class="glitch" id="artist-1" data-real="Omar Courtz"></span></span>
           <span class="event-meta">TBD &nbsp;/&nbsp; TBD</span>
         </div>
         <span class="event-tag">Concierto</span>
@@ -675,7 +842,7 @@
       <div class="event-row reveal">
         <span class="event-num">002</span>
         <div class="event-info">
-          <span class="event-name">Artista Invitado</span>
+          <span class="event-name"><span class="glitch" id="artist-2" data-real="Aria Vega"></span></span>
           <span class="event-meta">TBD &nbsp;/&nbsp; TBD</span>
         </div>
         <span class="event-tag">Concert Party</span>
@@ -684,6 +851,41 @@
 
     </div>
   </section>
+
+  <!-- ARTISTAS -->
+  <div class="artists-wrap">
+    <span class="artists-label">Artistas</span>
+    <div class="artists-track">
+      <div class="artists-inner">
+        <div class="artist-item"><span class="artist-name">Alleh &amp; Yorghaki</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Beele</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Mora</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Sky Rompiendo</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Dimelo Flow</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Llane from Piso 21</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Dekko</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Omar Courtz</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Danny Ocean</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Juan Duque</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Karlo</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Saiko</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Caleb Calloway</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Alleh &amp; Yorghaki</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Beele</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Mora</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Sky Rompiendo</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Dimelo Flow</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Llane from Piso 21</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Dekko</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Omar Courtz</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Danny Ocean</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Juan Duque</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Karlo</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Saiko</span><span class="artist-sep">✦</span></div>
+        <div class="artist-item"><span class="artist-name">Caleb Calloway</span><span class="artist-sep">✦</span></div>
+      </div>
+    </div>
+  </div>
 
   <!-- GALERÍA -->
   <section id="galeria">
@@ -732,6 +934,9 @@
       <a href="https://www.instagram.com/incognito.sdq/" target="_blank">Instagram</a>
       <a href="https://wa.me/18495807998" target="_blank">WhatsApp</a>
     </div>
+    <div style="margin-top:2.5rem;">
+      <button class="nav-guest" onclick="openModal()" style="font-size:11px;padding:14px 32px;letter-spacing:0.2em;">Solicitar acceso — Guest List →</button>
+    </div>
   </section>
 
   <!-- FOOTER -->
@@ -770,6 +975,106 @@
       });
     }, { threshold: 0.12 });
     reveals.forEach(el => obs.observe(el));
+  </script>
+  <!-- GUEST LIST MODAL -->
+  <div class="modal-overlay" id="guestModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕ Cerrar</button>
+      <div class="modal-tag">Guest List Request</div>
+      <div class="modal-field">
+        <label>Nombre completo</label>
+        <input type="text" id="gl-nombre" placeholder="Tu nombre" />
+      </div>
+      <div class="modal-field">
+        <label>Instagram</label>
+        <input type="text" id="gl-ig" placeholder="@usuario" />
+      </div>
+      <div class="modal-field">
+        <label>Correo electrónico</label>
+        <input type="email" id="gl-email" placeholder="tu@email.com" />
+      </div>
+      <div class="modal-field">
+        <label>Teléfono (WhatsApp)</label>
+        <input type="tel" id="gl-tel" placeholder="+1 (000) 000-0000" />
+      </div>
+      <div class="modal-field">
+        <label>Dirección</label>
+        <input type="text" id="gl-dir" placeholder="Ciudad, País" />
+      </div>
+      <button class="modal-submit" onclick="submitGuestList()">Solicitar acceso →</button>
+      <p class="modal-note" style="margin-top:1.5rem; margin-bottom:0;">
+        Completar este formulario no garantiza tu acceso al evento. Estamos determinando la lista de invitados — en caso de ser seleccionado, recibirás un correo electrónico de confirmación.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('guestModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('guestModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('guestModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+    function submitGuestList() {
+      const nombre = document.getElementById('gl-nombre').value.trim();
+      const ig     = document.getElementById('gl-ig').value.trim();
+      const email  = document.getElementById('gl-email').value.trim();
+      const tel    = document.getElementById('gl-tel').value.trim();
+      const dir    = document.getElementById('gl-dir').value.trim();
+      if (!nombre || !email) {
+        alert('Por favor completa al menos tu nombre y correo.');
+        return;
+      }
+      const btn = document.querySelector('.modal-submit');
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+      fetch('https://script.google.com/a/macros/calimeterd.com/s/AKfycbz3sU1Cfaz5WJzuH65fwnOx8P0riH0SEmcOynOKh4FkiyEi9H4mhrxmv0VdghUebBP8GQ/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, ig, email, tel, dir })
+      }).then(() => {
+        btn.textContent = '✓ Solicitud enviada';
+        btn.style.background = '#ffffff';
+        setTimeout(() => {
+          closeModal();
+          btn.textContent = 'Solicitar acceso →';
+          btn.style.background = '';
+          btn.disabled = false;
+          document.getElementById('gl-nombre').value = '';
+          document.getElementById('gl-ig').value = '';
+          document.getElementById('gl-email').value = '';
+          document.getElementById('gl-tel').value = '';
+          document.getElementById('gl-dir').value = '';
+        }, 2000);
+      }).catch(() => {
+        btn.textContent = 'Error — intenta de nuevo';
+        btn.disabled = false;
+      });
+    }
+  </script>
+  <script>
+    // SCRAMBLE
+    const chars = '█▓▒░#@$%&?!X0∆≠≈∑∏←→↑↓■□●○▲▼';
+    function scramble(el) {
+      const real = el.dataset.real;
+      const len = real.length;
+      let out = '';
+      for (let i = 0; i < len; i++) {
+        out += real[i] === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)];
+      }
+      el.textContent = out;
+    }
+    const glitches = document.querySelectorAll('.glitch[data-real]');
+    glitches.forEach(el => {
+      scramble(el);
+      setInterval(() => scramble(el), 120);
+    });
   </script>
   <script>
     // FOG
