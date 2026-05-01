@@ -32,32 +32,12 @@
       cursor: none;
     }
 
-    /* Custom cursor */
-    .cursor {
-      width: 8px; height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
-      mix-blend-mode: difference;
+    /* Custom cursor - pixelated white */
+    .cursor, .cursor-ring { display: none; }
+
+    @media (pointer: fine) {
+      body { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Crect x='0' y='0' width='2' height='2' fill='%23555'/%3E%3Crect x='0' y='2' width='2' height='2' fill='%23fff'/%3E%3Crect x='2' y='0' width='2' height='2' fill='%23fff'/%3E%3Crect x='0' y='4' width='2' height='2' fill='%23555'/%3E%3Crect x='2' y='2' width='2' height='4' fill='%23fff'/%3E%3Crect x='4' y='0' width='2' height='2' fill='%23555'/%3E%3Crect x='4' y='2' width='2' height='2' fill='%23fff'/%3E%3Crect x='0' y='6' width='2' height='2' fill='%23555'/%3E%3Crect x='2' y='6' width='2' height='2' fill='%23fff'/%3E%3Crect x='4' y='4' width='2' height='2' fill='%23fff'/%3E%3Crect x='6' y='2' width='2' height='2' fill='%23fff'/%3E%3Crect x='6' y='4' width='2' height='2' fill='%23555'/%3E%3Crect x='0' y='8' width='2' height='2' fill='%23555'/%3E%3Crect x='2' y='8' width='2' height='2' fill='%23fff'/%3E%3Crect x='4' y='6' width='2' height='2' fill='%23fff'/%3E%3Crect x='6' y='6' width='2' height='2' fill='%23555'/%3E%3Crect x='0' y='10' width='2' height='10' fill='%23555'/%3E%3Crect x='2' y='10' width='2' height='2' fill='%23555'/%3E%3Crect x='4' y='8' width='2' height='2' fill='%23555'/%3E%3C/svg%3E") 0 0, auto; }
     }
-    .cursor-ring {
-      width: 32px; height: 32px;
-      border: 1px solid rgba(255,230,0,0.4);
-      border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s;
-    }
-    body:has(a:hover) .cursor { width: 14px; height: 14px; }
-    body:has(a:hover) .cursor-ring { border-color: var(--accent); width: 44px; height: 44px; }
 
     /* NAV */
     nav {
@@ -435,6 +415,35 @@
       display: inline-block;
       font-family: var(--font-mono);
       letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.35);
+      transition: filter 0.3s, color 0.3s;
+    }
+    .glitch-wrap {
+      position: relative;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    .glitch-wrap .stay-tuned {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s, transform 0.25s;
+      order: -1;
+    }
+    .glitch-wrap:hover .stay-tuned {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .glitch-wrap:hover .glitch {
+      filter: blur(6px);
+      color: rgba(255,255,255,0.2);
     }
 
     section { padding: 8rem 2.5rem; }
@@ -609,7 +618,14 @@
       color: var(--accent);
     }
 
-
+    /* ABOUT */
+    #nosotros { border-top: 1px solid var(--border); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
     .about-text p {
       font-size: 16px;
       line-height: 1.85;
@@ -731,6 +747,7 @@
     @media (max-width: 768px) {
       nav { padding: 1.2rem 1.5rem; }
       .nav-links { display: none; }
+      .nav-guest { display: none; }
       section { padding: 5rem 1.5rem; }
       .event-row { grid-template-columns: 1fr auto; }
       .event-num, .event-tag { display: none; }
@@ -739,6 +756,28 @@
       .gallery-intro, .about-grid { grid-template-columns: 1fr; gap: 2rem; }
       .gallery-link { text-align: left; }
       footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+    .mobile-guest {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .mobile-guest {
+        display: flex;
+        position: fixed;
+        bottom: 24px; left: 50%; transform: translateX(-50%);
+        z-index: 200;
+        background: var(--accent);
+        color: #000;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        padding: 14px 28px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 24px rgba(255,230,0,0.3);
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
@@ -758,7 +797,6 @@
     <ul class="nav-links">
       <li><a href="#eventos">Próximos eventos</a></li>
       <li><a href="#galeria">Galería</a></li>
-      <li><a href="#nosotros">Nosotros</a></li>
       <li><a href="#contacto">Contacto</a></li>
     </ul>
     <div style="display:flex;align-items:center;gap:10px;">
@@ -804,6 +842,7 @@
       <span class="ticker-item"><span class="dot">◆</span>Made for the few.</span>
       <span class="ticker-item"><span class="dot">◆</span>You had to be there.</span>
       <span class="ticker-item"><span class="dot">◆</span>Where the island shows off.</span>
+      <span class="ticker-item"><span class="dot">◆</span>Moments don't happen. We build them.</span>
       <span class="ticker-item"><span class="dot">◆</span>Fewer guests. More intention.</span>
       <span class="ticker-item"><span class="dot">◆</span>We don't do basic.</span>
       <span class="ticker-item"><span class="dot">◆</span>Made for the few.</span>
@@ -824,7 +863,7 @@
       <div class="event-row reveal">
         <span class="event-num">001</span>
         <div class="event-info">
-          <span class="event-name"><span class="glitch" id="artist-1" data-real="Omar Courtz"></span></span>
+          <span class="event-name"><span class="glitch-wrap"><span class="stay-tuned">Stay tuned</span><span class="glitch" id="artist-1" data-real="Omar Courtz"></span></span></span>
           <span class="event-meta">TBD &nbsp;/&nbsp; TBD</span>
         </div>
         <span class="event-tag">Concierto</span>
@@ -834,7 +873,7 @@
       <div class="event-row reveal">
         <span class="event-num">002</span>
         <div class="event-info">
-          <span class="event-name"><span class="glitch" id="artist-2" data-real="Aria Vega"></span></span>
+          <span class="event-name"><span class="glitch-wrap"><span class="stay-tuned">Stay tuned</span><span class="glitch" id="artist-2" data-real="Aria Vega"></span></span></span>
           <span class="event-meta">TBD &nbsp;/&nbsp; TBD</span>
         </div>
         <span class="event-tag">Concert Party</span>
@@ -846,7 +885,7 @@
 
   <!-- ARTISTAS -->
   <div class="artists-wrap">
-    <span class="artists-label">Artistas</span>
+    <span class="artists-label">Artistas · Lineups Anteriores</span>
     <div class="artists-track">
       <div class="artists-inner">
         <div class="artist-item"><span class="artist-name">Alleh &amp; Yorghaki</span><span class="artist-sep">✦</span></div>
@@ -896,7 +935,15 @@
 
     <div class="gallery-grid reveal">
       <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item">
-        <img src="https://postimg.cc/qgvwTP3G" alt="Evento" />
+        <img src="https://i.postimg.cc/ZnhY2jp9/01.jpg" alt="Evento" />
+        <div class="overlay"><span class="overlay-label">Ver galería →</span></div>
+      </a>
+      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item">
+        <img src="https://i.postimg.cc/SRpQ3VC2/02.jpg" alt="Evento" />
+        <div class="overlay"><span class="overlay-label">Ver galería →</span></div>
+      </a>
+      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item">
+        <img src="https://i.postimg.cc/hvq46MTf/03.jpg" alt="Evento" />
         <div class="overlay"><span class="overlay-label">Ver galería →</span></div>
       </a>
       <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item">
@@ -905,14 +952,6 @@
       </a>
       <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item">
         <img src="https://i.postimg.cc/nrtVgTBc/05.jpg" alt="Evento" />
-        <div class="overlay"><span class="overlay-label">Ver galería →</span></div>
-      </a>
-      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item">
-        <img src="https://postimg.cc/qgvwTP3G" alt="Evento" />
-        <div class="overlay"><span class="overlay-label">Ver galería →</span></div>
-      </a>
-      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item">
-        <img src="https://i.postimg.cc/hvq46MTf/03.jpg" alt="Evento" />
         <div class="overlay"><span class="overlay-label">Ver galería →</span></div>
       </a>
     </div>
@@ -968,6 +1007,9 @@
     }, { threshold: 0.12 });
     reveals.forEach(el => obs.observe(el));
   </script>
+  <!-- MOBILE GUEST LIST BUTTON -->
+  <button class="mobile-guest" onclick="openModal()">Guest List →</button>
+
   <!-- GUEST LIST MODAL -->
   <div class="modal-overlay" id="guestModal">
     <div class="modal">
@@ -991,11 +1033,11 @@
       </div>
       <div class="modal-field">
         <label>Dirección</label>
-        <input type="text" id="gl-dir" placeholder="Tu Dirección de residencia" />
+        <input type="text" id="gl-dir" placeholder="Ciudad, País" />
       </div>
       <button class="modal-submit" onclick="submitGuestList()">Solicitar acceso →</button>
       <p class="modal-note" style="margin-top:1.5rem; margin-bottom:0;">
-        Completar este formulario no garantiza tu acceso a los eventos. Estamos determinando la lista de invitados, en caso de ser seleccionado, recibirás un correo electrónico de confirmación.
+        Completar este formulario no garantiza tu acceso al evento. Estamos determinando la lista de invitados — en caso de ser seleccionado, recibirás un correo electrónico de confirmación.
       </p>
     </div>
   </div>
