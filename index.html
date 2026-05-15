@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Incognito</title>
+  <title>Pulso Concerts</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -342,6 +342,15 @@
       z-index: 1;
       pointer-events: none;
     }
+    #sea-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.55;
+    }
     .ticker-wrap {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -429,7 +438,29 @@
       flex-shrink: 0;
     }
 
-    /* GLITCH EFFECT */
+    /* PARTIAL GLITCH - readable but unstable */
+    .glitch-partial {
+      font-family: var(--font-mono);
+      font-size: 0.65em;
+      letter-spacing: 0.08em;
+      color: rgba(135,188,222,0.7);
+      position: relative;
+      display: inline-block;
+    }
+    .glitch-partial::before {
+      content: attr(data-text);
+      position: absolute; top:0; left:0;
+      color: rgba(135,188,222,0.9);
+      clip-path: polygon(0 30%, 100% 30%, 100% 60%, 0 60%);
+      animation: partialGlitch 4s infinite;
+    }
+    @keyframes partialGlitch {
+      0%,80%,100% { opacity:0; transform:none; }
+      82% { opacity:1; transform:translate(-2px,0) skewX(-8deg); }
+      84% { opacity:0; }
+      86% { opacity:0.7; transform:translate(2px,1px); }
+      88% { opacity:0; }
+    }
     .glitch {
       position: relative;
       display: inline-block;
@@ -550,7 +581,45 @@
       transition: opacity 0.2s;
     }
     .event-cta:hover { opacity: 0.75; }
-    .event-sold { color: var(--dim); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .event-expandable { cursor: pointer; }
+    .event-expandable:hover { background: rgba(255,255,255,0.03); padding-left: 1rem; padding-right: 1rem; margin: 0 -1rem; }
+    .event-expand-arrow {
+      font-family: var(--font-mono); font-size: 14px;
+      color: var(--accent); transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+    .event-expandable.open .event-expand-arrow { transform: rotate(180deg); }
+    .event-actions-drawer {
+      display: none;
+      gap: 1rem;
+      padding: 1.2rem 0 1.8rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .event-actions-drawer.open { display: flex; }
+    .event-action-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 12px 24px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s;
+    }
+    .event-action-btn:first-child {
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+    }
+    .event-action-btn:first-child:hover { opacity: 0.85; }
+    .event-action-secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--border);
+    }
+    .event-action-secondary:hover { border-color: var(--white); }
 
     /* GALERÍA */
     #galeria { border-top: 1px solid var(--border); }
@@ -828,6 +897,7 @@
   <!-- HERO -->
   <section class="hero">
     <canvas id="fog-canvas"></canvas>
+    <canvas id="sea-canvas"></canvas>
     <div class="hero-content">
       <p class="hero-tag"><span>Curated or nothing.</span></p>
 
@@ -880,24 +950,34 @@
 
     <div class="events-list">
 
-      <div class="event-row reveal">
-        <span class="event-num">001</span>
+      <div class="event-row reveal event-expandable" onclick="toggleEvent(this)" style="background: linear-gradient(135deg, rgba(135,188,222,0.06) 0%, rgba(245,240,230,0.03) 100%); border-left: 2px solid rgba(135,188,222,0.4);">
+        <span class="event-num" style="color:rgba(135,188,222,0.6)">001</span>
         <div class="event-info">
-          <span class="event-name"><span class="glitch-wrap"><span class="stay-tuned">Stay tuned</span><span class="glitch" id="artist-1" data-real="Omar Courtz"></span></span></span>
-          <span class="event-meta">TBD &nbsp;/&nbsp; TBD</span>
+          <span class="event-name" style="color:var(--white)">
+            MAROLA &nbsp;<span class="glitch-partial" id="aria-partial">Aria Vega</span> &nbsp;<span style="font-size:0.7em">🌊☀️</span>
+          </span>
+          <span class="event-meta">4 Jun &nbsp;·&nbsp; <span style="color:rgba(135,188,222,0.8)">Día Festivo</span> &nbsp;/&nbsp; TBD &nbsp;·&nbsp; 12pm – 12am</span>
         </div>
-        <span class="event-tag">Concierto</span>
-        <a href="https://www.tix.do" target="_blank" class="event-cta">Tickets →</a>
+        <span class="event-tag" style="border-color:rgba(135,188,222,0.4);color:rgba(135,188,222,0.8)">Concert Party</span>
+        <span class="event-expand-arrow" style="color:rgba(135,188,222,0.9)">↓</span>
+      </div>
+      <div class="event-actions-drawer" id="drawer-marola" style="border-color:rgba(135,188,222,0.2)">
+        <a href="https://www.tix.do" target="_blank" class="event-action-btn" style="background:rgba(135,188,222,0.9);color:#0a1628">
+          <span>🎟</span> Tickets
+        </a>
+        <a href="mesas.html" target="_blank" class="event-action-btn event-action-secondary" style="border-color:rgba(135,188,222,0.3);color:rgba(135,188,222,0.8)">
+          <span>🪑</span> Reservar Mesa
+        </a>
       </div>
 
       <div class="event-row reveal">
         <span class="event-num">002</span>
         <div class="event-info">
-          <span class="event-name"><span class="glitch-wrap"><span class="stay-tuned">Stay tuned</span><span class="glitch" id="artist-2" data-real="Aria Vega"></span></span></span>
+          <span class="event-name"><span class="glitch-wrap"><span class="stay-tuned">Stay tuned</span><span class="glitch" id="artist-1" data-real="Omar Courtz"></span></span></span>
           <span class="event-meta">TBD &nbsp;/&nbsp; TBD</span>
         </div>
-        <span class="event-tag">Concert Party</span>
-        <a href="https://www.tix.do" target="_blank" class="event-cta">Tickets →</a>
+        <span class="event-tag">Concierto</span>
+        <span class="event-cta" style="opacity:0.3;cursor:not-allowed;pointer-events:none;background:transparent;border:1px solid var(--border);color:var(--dim)">Próximamente</span>
       </div>
 
     </div>
@@ -992,7 +1072,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-left">&copy; 2026 incognitosdq</span>
+    <span class="footer-left">&copy; 2025 incognitosdq</span>
     <div class="footer-center">
       A company of <strong>Pulso Concerts</strong>
     </div>
@@ -1193,6 +1273,13 @@
       requestAnimationFrame(drawFog);
     }
     drawFog();
+    function toggleEvent(row) {
+      row.classList.toggle('open');
+      const drawer = row.nextElementSibling;
+      if (drawer && drawer.classList.contains('event-actions-drawer')) {
+        drawer.classList.toggle('open');
+      }
+    }
   </script>
   <script>
     // Cursor
@@ -1209,6 +1296,58 @@
       ring.style.top = ry + 'px';
       requestAnimationFrame(loop);
     })();
+  </script>
+  <script>
+    // SEA WAVES
+    const seaCanvas = document.getElementById('sea-canvas');
+    const seaCtx = seaCanvas.getContext('2d');
+    function resizeSea() { seaCanvas.width = seaCanvas.offsetWidth; seaCanvas.height = seaCanvas.offsetHeight; }
+    resizeSea();
+    window.addEventListener('resize', resizeSea);
+    let seaT = 0;
+    const waves = [
+      { amp:38, freq:0.008, speed:1.0,  yR:0.72, color:'rgba(30,80,140,0.22)',   lw:2.5 },
+      { amp:28, freq:0.012, speed:1.4,  yR:0.76, color:'rgba(60,130,190,0.18)',  lw:1.8 },
+      { amp:18, freq:0.018, speed:0.7,  yR:0.80, color:'rgba(100,170,220,0.14)', lw:1.2 },
+      { amp:48, freq:0.006, speed:0.5,  yR:0.68, color:'rgba(20,60,120,0.12)',   lw:3.0 },
+      { amp:12, freq:0.024, speed:2.0,  yR:0.82, color:'rgba(180,220,255,0.10)', lw:1.0 },
+      { amp:55, freq:0.004, speed:0.3,  yR:0.62, color:'rgba(10,40,100,0.08)',   lw:4.0 },
+    ];
+    function drawSea() {
+      const W = seaCanvas.width, H = seaCanvas.height;
+      seaCtx.clearRect(0, 0, W, H);
+      seaT += 0.008;
+      waves.forEach(w => {
+        const baseY = H * w.yR;
+        seaCtx.beginPath();
+        seaCtx.moveTo(0, baseY);
+        for (let x = 0; x <= W; x += 3) {
+          const y = baseY
+            + Math.sin(x * w.freq + seaT * w.speed) * w.amp
+            + Math.sin(x * w.freq * 1.7 + seaT * w.speed * 0.6) * w.amp * 0.3
+            + Math.sin(x * w.freq * 0.4 + seaT * w.speed * 1.3) * w.amp * 0.15;
+          seaCtx.lineTo(x, y);
+        }
+        seaCtx.strokeStyle = w.color;
+        seaCtx.lineWidth = w.lw;
+        seaCtx.stroke();
+        seaCtx.lineTo(W, H); seaCtx.lineTo(0, H); seaCtx.closePath();
+        seaCtx.fillStyle = w.color.replace(/[\d.]+\)$/, '0.035)');
+        seaCtx.fill();
+      });
+      if (Math.random() < 0.25) {
+        seaCtx.beginPath();
+        seaCtx.arc(Math.random()*W, H*0.62 + Math.random()*H*0.28, Math.random()*2+0.5, 0, Math.PI*2);
+        seaCtx.fillStyle = 'rgba(200,230,255,0.18)';
+        seaCtx.fill();
+      }
+      requestAnimationFrame(drawSea);
+    }
+    drawSea();
+
+    // Set data-text on partial glitch
+    const pg = document.getElementById('aria-partial');
+    if (pg) pg.setAttribute('data-text', pg.textContent);
   </script>
 </body>
 </html>
