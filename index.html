@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>incognito kind of night</title>
+  <title>Pulso Concerts</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -29,12 +29,35 @@
       color: var(--white);
       font-family: var(--font-body);
       overflow-x: hidden;
-      cursor: auto;
+      cursor: none;
     }
 
     /* Custom cursor */
-.cursor { display: none; }
-.cursor-ring { display: none; }
+    .cursor {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 32px; height: 32px;
+      border: 1px solid rgba(255,230,0,0.4);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s;
+    }
+    body:has(a:hover) .cursor { width: 14px; height: 14px; }
+    body:has(a:hover) .cursor-ring { border-color: var(--accent); width: 44px; height: 44px; }
 
     /* NAV */
     nav {
@@ -931,7 +954,7 @@
         <span class="event-num" style="color:rgba(135,188,222,0.6)">001</span>
         <div class="event-info">
           <span class="event-name" style="color:var(--white)">
-            MAROLA &nbsp;<span class="glitch-partial" id="aria-partial">+ International Artist</span> &nbsp;<span style="font-size:0.7em">🌊☀️</span>
+            MAROLA &nbsp;<span class="glitch-partial" id="aria-partial">Aria Vega</span> &nbsp;<span style="font-size:0.7em">🌊☀️</span>
           </span>
           <span class="event-meta">4 Jun &nbsp;·&nbsp; <span style="color:rgba(135,188,222,0.8)">Día Festivo</span> &nbsp;/&nbsp; TBD &nbsp;·&nbsp; 12pm – 12am</span>
         </div>
@@ -1051,7 +1074,7 @@
   <footer>
     <span class="footer-left">&copy; 2025 incognitosdq</span>
     <div class="footer-center">
-      A company of <strong>PLS0</strong>
+      A company of <strong>Pulso Concerts</strong>
     </div>
     <span class="footer-right">Santo Domingo, RD</span>
   </footer>
@@ -1144,7 +1167,7 @@
       const btn = document.querySelector('.modal-submit');
       btn.textContent = 'Enviando...';
       btn.disabled = true;
-      fetch('https://script.google.com/a/macros/calimeterd.com/s/AKfycbyjUU7Tus2k3ZM276d_GH9KMR-puY79G8bR-dF_R-zKLSCM0zckA5WDUjW9AK1t9PTLHg/exec', {
+      fetch('https://script.google.com/a/macros/calimeterd.com/s/AKfycbzdpSI2ZdVVdD7xxNLnZHrzmJ8aJJH26qbTVoZbIFO_NFfxnjMnKfcr8sVYo5Nse1lu6g/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
