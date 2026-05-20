@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>incognito kind of night</title>
+  <title>Pulso Concerts</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
@@ -322,7 +322,7 @@
       height: 100%;
       z-index: 1;
       pointer-events: none;
-      opacity: 0.55;
+      opacity: 1;
     }
     .ticker-wrap {
       border-top: 1px solid var(--border);
@@ -860,7 +860,7 @@
     </ul>
     <div style="display:flex;align-items:center;gap:10px;">
       <button class="nav-guest" onclick="openModal()">Guest List</button>
-      <a href="#eventos" class="nav-cta">Tickets</a>
+      <a href="https://tix.do/event/CasaCapri-1" target="_blank" class="nav-cta">Tickets</a>
     </div>
   </nav>
 
@@ -924,19 +924,20 @@
         <span class="event-num" style="color:rgba(135,188,222,0.6)">001</span>
         <div class="event-info">
           <span class="event-name" style="color:var(--white)">
-            CASA CAPRI &nbsp;<span class="glitch-partial" id="aria-partial">+ International Artist</span> &nbsp;<span style="font-size:0.7em">🌊☀️</span>
+            CASA CAPRI &nbsp;<span class="glitch-partial" id="aria-partial">Aria Vega</span> &nbsp;<span style="font-size:0.7em">🌊☀️</span>
           </span>
-          <span class="event-meta">4 Jun &nbsp;·&nbsp; <span style="color:rgba(135,188,222,0.8)">Día Festivo</span> &nbsp;/&nbsp; TBD &nbsp;·&nbsp; 12pm – 12am</span>
+          <span class="event-meta">4 Jun &nbsp;·&nbsp; <span style="color:rgba(135,188,222,0.8)">Día Festivo</span> &nbsp;/&nbsp; Neptuno's, Boca Chica &nbsp;·&nbsp; 11am – 9pm</span>
+          <span class="event-meta" style="color:rgba(255,230,0,0.7);font-size:10px;letter-spacing:0.2em">✦ Open Bar Premium incluido</span>
         </div>
         <span class="event-tag" style="border-color:rgba(135,188,222,0.4);color:rgba(135,188,222,0.8)">Concert Party</span>
         <span class="event-expand-arrow" style="color:rgba(135,188,222,0.9)">↓</span>
       </div>
       <div class="event-actions-drawer" id="drawer-marola" style="border-color:rgba(135,188,222,0.2)">
-        <a href="https://www.tix.do" target="_blank" class="event-action-btn" style="background:rgba(135,188,222,0.9);color:#0a1628">
+        <a href="https://tix.do/event/CasaCapri-1" target="_blank" class="event-action-btn" style="background:rgba(135,188,222,0.9);color:#0a1628">
           <span>🎟</span> Tickets
         </a>
         <a href="mesas.html" target="_blank" class="event-action-btn event-action-secondary" style="border-color:rgba(135,188,222,0.3);color:rgba(135,188,222,0.8)">
-          <span>🪑</span> Reservar Mesa
+          <span> Reservar Mesa
         </a>
       </div>
 
@@ -1242,49 +1243,110 @@
     }
   </script>
   <script>
-    // SEA WAVES
+    // GOLDEN SAND PARTICLES
     const seaCanvas = document.getElementById('sea-canvas');
     const seaCtx = seaCanvas.getContext('2d');
-    function resizeSea() { seaCanvas.width = seaCanvas.offsetWidth; seaCanvas.height = seaCanvas.offsetHeight; }
+    function resizeSea() {
+      seaCanvas.width  = seaCanvas.offsetWidth;
+      seaCanvas.height = seaCanvas.offsetHeight;
+      initParticles();
+    }
     resizeSea();
     window.addEventListener('resize', resizeSea);
-    let seaT = 0;
-    const waves = [
-      { amp:38, freq:0.008, speed:1.0,  yR:0.72, color:'rgba(30,80,140,0.22)',   lw:2.5 },
-      { amp:28, freq:0.012, speed:1.4,  yR:0.76, color:'rgba(60,130,190,0.18)',  lw:1.8 },
-      { amp:18, freq:0.018, speed:0.7,  yR:0.80, color:'rgba(100,170,220,0.14)', lw:1.2 },
-      { amp:48, freq:0.006, speed:0.5,  yR:0.68, color:'rgba(20,60,120,0.12)',   lw:3.0 },
-      { amp:12, freq:0.024, speed:2.0,  yR:0.82, color:'rgba(180,220,255,0.10)', lw:1.0 },
-      { amp:55, freq:0.004, speed:0.3,  yR:0.62, color:'rgba(10,40,100,0.08)',   lw:4.0 },
-    ];
+
+    let particles = [];
+
+    function initParticles() {
+      const W = seaCanvas.width, H = seaCanvas.height;
+      const count = Math.floor((W * H) / 6000);
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push(spawnParticle(W, H, true));
+      }
+    }
+
+    function spawnParticle(W, H, randomY) {
+      const size = 0.4 + Math.random() * 1.8;
+      // Gold palette: deep amber to bright gold to pale champagne
+      const goldhues = [
+        [255, 210, 80],   // bright gold
+        [240, 185, 60],   // warm gold
+        [255, 230, 130],  // pale gold
+        [200, 155, 50],   // deep amber
+        [255, 245, 180],  // champagne
+      ];
+      const c = goldhues[Math.floor(Math.random() * goldhues.length)];
+      return {
+        x: Math.random() * W,
+        y: randomY ? Math.random() * H : H + size * 2,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: -(0.12 + Math.random() * 0.45),
+        size,
+        r: c[0], g: c[1], b: c[2],
+        alpha: 0,
+        maxAlpha: 0.25 + Math.random() * 0.55,
+        life: 0,
+        maxLife: 220 + Math.random() * 380,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.02 + Math.random() * 0.04,
+        drift: (Math.random() - 0.5) * 0.008,
+      };
+    }
+
     function drawSea() {
       const W = seaCanvas.width, H = seaCanvas.height;
-      seaCtx.clearRect(0, 0, W, H);
-      seaT += 0.008;
-      waves.forEach(w => {
-        const baseY = H * w.yR;
-        seaCtx.beginPath();
-        seaCtx.moveTo(0, baseY);
-        for (let x = 0; x <= W; x += 3) {
-          const y = baseY
-            + Math.sin(x * w.freq + seaT * w.speed) * w.amp
-            + Math.sin(x * w.freq * 1.7 + seaT * w.speed * 0.6) * w.amp * 0.3
-            + Math.sin(x * w.freq * 0.4 + seaT * w.speed * 1.3) * w.amp * 0.15;
-          seaCtx.lineTo(x, y);
+
+      // Very slow fade — particles leave a soft trail
+      seaCtx.fillStyle = 'rgba(0,0,0,0.025)';
+      seaCtx.fillRect(0, 0, W, H);
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.life++;
+        p.twinkle += p.twinkleSpeed;
+        p.vx += p.drift;
+        p.vx *= 0.995; // slight damping
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Fade in / fade out
+        const prog = p.life / p.maxLife;
+        if (prog < 0.15) {
+          p.alpha = (prog / 0.15) * p.maxAlpha;
+        } else if (prog > 0.75) {
+          p.alpha = ((1 - prog) / 0.25) * p.maxAlpha;
+        } else {
+          p.alpha = p.maxAlpha;
         }
-        seaCtx.strokeStyle = w.color;
-        seaCtx.lineWidth = w.lw;
-        seaCtx.stroke();
-        seaCtx.lineTo(W, H); seaCtx.lineTo(0, H); seaCtx.closePath();
-        seaCtx.fillStyle = w.color.replace(/[\d.]+\)$/, '0.035)');
-        seaCtx.fill();
-      });
-      if (Math.random() < 0.25) {
+
+        // Twinkle
+        const tw = 0.7 + Math.sin(p.twinkle) * 0.3;
+        const a = p.alpha * tw;
+
+        // Draw particle — crisp dot with soft glow
+        // Inner bright core
         seaCtx.beginPath();
-        seaCtx.arc(Math.random()*W, H*0.62 + Math.random()*H*0.28, Math.random()*2+0.5, 0, Math.PI*2);
-        seaCtx.fillStyle = 'rgba(200,230,255,0.18)';
+        seaCtx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2);
+        seaCtx.fillStyle = `rgba(${p.r},${p.g},${p.b},${a})`;
         seaCtx.fill();
+
+        // Outer soft halo (only for larger particles)
+        if (p.size > 1.0) {
+          const grd = seaCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2.2);
+          grd.addColorStop(0, `rgba(${p.r},${p.g},${p.b},${a * 0.4})`);
+          grd.addColorStop(1, `rgba(${p.r},${p.g},${p.b},0)`);
+          seaCtx.beginPath();
+          seaCtx.arc(p.x, p.y, p.size * 2.2, 0, Math.PI * 2);
+          seaCtx.fillStyle = grd;
+          seaCtx.fill();
+        }
+
+        // Remove dead / out-of-bounds particles
+        if (p.life > p.maxLife || p.y < -10 || p.x < -10 || p.x > W + 10) {
+          particles[i] = spawnParticle(W, H, false);
+        }
       }
+
       requestAnimationFrame(drawSea);
     }
     drawSea();
