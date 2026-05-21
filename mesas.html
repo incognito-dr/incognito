@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Capri — Selección de Mesas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B2A4A;
+  --bg:#0A1428;
+  --coral:#C9603F;
+  --ocre:#E0A422;
+  --cream:#F4EDE0;
+  --sky:#7FB5E0;
+  --display:'Fraunces',Georgia,serif;
+  --body:'Archivo', system-ui, sans-serif;
+  --script:'Caveat', cursive;
+  --avail:var(--ocre);
+  --selected:var(--coral);
+  --occupied:var(--sky);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--cream);font-family:var(--body);-webkit-font-smoothing:antialiased}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:radial-gradient(circle at 50% 25%,transparent 50%,rgba(4,9,20,.7));
+  mix-blend-mode:multiply;
+}
+.wrap{max-width:1400px;margin:0 auto;padding:clamp(20px,4vw,56px)}
+.head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin-bottom:30px}
+.eyebrow{font-family:var(--body);font-weight:600;letter-spacing:.42em;text-transform:uppercase;font-size:11px;color:var(--coral);display:flex;align-items:center;gap:14px;}
+.eyebrow::before,.eyebrow::after{content:"";width:34px;height:1px;background:var(--coral);opacity:.6}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,86px);line-height:.92;letter-spacing:-.01em;color:var(--cream);}
+h1 em{font-style:italic;color:var(--ocre)}
+.sub{font-family:var(--script);font-size:clamp(20px,3vw,30px);color:var(--sky);transform:rotate(-2deg);margin-top:4px}
+.hours{margin-top:10px;font-weight:600;letter-spacing:.28em;font-size:11px;text-transform:uppercase;color:var(--cream);border:1px solid rgba(201,96,63,.55);border-radius:30px;padding:7px 18px;background:rgba(201,96,63,.1);}
+.layout{display:grid;grid-template-columns:1fr 360px;gap:30px;align-items:start}
+@media(max-width:980px){.layout{grid-template-columns:1fr}}
+.mapcard{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(0,0,0,.7),0 0 0 1px rgba(127,181,224,.15),0 0 0 8px rgba(244,237,224,.04);}
+.mapcard img{display:block;width:100%;height:auto}
+.map-stage{position:relative;width:100%}
+.badge{position:absolute;transform:translate(-50%,-50%);width:clamp(30px,3.4vw,42px);height:clamp(30px,3.4vw,42px);border:none;background:transparent;cursor:pointer;padding:0;display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:clamp(9px,1vw,12px);color:#fff;z-index:3;transition:transform .18s cubic-bezier(.34,1.56,.64,1);}
+.badge .disc{position:absolute;inset:0;border-radius:50%;background:var(--avail);box-shadow:0 0 0 3px var(--navy),0 4px 10px -2px rgba(0,0,0,.5);transition:background .2s;}
+.badge .lbl{position:relative;z-index:2;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.badge:hover{transform:translate(-50%,-50%) scale(1.18)}
+.badge:hover .disc{filter:brightness(1.08)}
+.badge.selected .disc{background:var(--selected)}
+.badge.selected{transform:translate(-50%,-50%) scale(1.12)}
+.badge.selected::after{content:"✓";position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:var(--cream);color:var(--coral);border-radius:50%;font-size:11px;display:grid;place-items:center;font-weight:800;box-shadow:0 2px 5px rgba(0,0,0,.4);z-index:4;}
+.badge.occupied{cursor:not-allowed}
+.badge.occupied .disc{background:var(--occupied);opacity:.92}
+.badge.occupied .lbl{opacity:.55}
+.badge.occupied:hover{transform:translate(-50%,-50%)}
+.badge.occupied::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(45deg,transparent 0 4px,rgba(27,42,74,.32) 4px 7px);}
+.legend{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:18px;font-size:12px;letter-spacing:.04em}
+.legend span{display:flex;align-items:center;gap:8px;color:var(--cream);opacity:.85}
+.dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 2px var(--navy)}
+.panel{position:sticky;top:24px;background:var(--cream);color:var(--navy);border-radius:20px;padding:24px;box-shadow:0 24px 50px -18px rgba(0,0,0,.55);}
+.panel h2{font-family:var(--display);font-size:21px;font-weight:900;letter-spacing:.005em;margin-bottom:2px}
+.panel .pnote{font-size:12px;color:var(--coral);font-weight:600;letter-spacing:.04em;margin-bottom:16px}
+.tiers{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.tier{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:9px 11px;border-radius:11px;background:rgba(27,42,74,.05);font-size:12.5px;border:1px solid transparent;cursor:default;}
+.tier .sw{width:13px;height:13px;border-radius:50%}
+.tier b{font-weight:700;display:block;font-size:13px}
+.tier small{color:#6a6f7a;font-size:10.5px;letter-spacing:.02em}
+.tier .pr{font-family:var(--display);font-weight:900;font-size:12.5px;white-space:nowrap;letter-spacing:.01em}
+.selbox{border-top:1px dashed rgba(27,42,74,.25);padding-top:16px;margin-top:4px}
+.selbox h3{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--coral);margin-bottom:12px}
+.selrow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(27,42,74,.08);font-size:13px;animation:pop .25s ease}
+@keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.selrow .id{display:flex;align-items:center;gap:9px;font-weight:600}
+.selrow .id i{width:10px;height:10px;border-radius:50%;display:inline-block}
+.selrow .id em{font-style:normal;font-size:10.5px;color:#777;font-weight:500}
+.selrow .rt{display:flex;align-items:center;gap:12px}
+.selrow .x{cursor:pointer;color:var(--coral);font-weight:800;font-size:15px;line-height:1;opacity:.7}
+.selrow .x:hover{opacity:1}
+.empty{font-size:12.5px;color:#888;text-align:center;padding:14px 0;line-height:1.5}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;padding-top:14px;border-top:2px solid var(--navy)}
+.total .lab{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700}
+.total .amt{font-family:var(--display);font-weight:900;font-size:24px;letter-spacing:.01em}
+.paxline{font-size:11.5px;color:#6a6f7a;text-align:right;margin-top:2px}
+.consumo{margin-top:12px;display:flex;flex-direction:column;gap:3px;font-size:11px;line-height:1.45}
+.consumo .c-yes{color:var(--navy);font-weight:600}
+.consumo .c-no{color:var(--coral);font-weight:600}
+.cta{width:100%;margin-top:18px;border:none;cursor:pointer;background:var(--coral);color:var(--cream);font-family:var(--body);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:13px;padding:15px;border-radius:12px;transition:.2s;}
+.cta:hover:not(:disabled){background:var(--navy);transform:translateY(-1px)}
+.cta:disabled{opacity:.4;cursor:not-allowed}
+.shade-note{display:flex;gap:10px;align-items:flex-start;margin-top:16px;background:rgba(224,164,34,.14);border:1px solid rgba(224,164,34,.4);border-radius:11px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:var(--navy);}
+.shade-note b{color:var(--coral)}
+.foot{text-align:center;margin-top:30px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,237,224,.45)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="eyebrow">Incognito Events</div>
+    <h1>Casa <em>Capri</em></h1>
+    <div class="sub">Neptuno's, Boca Chica</div>
+    <div class="hours">11 AM — 9 PM &nbsp;·&nbsp; Jueves 4 de Junio</div>
+  </header>
+
+  <div class="layout">
+    <div>
+      <div class="mapcard">
+        <div class="map-stage" id="stage">
+          <img id="mapimg" src="https://res.cloudinary.com/dheiidsny/image/upload/v1779403097/gMESAS_CASA_CAPRI_ojqwtp.png" alt="Mapa Casa Capri">
+        </div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--ocre)"></i> Disponible</span>
+        <span><i class="dot" style="background:var(--coral)"></i> Seleccionada</span>
+        <span><i class="dot" style="background:var(--sky)"></i> Ocupada</span>
+      </div>
+    </div>
+
+    <aside class="panel" id="panel">
+      <h2>Tu selección</h2>
+      <div class="pnote">Toca una mesa en el mapa</div>
+      <div class="tiers">
+        <div class="tier"><span class="sw" style="background:var(--coral)"></span>
+          <div><b>Private Decks</b><small>P1–P2 · 15 pax · hot tub</small></div>
+          <span class="pr">RD$120,000</span></div>
+        <div class="tier"><span class="sw" style="background:var(--ocre)"></span>
+          <div><b>Seaside Tables</b><small>S1–S6 · 10 pax</small></div>
+          <span class="pr">RD$80,000</span></div>
+        <div class="tier"><span class="sw" style="background:var(--sky)"></span>
+          <div><b>Sunset Cabanas</b><small>T1–T8 · 8 pax</small></div>
+          <span class="pr">RD$50,000</span></div>
+        <div class="tier"><span class="sw" style="background:var(--navy)"></span>
+          <div><b>Capri Lounges</b><small>C1–C11 · 6 pax</small></div>
+          <span class="pr">RD$30,000</span></div>
+      </div>
+      <div class="selbox">
+        <h3>Mesas elegidas</h3>
+        <div id="sellist"><div class="empty">Aún no has seleccionado<br>ningún espacio.</div></div>
+        <div class="total">
+          <div><span class="lab">Total</span></div>
+          <div style="text-align:right">
+            <div class="amt" id="total">RD$0</div>
+            <div class="paxline" id="pax">0 personas</div>
+          </div>
+        </div>
+        <div class="consumo">
+          <span class="c-yes">Monto totalmente consumible en Menú de Bebida.</span>
+          <span class="c-no">No incluye crédito consumible en comida.</span>
+        </div>
+        <button class="cta" id="cta" disabled>Reservar por WhatsApp</button>
+      </div>
+      <div class="shade-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9603F" stroke-width="2" stroke-linecap="round"><path d="M12 2v2M12 9a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7zM3 16h18M12 16v6"/></svg>
+        <div><b>Todas las mesas cuentan con techo o sombrilla.</b> No se muestran en el mapa por motivos estéticos de selección, pero tu espacio siempre estará protegido del sol.</div>
+      </div>
+    </aside>
+  </div>
+  <div class="foot">Casa Capri · Neptuno's · República Dominicana</div>
+</div>
+
+<script>
+const TIERS = {
+  P:{name:'Private Deck', price:120000, pax:15, color:'var(--coral)'},
+  S:{name:'Seaside Table', price:80000, pax:10, color:'var(--ocre)'},
+  T:{name:'Sunset Cabana', price:50000, pax:8,  color:'var(--sky)'},
+  C:{name:'Capri Lounge',  price:30000, pax:6,  color:'var(--navy)'},
+};
+const tierOf = id => TIERS[id[0]];
+
+const TABLES = [
+  ['S5',27.6,15.0],['C1',35.2,15.0],['C2',42.0,15.0],['C3',48.4,15.0],['C4',54.6,15.0],['C5',62.0,15.0],['S6',70.0,15.0],
+  ['S3',30.0,21.0],['T6',49.0,21.0],['S4',70.0,21.0],
+  ['C6',31.0,26.9],['T5',39.2,26.0],['T7',60.0,26.0],['C9',67.2,26.9],
+  ['C7',31.0,31.8],['T4',39.2,31.8],['T8',60.0,31.8],['C10',67.2,31.8],
+  ['C8',31.0,37.0],['C11',67.2,37.0],
+  ['T3',28.0,45.2],['T2',28.0,51.0],['T1',28.0,57.0],
+  ['P1',27.0,68.8],['P2',71.0,68.8],
+  ['S1',26.0,80.0],['S2',71.0,79.8],
+];
+
+const OCCUPIED = new Set([]);
+const stage = document.getElementById('stage');
+const selected = new Map();
+
+TABLES.forEach(([id,x,y])=>{
+  const b=document.createElement('button');
+  b.className='badge'+(OCCUPIED.has(id)?' occupied':'');
+  b.style.left=x+'%'; b.style.top=y+'%';
+  b.dataset.id=id;
+  b.innerHTML=`<span class="disc"></span><span class="lbl">${id}</span>`;
+  b.onclick=()=>{ if(OCCUPIED.has(id)) return; toggle(id,b); };
+  stage.appendChild(b);
+});
+
+function toggle(id,el){
+  if(selected.has(id)){selected.delete(id);el.classList.remove('selected');}
+  else{
+    selected.set(id,tierOf(id));el.classList.add('selected');
+    if(window.matchMedia('(max-width:980px)').matches){
+      setTimeout(()=>document.getElementById('cta').scrollIntoView({behavior:'smooth',block:'center'}),120);
+    }
+  }
+  render();
+}
+
+function fmt(n){return 'RD$'+n.toLocaleString('en-US');}
+
+function render(){
+  const list=document.getElementById('sellist');
+  if(selected.size===0){
+    list.innerHTML='<div class="empty">Aún no has seleccionado<br>ningún espacio.</div>';
+  }else{
+    list.innerHTML='';
+    [...selected.entries()].forEach(([id,t])=>{
+      const r=document.createElement('div');r.className='selrow';
+      r.innerHTML=`<span class="id"><i style="background:${t.color}"></i>${id} <em>${t.name}</em></span>
+      <span class="rt">${fmt(t.price)} <span class="x" data-x="${id}">&times;</span></span>`;
+      list.appendChild(r);
+    });
+    list.querySelectorAll('.x').forEach(x=>x.onclick=()=>{
+      const id=x.dataset.x;selected.delete(id);
+      document.querySelector(`.badge[data-id="${id}"]`).classList.remove('selected');
+      render();
+    });
+  }
+  const tot=[...selected.values()].reduce((s,t)=>s+t.price,0);
+  const pax=[...selected.values()].reduce((s,t)=>s+t.pax,0);
+  document.getElementById('total').textContent=fmt(tot);
+  document.getElementById('pax').textContent=pax+' personas';
+  document.getElementById('cta').disabled=selected.size===0;
+}
+
+document.getElementById('cta').onclick=()=>{
+  if(selected.size===0) return;
+  const lines=[...selected.entries()].map(([id,t])=>`• ${id} — ${t.name} (${t.pax} pax) — ${fmt(t.price)}`);
+  const tot=document.getElementById('total').textContent;
+  const pax=document.getElementById('pax').textContent;
+  const msg=`¡Hola! Quiero reservar para Casa Capri (Neptuno's, 4 de Junio):\n\n${lines.join('\n')}\n\nTotal: ${tot}\nCapacidad: ${pax}\n\n¿Me confirman disponibilidad?`;
+  window.open(`https://wa.me/18495807998?text=${encodeURIComponent(msg)}`,'_blank');
+};
+</script>
+</body>
+</html>
