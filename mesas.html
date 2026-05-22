@@ -4,30 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Casa Capri — Selección de Mesas</title>
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dheiidsny/image/upload/v1779416400/favinco_inzodu.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Archivo:wght@400;500;600;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#1B2A4A;
-  --bg:#0A1428;
+  --bg:#000000;
   --coral:#C9603F;
   --ocre:#E0A422;
   --cream:#F4EDE0;
   --sky:#7FB5E0;
-  --display:'Fraunces',Georgia,serif;
-  --body:'Archivo', system-ui, sans-serif;
-  --script:'Caveat', cursive;
+  --line:rgba(255,255,255,0.1);
+  --display:'Inter',sans-serif;
+  --body:'Inter', system-ui, sans-serif;
+  --mono:'Space Mono', monospace;
   --avail:var(--ocre);
   --selected:var(--coral);
   --occupied:var(--sky);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--cream);font-family:var(--body);-webkit-font-smoothing:antialiased}
+html,body{background:var(--bg);color:var(--cream);font-family:var(--body);font-weight:300;-webkit-font-smoothing:antialiased}
 body::before{
   content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;
-  background:radial-gradient(circle at 50% 25%,transparent 50%,rgba(4,9,20,.7));
-  mix-blend-mode:multiply;
+  background:radial-gradient(circle at 50% 30%,transparent 60%,rgba(0,0,0,.5));
 }
 .wrap{max-width:1400px;margin:0 auto;padding:clamp(20px,4vw,56px)}
 .head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;margin-bottom:30px}
@@ -39,7 +40,7 @@ h1 em{font-style:italic;color:var(--ocre)}
 .hours{margin-top:10px;font-weight:600;letter-spacing:.28em;font-size:11px;text-transform:uppercase;color:var(--cream);border:1px solid rgba(201,96,63,.55);border-radius:30px;padding:7px 18px;background:rgba(201,96,63,.1);}
 .layout{display:grid;grid-template-columns:1fr 360px;gap:30px;align-items:start}
 @media(max-width:980px){.layout{grid-template-columns:1fr}}
-.mapcard{position:relative;border-radius:22px;overflow:hidden;box-shadow:0 30px 70px -20px rgba(0,0,0,.7),0 0 0 1px rgba(127,181,224,.15),0 0 0 8px rgba(244,237,224,.04);}
+.mapcard{position:relative;border-radius:6px;overflow:hidden;border:0.5px solid var(--line);}
 .mapcard img{display:block;width:100%;height:auto}
 .map-stage{position:relative;width:100%}
 .badge{position:absolute;transform:translate(-50%,-50%);width:clamp(30px,3.4vw,42px);height:clamp(30px,3.4vw,42px);border:none;background:transparent;cursor:pointer;padding:0;display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:clamp(9px,1vw,12px);color:#fff;z-index:3;transition:transform .18s cubic-bezier(.34,1.56,.64,1);}
@@ -51,46 +52,50 @@ h1 em{font-style:italic;color:var(--ocre)}
 .badge.selected{transform:translate(-50%,-50%) scale(1.12)}
 .badge.selected::after{content:"✓";position:absolute;top:-7px;right:-7px;width:18px;height:18px;background:var(--cream);color:var(--coral);border-radius:50%;font-size:11px;display:grid;place-items:center;font-weight:800;box-shadow:0 2px 5px rgba(0,0,0,.4);z-index:4;}
 .badge.occupied{cursor:not-allowed}
-.badge.occupied .disc{background:var(--occupied);opacity:.92}
-.badge.occupied .lbl{opacity:.55}
+.badge.occupied .disc{opacity:.45}
+.badge.occupied::after{content:"\00d7";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-family:var(--body);font-weight:700;font-size:clamp(20px,2.4vw,30px);line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:5;}
 .badge.occupied:hover{transform:translate(-50%,-50%)}
-.badge.occupied::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(45deg,transparent 0 4px,rgba(27,42,74,.32) 4px 7px);}
 .legend{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:18px;font-size:12px;letter-spacing:.04em}
-.legend span{display:flex;align-items:center;gap:8px;color:var(--cream);opacity:.85}
+.legend span{display:flex;align-items:center;gap:8px;color:var(--cream);opacity:.85;font-family:var(--body);font-size:11px;letter-spacing:0.02em}
+.viewers{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-family:var(--body);font-size:11px;color:#777;letter-spacing:0.02em}
+.viewers-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:vPulse 1.6s ease-in-out infinite}
+@keyframes vPulse{0%,100%{opacity:1}50%{opacity:.3}}
 .dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 2px var(--navy)}
-.panel{position:sticky;top:24px;background:var(--cream);color:var(--navy);border-radius:20px;padding:24px;box-shadow:0 24px 50px -18px rgba(0,0,0,.55);}
-.panel h2{font-family:var(--display);font-size:21px;font-weight:900;letter-spacing:.005em;margin-bottom:2px}
-.panel .pnote{font-size:12px;color:var(--coral);font-weight:600;letter-spacing:.04em;margin-bottom:16px}
+.legend-x{position:relative}
+.legend-x::after{content:"\00d7";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-weight:700;font-size:12px;line-height:1}
+.panel{position:sticky;top:24px;background:#fff;color:#111;border-radius:6px;padding:26px;}
+.panel h2{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-0.02em;margin-bottom:3px;color:#111}
+.panel .pnote{font-family:var(--body);font-size:11px;color:var(--coral);font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
 .tiers{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
-.tier{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:9px 11px;border-radius:11px;background:rgba(27,42,74,.05);font-size:12.5px;border:1px solid transparent;cursor:default;}
+.tier{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:4px;background:#f5f5f3;font-size:12.5px;border:0.5px solid rgba(0,0,0,0.06);cursor:default;}
 .tier .sw{width:13px;height:13px;border-radius:50%}
-.tier b{font-weight:700;display:block;font-size:13px}
-.tier small{color:#6a6f7a;font-size:10.5px;letter-spacing:.02em}
-.tier .pr{font-family:var(--display);font-weight:900;font-size:12.5px;white-space:nowrap;letter-spacing:.01em}
-.selbox{border-top:1px dashed rgba(27,42,74,.25);padding-top:16px;margin-top:4px}
-.selbox h3{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--coral);margin-bottom:12px}
-.selrow{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(27,42,74,.08);font-size:13px;animation:pop .25s ease}
+.tier b{font-weight:500;display:block;font-size:13px;color:#111}
+.tier small{color:#888;font-size:11px;letter-spacing:0;font-family:var(--body)}
+.tier .pr{font-family:var(--display);font-weight:500;font-size:12.5px;white-space:nowrap;letter-spacing:0;color:#111}
+.selbox{border-top:0.5px solid rgba(0,0,0,0.1);padding-top:18px;margin-top:6px}
+.selbox h3{font-family:var(--body);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);margin-bottom:14px}
+.selrow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid rgba(0,0,0,0.08);font-size:13px;animation:pop .25s ease;color:#111}
 @keyframes pop{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
 .selrow .id{display:flex;align-items:center;gap:9px;font-weight:600}
 .selrow .id i{width:10px;height:10px;border-radius:50%;display:inline-block}
-.selrow .id em{font-style:normal;font-size:10.5px;color:#777;font-weight:500}
+.selrow .id em{font-style:normal;font-size:10.5px;color:#999;font-weight:400;font-family:var(--body)}
 .selrow .rt{display:flex;align-items:center;gap:12px}
 .selrow .x{cursor:pointer;color:var(--coral);font-weight:800;font-size:15px;line-height:1;opacity:.7}
 .selrow .x:hover{opacity:1}
-.empty{font-size:12.5px;color:#888;text-align:center;padding:14px 0;line-height:1.5}
-.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;padding-top:14px;border-top:2px solid var(--navy)}
-.total .lab{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:700}
-.total .amt{font-family:var(--display);font-weight:900;font-size:24px;letter-spacing:.01em}
-.paxline{font-size:11.5px;color:#6a6f7a;text-align:right;margin-top:2px}
-.consumo{margin-top:12px;display:flex;flex-direction:column;gap:3px;font-size:11px;line-height:1.45}
-.consumo .c-yes{color:var(--navy);font-weight:600}
-.consumo .c-no{color:var(--coral);font-weight:600}
-.cta{width:100%;margin-top:18px;border:none;cursor:pointer;background:var(--coral);color:var(--cream);font-family:var(--body);font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:13px;padding:15px;border-radius:12px;transition:.2s;}
-.cta:hover:not(:disabled){background:var(--navy);transform:translateY(-1px)}
+.empty{font-size:12.5px;color:#999;text-align:center;padding:16px 0;line-height:1.6;font-family:var(--body)}
+.total{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;padding-top:16px;border-top:1px solid #111}
+.total .lab{font-family:var(--body);font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;color:#666}
+.total .amt{font-family:var(--display);font-weight:500;font-size:24px;letter-spacing:-0.02em;color:#111}
+.paxline{font-family:var(--body);font-size:11px;color:#888;text-align:right;margin-top:3px}
+.consumo{margin-top:12px;display:flex;flex-direction:column;gap:3px;font-size:11px;line-height:1.45;color:#444}
+.consumo .c-yes{color:#444;font-weight:400}
+.consumo .c-no{color:var(--coral);font-weight:400}
+.cta{width:100%;margin-top:18px;border:none;cursor:pointer;background:#111;color:#fff;font-family:var(--body);font-weight:500;letter-spacing:.12em;text-transform:uppercase;font-size:12px;padding:16px;border-radius:3px;transition:.2s;}
+.cta:hover:not(:disabled){opacity:0.85;transform:translateY(-1px)}
 .cta:disabled{opacity:.4;cursor:not-allowed}
-.shade-note{display:flex;gap:10px;align-items:flex-start;margin-top:16px;background:rgba(224,164,34,.14);border:1px solid rgba(224,164,34,.4);border-radius:11px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:var(--navy);}
-.shade-note b{color:var(--coral)}
-.foot{text-align:center;margin-top:30px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,237,224,.45)}
+.shade-note{display:flex;gap:10px;align-items:flex-start;margin-top:16px;background:#faf6ec;border:0.5px solid rgba(224,164,34,.4);border-radius:4px;padding:12px 14px;font-size:11px;line-height:1.6;color:#5a4a20;}
+.shade-note b{color:#b58a00;font-weight:600}
+.foot{text-align:center;margin-top:30px;font-family:var(--body);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:rgba(244,237,224,.35)}
 </style>
 </head>
 <body>
@@ -103,14 +108,14 @@ h1 em{font-style:italic;color:var(--ocre)}
     <div>
       <div class="mapcard">
         <div class="map-stage" id="stage">
-          <img id="mapimg" src="https://res.cloudinary.com/dheiidsny/image/upload/v1779403097/gMESAS_CASA_CAPRI_ojqwtp.png" alt="Mapa Casa Capri">
+          <img id="mapimg" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779420409/cdsMesas-Casa-Capri-Recovered_qtesrb.webp" alt="Mapa Casa Capri">
         </div>
       </div>
       <div class="legend">
-        <span><i class="dot" style="background:var(--ocre)"></i> Disponible</span>
-        <span><i class="dot" style="background:var(--coral)"></i> Seleccionada</span>
-        <span><i class="dot" style="background:var(--sky)"></i> Ocupada</span>
+        <span><i class="dot" style="background:var(--coral)"></i> Tu selección</span>
+        <span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>
       </div>
+      <div class="viewers"><span class="viewers-dot"></span><span id="viewerCount">8</span> personas viendo el mapa ahora</div>
     </div>
 
     <aside class="panel" id="panel">
@@ -177,7 +182,7 @@ const TABLES = [
   ['S1',26.0,80.0],['S2',71.0,79.8],
 ];
 
-const OCCUPIED = new Set(['P1','P2','S4','C5','T1']);
+const OCCUPIED = new Set(['P1','P2','S4','C5','T1','T6']);
 const stage = document.getElementById('stage');
 const selected = new Map();
 
@@ -188,19 +193,26 @@ TABLES.forEach(([id,x,y])=>{
   b.className='badge'+(isOccupied?' occupied':'');
   b.style.left=x+'%'; b.style.top=y+'%';
   b.dataset.id=id;
-  // Apply tier color to disc unless occupied
-  const discColor = isOccupied ? 'var(--occupied)' : tier.color;
-  b.innerHTML=`<span class="disc" style="background:${discColor}"></span><span class="lbl">${id}</span>`;
+  // Occupied tiles keep their tier color but show a bold white X
+  b.innerHTML=`<span class="disc" style="background:${tier.color}"></span><span class="lbl">${isOccupied?'':id}</span>`;
   b.onclick=()=>{ if(isOccupied) return; toggle(id,b); };
   stage.appendChild(b);
 });
 
 function toggle(id,el){
   if(selected.has(id)){
+    // deselect current
     selected.delete(id);
     el.classList.remove('selected');
     el.querySelector('.disc').style.background = tierOf(id).color;
-  } else{
+  } else {
+    // single selection — clear any previously selected table first
+    if(selected.size > 0){
+      const [prevId] = [...selected.keys()];
+      selected.delete(prevId);
+      const prevEl = document.querySelector(`.badge[data-id="${prevId}"]`);
+      if(prevEl){ prevEl.classList.remove('selected'); prevEl.querySelector('.disc').style.background = tierOf(prevId).color; }
+    }
     selected.set(id,tierOf(id));
     el.classList.add('selected');
     el.querySelector('.disc').style.background = 'var(--selected)';
@@ -246,6 +258,28 @@ document.getElementById('cta').onclick=()=>{
   const msg=`¡Hola! Quiero reservar para Casa Capri (Neptuno's, 4 de Junio):\n\n${lines.join('\n')}\n\nTotal: ${tot}\nCapacidad: ${pax}\n\n¿Me confirman disponibilidad?`;
   window.open(`https://wa.me/18495807998?text=${encodeURIComponent(msg)}`,'_blank');
 };
+
+// ===== FAKE LIVE VIEWERS =====
+(function(){
+  const el=document.getElementById('viewerCount');
+  let v=8;
+  function bump(){
+    // weighted random: mostly ±1, occasionally ±2, sometimes no change
+    const r=Math.random();
+    let delta;
+    if(r<0.15) delta=0;
+    else if(r<0.55) delta=Math.random()<0.5?-1:1;
+    else if(r<0.8) delta=Math.random()<0.5?-2:2;
+    else delta=Math.random()<0.5?-1:1;
+    v+=delta;
+    if(v<4) v=4+Math.floor(Math.random()*2);
+    if(v>15) v=13+Math.floor(Math.random()*2);
+    el.textContent=v;
+    setTimeout(bump, 2200+Math.random()*4500);
+  }
+  setTimeout(bump, 2500);
+})();
+
 </script>
 </body>
 </html>
