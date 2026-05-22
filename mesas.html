@@ -182,40 +182,77 @@ const TABLES = [
   ['S1',26.0,80.0],['S2',71.0,79.8],
 ];
 
-const OCCUPIED = new Set(['P1','P2','S4','C5','T1','T6']);
+// Mesas ocupadas — se actualiza en vivo desde Google Sheet (con fallback inicial)
+let OCCUPIED = new Set(['P1','P2','S4','C5','T1','T6']);
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzh2YiCoo-bxdsxM0yaV1D6yfGG1fFKsr0fytSnkCOJnpDStPq-5VvijAlv5F6TU5PZ1w/exec';
 const stage = document.getElementById('stage');
 const selected = new Map();
 
 TABLES.forEach(([id,x,y])=>{
   const tier = tierOf(id);
-  const isOccupied = OCCUPIED.has(id);
   const b=document.createElement('button');
-  b.className='badge'+(isOccupied?' occupied':'');
   b.style.left=x+'%'; b.style.top=y+'%';
   b.dataset.id=id;
-  // Occupied tiles keep their tier color but show a bold white X
-  b.innerHTML=`<span class="disc" style="background:${tier.color}"></span><span class="lbl">${isOccupied?'':id}</span>`;
-  b.onclick=()=>{ if(isOccupied) return; toggle(id,b); };
+  b.innerHTML=`<span class="disc" style="background:${tier.color}"></span><span class="lbl"></span>`;
   stage.appendChild(b);
 });
 
+// Apply occupied state to every badge (called on load + after each Sheet fetch)
+function applyOccupied(){
+  TABLES.forEach(([id])=>{
+    const b = document.querySelector(`.badge[data-id="${id}"]`);
+    if(!b) return;
+    const isOccupied = OCCUPIED.has(id);
+    const lbl = b.querySelector('.lbl');
+    if(isOccupied){
+      // if user had this selected, drop it
+      if(selected.has(id)){ selected.delete(id); b.classList.remove('selected'); render(); }
+      b.classList.add('occupied');
+      lbl.textContent = '';
+      b.onclick = ()=>{};
+    } else {
+      b.classList.remove('occupied');
+      if(!b.classList.contains('selected')) lbl.textContent = id;
+      b.onclick = ()=> toggle(id,b);
+    }
+  });
+}
+
+// Fetch occupied tables from Google Sheet
+async function fetchOccupied(){
+  try {
+    const res = await fetch(SHEET_URL, {cache:'no-store'});
+    const data = await res.json();
+    if(data && Array.isArray(data.ocupadas)){
+      OCCUPIED = new Set(data.ocupadas.map(m=>String(m).trim().toUpperCase()));
+      applyOccupied();
+    }
+  } catch(e){
+    // si falla, conserva el estado actual (fallback)
+    console.log('No se pudo actualizar mesas desde Sheet:', e);
+  }
+}
+
 function toggle(id,el){
+  if(OCCUPIED.has(id)) return;
   if(selected.has(id)){
     // deselect current
     selected.delete(id);
     el.classList.remove('selected');
     el.querySelector('.disc').style.background = tierOf(id).color;
+    el.querySelector('.lbl').textContent = id;
   } else {
     // single selection — clear any previously selected table first
     if(selected.size > 0){
       const [prevId] = [...selected.keys()];
       selected.delete(prevId);
       const prevEl = document.querySelector(`.badge[data-id="${prevId}"]`);
-      if(prevEl){ prevEl.classList.remove('selected'); prevEl.querySelector('.disc').style.background = tierOf(prevId).color; }
+      if(prevEl){ prevEl.classList.remove('selected'); prevEl.querySelector('.disc').style.background = tierOf(prevId).color; prevEl.querySelector('.lbl').textContent = prevId; }
     }
     selected.set(id,tierOf(id));
     el.classList.add('selected');
     el.querySelector('.disc').style.background = 'var(--selected)';
+    el.querySelector('.lbl').textContent = id;
     if(window.matchMedia('(max-width:980px)').matches){
       setTimeout(()=>document.getElementById('cta').scrollIntoView({behavior:'smooth',block:'center'}),120);
     }
@@ -258,6 +295,12 @@ document.getElementById('cta').onclick=()=>{
   const msg=`¡Hola! Quiero reservar para Casa Capri (Neptuno's, 4 de Junio):\n\n${lines.join('\n')}\n\nTotal: ${tot}\nCapacidad: ${pax}\n\n¿Me confirman disponibilidad?`;
   window.open(`https://wa.me/18495807998?text=${encodeURIComponent(msg)}`,'_blank');
 };
+
+// ===== INIT: apply occupied (fallback) then sync live from Sheet =====
+render();
+applyOccupied();
+fetchOccupied();
+setInterval(fetchOccupied, 30000); // refresca cada 30s
 
 // ===== FAKE LIVE VIEWERS =====
 (function(){
