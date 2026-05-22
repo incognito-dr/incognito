@@ -191,6 +191,7 @@ const selected = new Map();
 TABLES.forEach(([id,x,y])=>{
   const tier = tierOf(id);
   const b=document.createElement('button');
+  b.className='badge';
   b.style.left=x+'%'; b.style.top=y+'%';
   b.dataset.id=id;
   b.innerHTML=`<span class="disc" style="background:${tier.color}"></span><span class="lbl"></span>`;
