@@ -96,10 +96,7 @@ h1 em{font-style:italic;color:var(--ocre)}
 <body>
 <div class="wrap">
   <header class="head">
-    <div class="eyebrow">Incognito Events</div>
-    <h1>Casa <em>Capri</em></h1>
-    <div class="sub">Neptuno's, Boca Chica</div>
-    <div class="hours">11 AM — 9 PM &nbsp;·&nbsp; Jueves 4 de Junio</div>
+    <img src="https://res.cloudinary.com/dheiidsny/image/upload/v1779408025/casacp_latzgf.png" alt="Casa Capri" style="max-width:clamp(280px,55vw,520px);width:100%;height:auto;display:block;margin:0 auto;">
   </header>
 
   <div class="layout">
@@ -155,7 +152,9 @@ h1 em{font-style:italic;color:var(--ocre)}
       </div>
     </aside>
   </div>
-  <div class="foot">Casa Capri · Neptuno's · República Dominicana</div>
+  <div style="text-align:center;margin-top:32px;padding-bottom:12px;">
+    <img src="https://res.cloudinary.com/dheiidsny/image/upload/v1779408020/c%CC%A7sda_wdamqd.png" alt="Sponsors" style="max-width:clamp(200px,40vw,380px);width:100%;height:auto;opacity:0.85;">
+  </div>
 </div>
 
 <script>
@@ -178,24 +177,33 @@ const TABLES = [
   ['S1',26.0,80.0],['S2',71.0,79.8],
 ];
 
-const OCCUPIED = new Set([]);
+const OCCUPIED = new Set(['P1','P2','S4','C5','T1']);
 const stage = document.getElementById('stage');
 const selected = new Map();
 
 TABLES.forEach(([id,x,y])=>{
+  const tier = tierOf(id);
+  const isOccupied = OCCUPIED.has(id);
   const b=document.createElement('button');
-  b.className='badge'+(OCCUPIED.has(id)?' occupied':'');
+  b.className='badge'+(isOccupied?' occupied':'');
   b.style.left=x+'%'; b.style.top=y+'%';
   b.dataset.id=id;
-  b.innerHTML=`<span class="disc"></span><span class="lbl">${id}</span>`;
-  b.onclick=()=>{ if(OCCUPIED.has(id)) return; toggle(id,b); };
+  // Apply tier color to disc unless occupied
+  const discColor = isOccupied ? 'var(--occupied)' : tier.color;
+  b.innerHTML=`<span class="disc" style="background:${discColor}"></span><span class="lbl">${id}</span>`;
+  b.onclick=()=>{ if(isOccupied) return; toggle(id,b); };
   stage.appendChild(b);
 });
 
 function toggle(id,el){
-  if(selected.has(id)){selected.delete(id);el.classList.remove('selected');}
-  else{
-    selected.set(id,tierOf(id));el.classList.add('selected');
+  if(selected.has(id)){
+    selected.delete(id);
+    el.classList.remove('selected');
+    el.querySelector('.disc').style.background = tierOf(id).color;
+  } else{
+    selected.set(id,tierOf(id));
+    el.classList.add('selected');
+    el.querySelector('.disc').style.background = 'var(--selected)';
     if(window.matchMedia('(max-width:980px)').matches){
       setTimeout(()=>document.getElementById('cta').scrollIntoView({behavior:'smooth',block:'center'}),120);
     }
