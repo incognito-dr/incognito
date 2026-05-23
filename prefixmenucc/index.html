@@ -162,6 +162,13 @@
   }
 
 
+
+  .order-grip{ width:38px; height:4px; border-radius:4px; background:rgba(255,255,255,0.25); margin:12px auto 4px; flex-shrink:0; cursor:grab; }
+  .order-grip-wrap{ padding:6px 0 2px; display:flex; justify-content:center; cursor:grab; flex-shrink:0; touch-action:none; }
+  .order-hint{ font-family:var(--display); font-weight:300; font-size:12px; color:rgba(255,255,255,0.45); padding:0 1.6rem 0.4rem; letter-spacing:0.02em; }
+  /* + button shows number once added */
+  .add-btn.added{ font-family:var(--display); font-weight:600; font-size:12px; }
+
   /* ===== ORDER SELECTOR ===== */
   /* + add button injected into each item */
   .add-btn{ position:absolute; top:10px; right:10px; width:24px; height:24px; border-radius:50%; border:1.2px solid currentColor; background:transparent; color:inherit; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; line-height:1; opacity:0.5; transition:opacity .2s, transform .2s, background .2s; padding:0; font-family:var(--display); }
@@ -350,15 +357,16 @@
   <!-- ORDER PANEL -->
   <div class="order-overlay" id="orderOverlay">
     <div class="order-panel">
-      <div class="order-grip"></div>
+      <div class="order-grip-wrap" id="orderGripWrap"><div class="order-grip"></div></div>
       <div class="order-head">
-        <div class="ttl">Selección <span id="orderCount"></span></div>
+        <div class="ttl">Resumen de orden <span id="orderCount"></span></div>
         <button class="ord-act" id="orderCloseBtn" style="flex:none;padding:8px 16px;border-radius:20px;">Cerrar</button>
       </div>
+      <p class="order-hint">Muestra esta selección a tu mesero para tomar tu orden.</p>
       <div class="order-scroll" id="orderScroll"></div>
       <div class="order-actions">
         <button class="ord-act danger" id="orderClearBtn">Borrar selección</button>
-        <button class="ord-act primary" id="orderCloseBtn2">Cerrar y seguir</button>
+        <button class="ord-act primary" id="orderCloseBtn2">Volver al menú</button>
       </div>
     </div>
   </div>
@@ -473,6 +481,7 @@
   // ===== ORDER SELECTOR =====
   (function(){
     const order = {}; // key -> {name, type, qty}
+    const btnByKey = {}; // key -> add button element
     let seq = 0;
 
     function plusSvg(){
@@ -485,13 +494,20 @@
       const k = keyFor(name, type);
       if(order[k]) { order[k].qty++; }
       else { order[k] = { name, type, qty:1 }; }
-      // satisfying feedback
+      // satisfying feedback + show current qty on the button
       if(btn){
         btn.classList.add('added','pulse');
-        btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2l2.4 2.4L9.6 3.8"/></svg>';
+        btn.textContent = order[k].qty;
         setTimeout(()=>btn.classList.remove('pulse'), 360);
       }
       renderFab();
+    }
+    // map a key back to its add button so qty stays in sync
+    function refreshAddBtn(k){
+      const btn = btnByKey[k];
+      if(!btn) return;
+      if(order[k]){ btn.classList.add('added'); btn.textContent = order[k].qty; }
+      else { btn.classList.remove('added'); btn.innerHTML = plusSvg(); }
     }
 
     // inject + buttons
@@ -505,6 +521,7 @@
         btn.className = 'add-btn'; btn.type='button'; btn.innerHTML = plusSvg();
         btn.setAttribute('aria-label','Agregar '+name);
         btn.onclick = (e)=>{ e.stopPropagation(); addItem(name,'Comida',btn); };
+        btnByKey[keyFor(name,'Comida')] = btn;
         it.appendChild(btn);
       });
       // DRINK: each bottle row .drink-grid .ir — name is .irn b
@@ -517,6 +534,7 @@
         btn.className='add-btn'; btn.type='button'; btn.innerHTML = plusSvg();
         btn.setAttribute('aria-label','Agregar '+name);
         btn.onclick=(e)=>{ e.stopPropagation(); addItem(name,'Bebida',btn); };
+        btnByKey[keyFor(name,'Bebida')] = btn;
         row.appendChild(btn);
       });
     }
@@ -573,21 +591,16 @@
       const act = btn.getAttribute('data-act');
       if(!order[k]) return;
       if(act==='inc') order[k].qty++;
-      else if(act==='dec'){ order[k].qty--; if(order[k].qty<=0) delete order[k]; }
+      else if(act==='dec'){ order[k].qty--; if(order[k].qty<=0){ delete order[k]; } }
       else if(act==='rm'){ delete order[k]; }
-      renderPanel(); renderFab(); syncButtons();
+      refreshAddBtn(k);
+      renderPanel(); renderFab();
     });
 
-    function syncButtons(){
-      // reset all add buttons that are no longer in order
-      document.querySelectorAll('.add-btn.added').forEach(btn=>{
-        // we can't easily map back; simplest: leave check as-is. (optional)
-      });
-    }
-
     function clearAll(){
-      Object.keys(order).forEach(k=>delete order[k]);
-      document.querySelectorAll('.add-btn.added').forEach(btn=>{ btn.classList.remove('added'); btn.innerHTML = plusSvg(); });
+      const keys = Object.keys(order);
+      keys.forEach(k=>delete order[k]);
+      keys.forEach(k=>refreshAddBtn(k));
       renderPanel(); renderFab();
     }
 
@@ -599,6 +612,23 @@
     document.getElementById('orderCloseBtn2').addEventListener('click', closeOrder);
     document.getElementById('orderClearBtn').addEventListener('click', clearAll);
     overlay.addEventListener('click', e=>{ if(e.target===overlay) closeOrder(); });
+
+    // grip: tap or drag down to close
+    (function(){
+      const grip = document.getElementById('orderGripWrap');
+      const panel = overlay.querySelector('.order-panel');
+      let startY=null, curY=0, dragging=false;
+      grip.addEventListener('click', ()=>{ closeOrder(); });
+      function onStart(y){ startY=y; dragging=true; panel.style.transition='none'; }
+      function onMove(y){ if(!dragging||startY===null) return; curY=Math.max(0,y-startY); panel.style.transform='translateY('+curY+'px)'; }
+      function onEnd(){ if(!dragging) return; dragging=false; panel.style.transition=''; if(curY>90){ closeOrder(); } panel.style.transform=''; curY=0; startY=null; }
+      grip.addEventListener('touchstart', e=>onStart(e.touches[0].clientY), {passive:true});
+      grip.addEventListener('touchmove', e=>onMove(e.touches[0].clientY), {passive:true});
+      grip.addEventListener('touchend', onEnd);
+      grip.addEventListener('mousedown', e=>{ onStart(e.clientY); e.preventDefault(); });
+      window.addEventListener('mousemove', e=>{ if(dragging) onMove(e.clientY); });
+      window.addEventListener('mouseup', onEnd);
+    })();
   })();
 
   </script>
