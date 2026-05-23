@@ -100,6 +100,32 @@
   .ig-footer-copy{ font-family:var(--display); font-size:9px; font-weight:400; letter-spacing:0.12em; color:var(--navy-soft); text-transform:uppercase; margin-top:4px; }
 
 
+
+  /* boxed share items (dotted border around each) */
+  .share-box{ border:1px dotted rgba(255,255,255,0.5); border-radius:8px; padding:18px 16px; margin:0 16px 14px; position:relative; }
+  .share-box .item{ border:none; padding:0; }
+  .share-box .add-btn{ top:16px; right:16px; }
+  /* collapsible sushi */
+  .sushi-collapse{ border:1px dotted rgba(255,255,255,0.5); border-radius:8px; margin:0 16px 14px; overflow:hidden; }
+  .sushi-trigger{ display:flex; align-items:center; gap:12px; width:100%; background:transparent; border:none; cursor:pointer; padding:18px 16px; text-align:left; color:#fff; }
+  .sushi-trigger .s-name{ font-family:var(--display); font-weight:300; font-size:25px; line-height:0.98; letter-spacing:-0.6px; text-transform:uppercase; color:#fff; flex:1; }
+  .sushi-trigger .s-meta{ font-family:var(--display); font-weight:400; font-size:12px; color:rgba(255,255,255,0.85); }
+  .sushi-trigger .s-chev{ transition:transform .35s cubic-bezier(.16,1,.3,1); font-size:14px; opacity:0.8; }
+  .sushi-collapse.open .sushi-trigger .s-chev{ transform:rotate(180deg); }
+  .sushi-top{ padding:0 16px; }
+  .sushi-top .s-zone{ display:flex; align-items:center; gap:7px; padding:16px 0 0; }
+  .sushi-top .s-zlabel{ font-family:var(--display); font-weight:600; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.92); }
+  .sushi-body{ max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.16,1,.3,1); }
+  .sushi-collapse.open .sushi-body{ max-height:800px; }
+  .sushi-list{ padding:4px 16px 16px; }
+  .sushi-row{ display:flex; align-items:center; gap:10px; padding:11px 0; border-top:0.8px dotted rgba(255,255,255,0.32); position:relative; }
+  .sushi-row .sr-info{ flex:1; }
+  .sushi-row .sr-name{ font-family:var(--display); font-weight:600; font-size:14px; text-transform:uppercase; letter-spacing:0.2px; color:#fff; }
+  .sushi-row .sr-desc{ font-size:12px; font-weight:300; color:rgba(255,255,255,0.82); line-height:1.4; margin-top:2px; }
+  .sushi-row .sr-price{ font-family:var(--display); font-weight:400; font-size:13px; color:#fff; white-space:nowrap; }
+  .sushi-row .add-btn{ position:static; transform:none; margin-left:4px; }
+  .sushi-row .add-btn.added{ transform:scale(1.1); }
+
   /* ===== ROTATING GLOW OVALS (EAT / DRINK headers) ===== */
   @property --glow-angle { syntax:'<angle>'; initial-value:0deg; inherits:false; }
   @keyframes glowSpin { to { --glow-angle:360deg; } }
@@ -173,10 +199,11 @@
   /* + add button injected into each item */
   .add-btn{ position:absolute; top:10px; right:10px; width:24px; height:24px; border-radius:50%; border:1.2px solid currentColor; background:transparent; color:inherit; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; line-height:1; opacity:0.5; transition:opacity .2s, transform .2s, background .2s; padding:0; font-family:var(--display); }
   .add-btn:hover{ opacity:1; }
-  .add-btn.added{ background:currentColor; opacity:1; transform:scale(1.12); }
-  .add-btn.added svg{ stroke:var(--check-bg,#fff); }
-  .drink-grid .add-btn.added svg{ stroke:#fff; }
-  .eat-grid .add-btn.added svg{ stroke:var(--terra); }
+  .add-btn.added{ opacity:1; transform:scale(1.1); font-family:var(--display); font-weight:700; font-size:12px; border-color:transparent; }
+  /* drink: filled terracotta circle, white number */
+  .drink-grid .add-btn.added{ background:var(--terra); color:#fff; }
+  /* eat: filled white circle, terracotta number */
+  .eat-grid .add-btn.added{ background:#fff; color:var(--terra); }
   /* item needs relative + room for button */
   .item{ position:relative; }
   .ir{ position:relative; }
@@ -335,10 +362,30 @@
           <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Ostras al Grill</div><div class="isub">Gratinadas</div><div class="idesc">Terminadas al grill con mantequilla de hierbas.</div><div class="imeta">6 unidades<span class="dot"></span>RD$00000</div>
         </div>
     </div>
-    <div class="grid one">
+    <!-- Collapsible sushi -->
+    <div class="sushi-collapse" id="sushiCollapse">
+      <div class="sushi-top">
+        <div class="s-zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="s-zlabel">Para Compartir</span></div>
+      </div>
+      <button class="sushi-trigger" type="button" onclick="document.getElementById('sushiCollapse').classList.toggle('open')">
+        <span class="s-name">Sushi · 8 Piezas</span>
+        <span class="s-meta">Ver rolls</span>
+        <span class="s-chev">▾</span>
+      </button>
+      <div class="sushi-body">
+        <div class="sushi-list"><div class="sushi-row"><div class="sr-info"><div class="sr-name">King Crab Roll</div><div class="sr-desc">King crab, camarones panko, cream cheese, aguacate, salsa de miel</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Neptuno Roll</div><div class="sr-desc">King crab, camarón furai, aguacate, plátano maduro, salsa de anguila</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Philadelphia Roll</div><div class="sr-desc">Salmón, queso crema, pepino, cubierta de sésamo</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Spicy Tuna Roll</div><div class="sr-desc">Atún fresco, aguacate, cubierta de atún y sésamo, salsa spicy</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div></div>
+      </div>
+    </div>
+
+    <!-- Boxed share: Cofre Capri -->
+    <div class="share-box">
         <div class="item">
           <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Cofre Capri</div><div class="isub">Sushi · Para compartir</div><div class="idesc">Selección de cuatro rolls variados — la tabla de sushi de la mesa.</div><div class="inner"><div class="ir"><span class="irn"><b>King Crab Roll</b><small>King crab, camarones panko, cream cheese, aguacate, salsa de miel</small></span><span class="irq">8 pzs</span></div><div class="ir"><span class="irn"><b>Neptuno Roll</b><small>King crab, camarón furai, aguacate, plátano maduro, salsa de anguila</small></span><span class="irq">8 pzs</span></div><div class="ir"><span class="irn"><b>Philadelphia Roll</b><small>Salmón, queso crema, pepino, cubierta de sésamo</small></span><span class="irq">8 pzs</span></div><div class="ir"><span class="irn"><b>Spicy Tuna Roll</b><small>Atún fresco, aguacate, cubierta de atún y sésamo, salsa spicy</small></span><span class="irq">8 pzs</span></div></div><div class="imeta">32 piezas<span class="dot"></span>RD$00000</div>
         </div>
+    </div>
+
+    <!-- Boxed share: Tabla Capri -->
+    <div class="share-box">
         <div class="item">
           <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Tabla Capri</div><div class="isub">Mar &amp; Tierra · Para compartir</div><div class="idesc">Surtido de mar y tierra para la mesa — el festín completo.</div><div class="inner"><div class="ir"><span class="irn"><b>Fritto Misto Capri</b><small>Calamares chipirón con alioli</small></span><span class="irq">4 pzs</span></div><div class="ir"><span class="irn"><b>Catibias del Puerto</b><small>Masa frita rellena de lambí</small></span><span class="irq">3 pzs</span></div><div class="ir"><span class="irn"><b>Spiedino de Camarón</b><small>Brocheta al ajillo</small></span><span class="irq">2 broch.</span></div><div class="ir"><span class="irn"><b>Sliders di Manzo</b><small>Mini de churrasco al grill</small></span><span class="irq">3 sliders</span></div><div class="ir"><span class="irn"><b>Dumplings de la Casa</b><small>Cerdo y jengibre</small></span><span class="irq">4 pzs</span></div></div><div class="imeta">Para 3–4<span class="dot"></span>RD$2,995</div>
         </div>
@@ -536,6 +583,15 @@
         btn.onclick=(e)=>{ e.stopPropagation(); addItem(name,'Bebida',btn); };
         btnByKey[keyFor(name,'Bebida')] = btn;
         row.appendChild(btn);
+      });
+      // SUSHI collapsible rows — wire the existing static + buttons
+      document.querySelectorAll('.sushi-row').forEach(row=>{
+        const nameEl = row.querySelector('.sr-name');
+        const btn = row.querySelector('.add-btn');
+        if(!nameEl || !btn) return;
+        const name = nameEl.textContent.trim();
+        btn.onclick=(e)=>{ e.stopPropagation(); addItem(name,'Comida',btn); };
+        btnByKey[keyFor(name,'Comida')] = btn;
       });
     }
 
