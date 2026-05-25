@@ -54,6 +54,7 @@ h1 em{font-style:italic;color:var(--ocre)}
 .badge.occupied{cursor:not-allowed}
 .badge.occupied .disc{opacity:.45}
 .badge.occupied::after{content:"\00d7";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-family:var(--body);font-weight:700;font-size:clamp(20px,2.4vw,30px);line-height:1;text-shadow:0 1px 3px rgba(0,0,0,.6);z-index:5;}
+.occ-chip{position:absolute;top:50%;left:calc(100% + 3px);transform:translateY(-50%);background:rgba(17,17,17,0.92);color:#fff;font-family:var(--body);font-weight:600;font-size:9px;letter-spacing:0.04em;padding:2px 5px;border-radius:3px;line-height:1;white-space:nowrap;z-index:6;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.4);}
 .badge.occupied:hover{transform:translate(-50%,-50%)}
 .legend{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:18px;font-size:12px;letter-spacing:.04em}
 .legend span{display:flex;align-items:center;gap:8px;color:var(--cream);opacity:.85;font-family:var(--body);font-size:11px;letter-spacing:0.02em}
@@ -302,7 +303,7 @@ const TABLES = [
 ];
 
 // Mesas ocupadas — se actualiza en vivo desde Google Sheet (con fallback inicial)
-let OCCUPIED = new Set(['P1','P2','S4','C5','T1','T6']);
+let OCCUPIED = new Set([]);
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzh2YiCoo-bxdsxM0yaV1D6yfGG1fFKsr0fytSnkCOJnpDStPq-5VvijAlv5F6TU5PZ1w/exec';
 const stage = document.getElementById('stage');
 const selected = new Map();
@@ -324,14 +325,23 @@ function applyOccupied(){
     if(!b) return;
     const isOccupied = OCCUPIED.has(id);
     const lbl = b.querySelector('.lbl');
+    // ensure a name chip element exists
+    let chip = b.querySelector('.occ-chip');
     if(isOccupied){
       // if user had this selected, drop it
       if(selected.has(id)){ selected.delete(id); b.classList.remove('selected'); render(); }
       b.classList.add('occupied');
       lbl.textContent = '';
+      if(!chip){
+        chip = document.createElement('span');
+        chip.className = 'occ-chip';
+        chip.textContent = id;
+        b.appendChild(chip);
+      }
       b.onclick = ()=>{};
     } else {
       b.classList.remove('occupied');
+      if(chip){ chip.remove(); }
       if(!b.classList.contains('selected')) lbl.textContent = id;
       b.onclick = ()=> toggle(id,b);
     }
