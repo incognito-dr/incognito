@@ -380,6 +380,12 @@ async function fetchOccupied(){
   }
 }
 
+
+// ===== ANALYTICS EVENT TRACKING =====
+function track(name, data){
+  try { if(window.va) window.va('event', { name: name, data: data || {} }); } catch(e){}
+}
+
 function toggle(id,el){
   if(OCCUPIED.has(id)) return;
   if(selected.has(id)){
@@ -397,6 +403,7 @@ function toggle(id,el){
       if(prevEl){ prevEl.classList.remove('selected'); prevEl.querySelector('.disc').style.background = tierOf(prevId).color; prevEl.querySelector('.lbl').textContent = prevId; }
     }
     selected.set(id,tierOf(id));
+    track('mesa_seleccionada', { mesa: id, tier: tierOf(id).name });
     el.classList.add('selected');
     el.querySelector('.disc').style.background = 'var(--selected)';
     el.querySelector('.lbl').textContent = id;
@@ -448,6 +455,7 @@ document.getElementById('cta').onclick=()=>{
   const lines=[...selected.entries()].map(([id,t])=>`• ${id} — ${t.name} · Incluye ${t.pax} accesos — ${fmt(t.price)}`);
   const tot=document.getElementById('total').textContent;
   const pax=[...selected.values()].reduce((s,t)=>s+t.pax,0);
+  track('reserva_whatsapp', { mesas: [...selected.keys()].join(','), espacios: selected.size, accesos: [...selected.values()].reduce((s,t)=>s+t.pax,0), total: tot });
   const msg=`¡Hola! Quiero reservar para Casa Capri (Neptuno's, 4 de Junio):\n\n${lines.join('\n')}\n\nTotal: ${tot}\nAccesos incluidos: ${pax}\n\nEntiendo que el monto es 100% consumible en el Menú de Bebida.\n\n¿Me confirman disponibilidad?`;
   window.open(`https://wa.me/18495807998?text=${encodeURIComponent(msg)}`,'_blank');
 };
@@ -482,6 +490,28 @@ document.getElementById('polOverlay').addEventListener('click', function(e){ if(
     setTimeout(bump, 2200+Math.random()*4500);
   }
   setTimeout(bump, 2500);
+})();
+
+
+// ===== TIME ON PAGE =====
+(function(){
+  const start = Date.now();
+  let sent = false;
+  function bucket(sec){
+    if(sec < 30) return '0-30s';
+    if(sec < 60) return '30-60s';
+    if(sec < 180) return '1-3min';
+    if(sec < 300) return '3-5min';
+    return '5min+';
+  }
+  function sendTime(){
+    if(sent) return; sent = true;
+    const sec = Math.round((Date.now() - start)/1000);
+    track('tiempo_en_pagina', { rango: bucket(sec), segundos: sec });
+  }
+  // fire when the user leaves/hides the tab
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') sendTime(); });
+  window.addEventListener('pagehide', sendTime);
 })();
 
 </script>
