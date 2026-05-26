@@ -172,7 +172,7 @@ h1 em{font-style:italic;color:var(--ocre)}
         <span><i class="dot" style="background:var(--coral)"></i> Tu selección</span>
         <span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>
       </div>
-      <div class="viewers"><span class="viewers-dot"></span><span id="viewerCount">7</span> personas viendo el mapa ahora</div>
+      <div class="viewers"><span class="viewers-dot"></span><span id="viewerCount">28</span> personas viendo el mapa ahora</div>
     </div>
 
     <aside class="panel" id="panel">
@@ -502,13 +502,23 @@ function openPolicies(){ document.getElementById('polOverlay').classList.add('op
 function closePolicies(){ document.getElementById('polOverlay').classList.remove('open'); document.body.style.overflow=''; }
 document.getElementById('polOverlay').addEventListener('click', function(e){ if(e.target===this) closePolicies(); });
 
-// ===== FAKE LIVE VIEWERS =====
+// ===== FAKE LIVE VIEWERS (patrón por hora del día) =====
 (function(){
   const el=document.getElementById('viewerCount');
-  let v=24 + Math.floor(Math.random()*10); // start somewhere mid-range
+  // Define un rango [min,max] según la hora local
+  function rangeForHour(h){
+    if(h>=12 && h<15) return [28,40];   // mediodía: pico alto
+    if(h>=15 && h<18) return [14,24];   // tarde: más lento
+    if(h>=18 || h<0)  return [26,40];   // noche 6pm-12am: subiendo, alto
+    if(h>=0 && h<6)   return [8,16];    // madrugada: bajo
+    return [11,22];                      // mañana 6am-12pm: moderado
+  }
+  function curRange(){ return rangeForHour(new Date().getHours()); }
+  let [mn,mx]=curRange();
+  let v = mn + Math.floor(Math.random()*(mx-mn+1));
   el.textContent=v;
   function bump(){
-    // weighted random: mostly ±1-2, occasionally ±3, sometimes no change
+    [mn,mx]=curRange(); // recalcula por si cambió la franja horaria
     const r=Math.random();
     let delta;
     if(r<0.15) delta=0;
@@ -516,8 +526,8 @@ document.getElementById('polOverlay').addEventListener('click', function(e){ if(
     else if(r<0.82) delta=Math.random()<0.5?-2:2;
     else delta=Math.random()<0.5?-3:3;
     v+=delta;
-    if(v<11) v=11+Math.floor(Math.random()*3);
-    if(v>40) v=38-Math.floor(Math.random()*3);
+    if(v<mn) v=mn+Math.floor(Math.random()*3);
+    if(v>mx) v=mx-Math.floor(Math.random()*3);
     el.textContent=v;
     setTimeout(bump, 2200+Math.random()*4500);
   }
