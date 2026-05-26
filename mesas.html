@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Casa Capri — Selección de Mesas</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LK5YVM3CPM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LK5YVM3CPM');
+  </script>
+
 <link rel="icon" type="image/png" href="https://res.cloudinary.com/dheiidsny/image/upload/v1779416400/favinco_inzodu.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -381,9 +390,9 @@ async function fetchOccupied(){
 }
 
 
-// ===== ANALYTICS EVENT TRACKING =====
+// ===== ANALYTICS EVENT TRACKING (GA4) =====
 function track(name, data){
-  try { if(window.va) window.va('event', { name: name, data: data || {} }); } catch(e){}
+  try { if(window.gtag) window.gtag('event', name, data || {}); } catch(e){}
 }
 
 function toggle(id,el){
@@ -515,10 +524,5 @@ document.getElementById('polOverlay').addEventListener('click', function(e){ if(
 })();
 
 </script>
-  <!-- Vercel Analytics -->
-  <script>
-    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-  </script>
-  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
