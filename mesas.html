@@ -172,7 +172,7 @@ h1 em{font-style:italic;color:var(--ocre)}
         <span><i class="dot" style="background:var(--coral)"></i> Tu selección</span>
         <span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>
       </div>
-      <div class="viewers"><span class="viewers-dot"></span><span id="viewerCount">11</span> personas viendo el mapa ahora</div>
+      <div class="viewers"><span class="viewers-dot"></span><span id="viewerCount">28</span> personas viendo el mapa ahora</div>
     </div>
 
     <aside class="panel" id="panel">
@@ -505,18 +505,19 @@ document.getElementById('polOverlay').addEventListener('click', function(e){ if(
 // ===== FAKE LIVE VIEWERS =====
 (function(){
   const el=document.getElementById('viewerCount');
-  let v=8;
+  let v=24 + Math.floor(Math.random()*10); // start somewhere mid-range
+  el.textContent=v;
   function bump(){
-    // weighted random: mostly ±1, occasionally ±2, sometimes no change
+    // weighted random: mostly ±1-2, occasionally ±3, sometimes no change
     const r=Math.random();
     let delta;
     if(r<0.15) delta=0;
     else if(r<0.55) delta=Math.random()<0.5?-1:1;
-    else if(r<0.8) delta=Math.random()<0.5?-2:2;
-    else delta=Math.random()<0.5?-1:1;
+    else if(r<0.82) delta=Math.random()<0.5?-2:2;
+    else delta=Math.random()<0.5?-3:3;
     v+=delta;
-    if(v<4) v=4+Math.floor(Math.random()*2);
-    if(v>15) v=13+Math.floor(Math.random()*2);
+    if(v<11) v=11+Math.floor(Math.random()*3);
+    if(v>40) v=38-Math.floor(Math.random()*3);
     el.textContent=v;
     setTimeout(bump, 2200+Math.random()*4500);
   }
