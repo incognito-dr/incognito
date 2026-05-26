@@ -52,6 +52,10 @@ h1 em{font-style:italic;color:var(--ocre)}
 .mapcard{position:relative;border-radius:6px;overflow:hidden;border:0.5px solid var(--line);}
 .mapcard img{display:block;width:100%;height:auto}
 .map-stage{position:relative;width:100%}
+.map-loading{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.78);backdrop-filter:blur(8px);color:#fff;font-family:var(--body);font-size:11px;font-weight:400;letter-spacing:0.04em;padding:8px 16px;border-radius:30px;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:opacity .4s, transform .4s;}
+.map-loading.hide{opacity:0;transform:translateX(-50%) translateY(-8px);pointer-events:none;}
+.ml-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:mlPulse 1s ease-in-out infinite;}
+@keyframes mlPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 .badge{position:absolute;transform:translate(-50%,-50%);width:clamp(30px,3.4vw,42px);height:clamp(30px,3.4vw,42px);border:none;background:transparent;cursor:pointer;padding:0;display:grid;place-items:center;font-family:var(--body);font-weight:700;font-size:clamp(9px,1vw,12px);color:#fff;z-index:3;transition:transform .18s cubic-bezier(.34,1.56,.64,1);}
 .badge .disc{position:absolute;inset:0;border-radius:50%;background:var(--avail);box-shadow:0 0 0 3px var(--navy),0 4px 10px -2px rgba(0,0,0,.5);transition:background .2s;}
 .badge .lbl{position:relative;z-index:2;text-shadow:0 1px 2px rgba(0,0,0,.35)}
@@ -156,6 +160,7 @@ h1 em{font-style:italic;color:var(--ocre)}
       <div class="mapcard">
         <div class="map-stage" id="stage">
           <img id="mapimg" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779745868/cdsMesas-Casa-Capri-Recovered_1_jrcl0e.webp" alt="Mapa Casa Capri">
+          <div class="map-loading" id="mapLoading"><span class="ml-dot"></span>Cargando disponibilidad…</div>
         </div>
       </div>
       <div class="legend">
@@ -328,8 +333,14 @@ const TABLES = [
   ['S1',26.0,80.0],['S2',71.0,79.8],
 ];
 
-// Mesas ocupadas — se actualiza en vivo desde Google Sheet (con fallback inicial)
+// Mesas ocupadas — se actualiza en vivo desde Google Sheet
+// (B) caché: arranca con lo último conocido guardado en el navegador para mostrar al instante
 let OCCUPIED = new Set([]);
+const CACHE_KEY = 'casacapri_ocupadas_v1';
+try {
+  const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || '[]');
+  if(Array.isArray(cached)) OCCUPIED = new Set(cached.map(m=>String(m).trim().toUpperCase()));
+} catch(e){}
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzh2YiCoo-bxdsxM0yaV1D6yfGG1fFKsr0fytSnkCOJnpDStPq-5VvijAlv5F6TU5PZ1w/exec';
 const stage = document.getElementById('stage');
 const selected = new Map();
@@ -382,10 +393,16 @@ async function fetchOccupied(){
     if(data && Array.isArray(data.ocupadas)){
       OCCUPIED = new Set(data.ocupadas.map(m=>String(m).trim().toUpperCase()));
       applyOccupied();
+      // (B) guarda en caché para que la próxima visita muestre al instante
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify([...OCCUPIED])); } catch(e){}
+      // ocultar el indicador de carga
+      const ld = document.getElementById('mapLoading');
+      if(ld) ld.classList.add('hide');
     }
   } catch(e){
-    // si falla, conserva el estado actual (fallback)
     console.log('No se pudo actualizar mesas desde Sheet:', e);
+    const ld = document.getElementById('mapLoading');
+    if(ld) ld.classList.add('hide');
   }
 }
 
@@ -473,7 +490,7 @@ document.getElementById('cta').onclick=()=>{
 render();
 applyOccupied();
 fetchOccupied();
-setInterval(fetchOccupied, 30000); // refresca cada 30s
+setInterval(fetchOccupied, 15000); // refresca cada 15s
 
 // ===== POLICIES MODAL =====
 function openPolicies(){ document.getElementById('polOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
