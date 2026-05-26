@@ -52,7 +52,7 @@ h1 em{font-style:italic;color:var(--ocre)}
 .mapcard{position:relative;border-radius:6px;overflow:hidden;border:0.5px solid var(--line);}
 .mapcard img{display:block;width:100%;height:auto}
 .map-stage{position:relative;width:100%}
-.map-loading{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.78);backdrop-filter:blur(8px);color:#fff;font-family:var(--body);font-size:11px;font-weight:400;letter-spacing:0.04em;padding:8px 16px;border-radius:30px;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:opacity .4s, transform .4s;}
+.map-loading{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;background:rgba(0,0,0,0.78);backdrop-filter:blur(8px);color:#fff;font-family:var(--body);font-size:11px;font-weight:400;letter-spacing:0.04em;line-height:1;padding:9px 16px;border-radius:30px;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:opacity .4s, transform .4s;}
 .map-loading.hide{opacity:0;transform:translateX(-50%) translateY(-8px);pointer-events:none;}
 .ml-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:mlPulse 1s ease-in-out infinite;}
 @keyframes mlPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
@@ -86,6 +86,10 @@ h1 em{font-style:italic;color:var(--ocre)}
 .tier b{font-weight:500;display:block;font-size:13px;color:#111}
 .tier small{color:#888;font-size:11px;letter-spacing:0;font-family:var(--body)}
 .tier .pr{font-family:var(--display);font-weight:500;font-size:12.5px;white-space:nowrap;letter-spacing:0;color:#111}
+.tier.soldout{opacity:0.55}
+.tier.soldout .pr{text-decoration:line-through;opacity:0.6}
+.soldout-tag{display:inline-block;font-family:var(--body);font-weight:600;font-size:8px;letter-spacing:0.1em;text-transform:uppercase;color:#fff;background:var(--coral);padding:2px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;line-height:1}
+
 .selbox{border-top:0.5px solid rgba(0,0,0,0.1);padding-top:18px;margin-top:6px}
 .selbox h3{font-family:var(--body);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--coral);margin-bottom:14px}
 .selrow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid rgba(0,0,0,0.08);font-size:13px;animation:pop .25s ease;color:#111}
@@ -174,18 +178,18 @@ h1 em{font-style:italic;color:var(--ocre)}
       <h2>Tu selección</h2>
       <div class="pnote">Toca una mesa en el mapa</div>
       <div class="tiers">
-        <div class="tier"><span class="sw" style="background:var(--coral)"></span>
-          <div><b>Private Decks</b><small>P1–P2 · Incluye 15 accesos · hot tub</small></div>
-          <span class="pr">RD$120,000</span></div>
-        <div class="tier"><span class="sw" style="background:var(--ocre)"></span>
-          <div><b>Seaside Tables</b><small>S1–S6 · Incluye 10 accesos</small></div>
-          <span class="pr">RD$80,000</span></div>
+        <div class="tier soldout"><span class="sw" style="background:var(--navy)"></span>
+          <div><b>Capri Lounges <span class="soldout-tag">Sold Out</span></b><small>C1–C11 · Incluye 6 accesos</small></div>
+          <span class="pr">RD$30,000</span></div>
         <div class="tier"><span class="sw" style="background:var(--sky)"></span>
           <div><b>Sunset Cabanas</b><small>T1–T8 · Incluye 8 accesos</small></div>
           <span class="pr">RD$50,000</span></div>
-        <div class="tier"><span class="sw" style="background:var(--navy)"></span>
-          <div><b>Capri Lounges</b><small>C1–C11 · Incluye 6 accesos</small></div>
-          <span class="pr">RD$30,000</span></div>
+        <div class="tier"><span class="sw" style="background:var(--ocre)"></span>
+          <div><b>Seaside Tables</b><small>S1–S6 · Incluye 10 accesos</small></div>
+          <span class="pr">RD$80,000</span></div>
+        <div class="tier"><span class="sw" style="background:var(--coral)"></span>
+          <div><b>Private Decks</b><small>P1–P2 · Incluye 15 accesos · hot tub</small></div>
+          <span class="pr">RD$120,000</span></div>
       </div>
       <div class="selbox">
         <h3>Mesas elegidas</h3>
