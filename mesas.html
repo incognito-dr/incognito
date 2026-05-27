@@ -164,7 +164,7 @@ h1 em{font-style:italic;color:var(--ocre)}
     <div>
       <div class="mapcard">
         <div class="map-stage" id="stage">
-          <img id="mapimg" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779745868/cdsMesas-Casa-Capri-Recovered_1_jrcl0e.webp" alt="Mapa Casa Capri">
+          <img id="mapimg" src="https://res.cloudinary.com/dheiidsny/image/upload/v1779912083/csdcdMesas-Casa-Capri-Recovered_1_rorbkg.webp" alt="Mapa Casa Capri">
           <div class="map-loading" id="mapLoading"><span class="ml-dot"></span>Cargando disponibilidad…</div>
         </div>
       </div>
@@ -180,13 +180,13 @@ h1 em{font-style:italic;color:var(--ocre)}
       <div class="pnote">Toca una mesa en el mapa</div>
       <div class="tiers">
         <div class="tier"><span class="sw" style="background:var(--navy)"></span>
-          <div><b>Capri Lounges</b><small>C1–C11 · Incluye 6 accesos</small></div>
+          <div><b>Capri Lounges <span class="few-tag">Quedan pocas</span></b><small>C1–C11 · Incluye 6 accesos</small></div>
           <span class="pr">RD$30,000</span></div>
         <div class="tier"><span class="sw" style="background:var(--sky)"></span>
-          <div><b>Sunset Cabanas <span class="few-tag">Quedan pocas</span></b><small>T1–T8 · Incluye 8 accesos</small></div>
+          <div><b>Sunset Cabanas <span class="few-tag">Quedan pocas</span></b><small>T1–T10 · Incluye 8 accesos</small></div>
           <span class="pr">RD$50,000</span></div>
         <div class="tier"><span class="sw" style="background:var(--ocre)"></span>
-          <div><b>Seaside Tables</b><small>S1–S6 · Incluye 10 accesos</small></div>
+          <div><b>Seaside Tables <span class="few-tag">Quedan pocas</span></b><small>S1–S6 · Incluye 10 accesos</small></div>
           <span class="pr">RD$80,000</span></div>
         <div class="tier soldout"><span class="sw" style="background:var(--coral)"></span>
           <div><b>Private Decks <span class="soldout-tag">Sold Out</span></b><small>P1–P2 · Incluye 15 accesos · hot tub</small></div>
@@ -202,7 +202,7 @@ h1 em{font-style:italic;color:var(--ocre)}
           <div class="recap-row recap-total"><span class="recap-lab">Total</span><span class="recap-val" id="total">RD$0</span></div>
           <div class="recap-consumible">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-          <span>El precio es <b>100% consumible</b> en el Menú de Botellas — el monto total es de consumo e incluye los tickets descritos con la reserva, los tickets serán enviados via whatsapp conjunto a su reserva.</span>
+          <span>El precio es <b>100% consumible</b> en el Menú de Bebida — lo que pagas se convierte en consumo.</span>
           </div>
           <div class="recap-nofood">No incluye crédito para comida.</div>
         </div>
@@ -330,8 +330,8 @@ const tierOf = id => TIERS[id[0]];
 const TABLES = [
   ['S5',27.6,15.0],['C1',35.2,15.0],['C2',42.0,15.0],['C3',48.4,15.0],['C4',54.6,15.0],['C5',62.0,15.0],['S6',70.0,15.0],
   ['S3',30.0,21.0],['T6',49.0,21.0],['S4',70.0,21.0],
-  ['C6',31.0,26.9],['T5',39.2,26.0],['T7',60.0,26.0],['C9',67.2,26.9],
-  ['C7',31.0,31.8],['T4',39.2,31.8],['T8',60.0,31.8],['C10',67.2,31.8],
+  ['C6',31.0,26.9],['T5',39.2,26.0],['T10',49.6,26.0],['T7',60.0,26.0],['C9',67.2,26.9],
+  ['C7',31.0,31.8],['T4',39.2,31.8],['T9',49.6,31.8],['T8',60.0,31.8],['C10',67.2,31.8],
   ['C8',31.0,37.0],['C11',67.2,37.0],
   ['T3',28.0,45.2],['T2',28.0,51.0],['T1',28.0,57.0],
   ['P1',27.0,68.8],['P2',71.0,68.8],
