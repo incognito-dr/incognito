@@ -110,6 +110,27 @@
 
 
 
+
+  /* Mixers & Softs box — separated from bottle list */
+  .mixers-box{ margin:24px 16px 40px; padding:18px 16px; border:1px dotted rgba(27,42,74,0.42); border-radius:8px; background:rgba(27,42,74,0.025); }
+  .mx-head{ display:flex; align-items:flex-start; gap:10px; padding-bottom:14px; margin-bottom:8px; border-bottom:0.6px dotted rgba(27,42,74,0.28); }
+  .mx-head .arrow{ flex-shrink:0; margin-top:8px; }
+  .mx-titles{ display:flex; flex-direction:column; gap:4px; }
+  .mx-zlabel{ font-family:var(--display); font-weight:300; font-size:25px; line-height:0.98; letter-spacing:-0.6px; text-transform:uppercase; color:var(--navy); }
+  .mx-sub{ font-family:var(--body); font-weight:500; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--terra); }
+  .mx-list{ display:grid; grid-template-columns:1fr 1fr; gap:0 18px; }
+  .mx-list .ir{ display:flex; justify-content:space-between; align-items:baseline; padding:8px 0; border-bottom:0.5px dotted rgba(27,42,74,0.18); gap:8px; }
+  .mx-list .ir:nth-last-child(-n+2){ border-bottom:none; }
+  .mx-list .irn{ display:flex; flex-direction:column; gap:1px; min-width:0; }
+  .mx-list .irn b{ font-family:var(--display); font-weight:600; font-size:12px; color:var(--navy); }
+  .mx-list .irn small{ font-family:var(--body); font-weight:400; font-size:9.5px; letter-spacing:0.05em; color:var(--navy-soft); text-transform:uppercase; }
+  .mx-list .irq{ font-family:var(--display); font-weight:500; font-size:12px; color:var(--terra); white-space:nowrap; }
+  @media (max-width:420px){
+    .mx-list{ grid-template-columns:1fr; gap:0; }
+    .mx-list .ir:nth-last-child(-n+2){ border-bottom:0.5px dotted rgba(27,42,74,0.18); }
+    .mx-list .ir:last-child{ border-bottom:none; }
+  }
+
   /* boxed share items (dotted border around each) */
   .share-box{ border:1px dotted rgba(255,255,255,0.5); border-radius:8px; padding:18px 16px; margin:0 16px 14px; position:relative; }
   .share-box .item{ border:none; padding:0; }
@@ -288,44 +309,39 @@
   <div class="drink-grid">
     <div class="grid">
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Vodka</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Grey Goose Magnum</b><small>1.75ML</small></span><span class="irq">RD$18,000</span></div><div class="ir"><span class="irn"><b>Grey Goose Night Vision</b><small>700ML</small></span><span class="irq">RD$11,000</span></div></div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Tequila</span></div><div class="inner"><div class="ir"><span class="irn"><b>Patrón Reposado</b></span><span class="irq">RD$13,000</span></div><div class="ir"><span class="irn"><b>Patrón Cristalino</b></span><span class="irq">RD$14,000</span></div><div class="ir"><span class="irn"><b>Patrón El Alto</b></span><span class="irq">RD$25,000</span></div></div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Whisky</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Chivas Regal 18 Años</b></span><span class="irq">RD$15,500</span></div><div class="ir"><span class="irn"><b>Chivas Regal 12 Años</b></span><span class="irq">RD$8,500</span></div></div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Vodka</span></div><div class="inner"><div class="ir"><span class="irn"><b>Grey Goose</b></span><span class="irq">RD$10,000</span></div></div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Tequila</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Patrón Cristalino</b></span><span class="irq">RD$17,000</span></div><div class="ir"><span class="irn"><b>Patrón Reposado</b></span><span class="irq">RD$12,000</span></div><div class="ir"><span class="irn"><b>Patrón Silver</b></span><span class="irq">RD$11,500</span></div></div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Ron</span></div><div class="inner"><div class="ir"><span class="irn"><b>Brugal Leyenda</b></span><span class="irq">RD$9,000</span></div><div class="ir"><span class="irn"><b>Brugal 1888</b></span><span class="irq">RD$10,000</span></div></div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Gin</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Tanqueray No. Ten</b></span><span class="irq">RD$10,000</span></div><div class="ir"><span class="irn"><b>Tanqueray Sevilla</b></span><span class="irq">RD$7,000</span></div></div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Gin</span></div><div class="inner"><div class="ir"><span class="irn"><b>Bombay Sapphire</b></span><span class="irq">RD$9,000</span></div></div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Ron</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Brugal 1888</b></span><span class="irq">RD$11,000</span></div><div class="ir"><span class="irn"><b>Brugal Leyenda</b></span><span class="irq">RD$7,000</span></div></div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Whiskey</span></div><div class="inner"><div class="ir"><span class="irn"><b>Chivas Crystal Gold</b></span><span class="irq">RD$10,000</span></div><div class="ir"><span class="irn"><b>Chivas 18</b></span><span class="irq">RD$13,000</span></div></div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Espumantes</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Moët Ice</b></span><span class="irq">RD$16,000</span></div></div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Espumantes</span></div><div class="inner"><div class="ir"><span class="irn"><b>Perrier-Jouët Grand Brut</b></span><span class="irq">RD$16,000</span></div><div class="ir"><span class="irn"><b>Perrier-Jouët Blason Rosé</b></span><span class="irq">RD$18,000</span></div></div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Licores</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Aguardiente</b></span><span class="irq">RD$8,500</span></div></div>
-        </div>
-        <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#C9603F" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Varios</span></div>
-          <div class="inner" style="margin-top:4px;padding-top:0;border-top:none"><div class="ir"><span class="irn"><b>Red Bull</b><small>Regular / Sugar Free / Red Edition</small></span><span class="irq">RD$200</span></div><div class="ir"><span class="irn"><b>Evian 33cl · Tónica · Soda · Refrescos</b></span><span class="irq">RD$250</span></div><div class="ir"><span class="irn"><b>Cranberry · Sour de Limón</b></span><span class="irq">RD$350</span></div></div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Licores</span></div><div class="inner"><div class="ir"><span class="irn"><b>Aguardiente Antioqueño</b></span><span class="irq">RD$7,000</span></div></div>
         </div>
     </div>
-    <div class="taxnote">Impuestos incluidos · El pre-pago de mesa aplica sobre esta sección</div>
-  </div>
 
-
-  <div style="text-align:center;padding:30px 18px 40px;">
-    <img src="https://res.cloudinary.com/dheiidsny/image/upload/v1780074497/ccPatrodark_fsqlos.png" alt="Patrocinadores" style="max-width:clamp(372px,94vw,744px);width:100%;height:auto;opacity:0.9;display:block;margin:0 auto;">
+    <!-- Mixers & Softs box -->
+    <div class="mixers-box">
+      <div class="mx-head">
+        <span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#1B2A4A" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="mx-titles">
+          <span class="mx-zlabel">Mixers &amp; Softs</span>
+          <span class="mx-sub">Acompañamientos · à la carte</span>
+        </div>
+      </div>
+      <div class="mx-list"><div class="ir"><span class="irn"><b>Red Bull</b><small>Lata</small></span><span class="irq">RD$300</span></div><div class="ir"><span class="irn"><b>Red Bull Sugar Free</b><small>Lata</small></span><span class="irq">RD$300</span></div><div class="ir"><span class="irn"><b>Agua FIJI</b><small>Botella</small></span><span class="irq">RD$300</span></div><div class="ir"><span class="irn"><b>Agua con Gas</b><small>Botella</small></span><span class="irq">RD$300</span></div><div class="ir"><span class="irn"><b>Agua Tónica</b><small>Botella</small></span><span class="irq">RD$200</span></div><div class="ir"><span class="irn"><b>Refrescos</b><small>Lata / vaso</small></span><span class="irq">RD$200</span></div><div class="ir"><span class="irn"><b>Sour Limón</b><small>200 ml</small></span><span class="irq">RD$600</span></div><div class="ir"><span class="irn"><b>Cranberry</b><small>200 ml</small></span><span class="irq">RD$400</span></div></div>
+    </div>
   </div>
 
   <!-- ====== EAT ====== -->
@@ -335,68 +351,72 @@
 
     <div class="grid">
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Del Mar</span></div><div class="iname">Fritto Misto Capri</div><div class="isub">Frittura</div><div class="idesc">Calamares chipirón crujientes, servidos con alioli de la casa.</div><div class="imeta">6 piezas<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Mar</span></div><div class="iname">Frito Mixto Capri</div><div class="isub">Frittura</div><div class="idesc">Calamares chipirón crujientes, servidos con alioli de la casa.</div><div class="imeta">1 porción<span class="dot"></span>RD$790</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Del Mar</span></div><div class="iname">Catibias del Puerto</div><div class="isub">Criollo</div><div class="idesc">Masa frita dorada, rellena de lambí guisado.</div><div class="imeta">3 piezas<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Mar</span></div><div class="iname">Catibías del Puerto</div><div class="isub">Criollo</div><div class="idesc">Masa frita dorada de yuca, rellena de lambí guisado.</div><div class="imeta">2 piezas<span class="dot"></span>RD$590</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Del Mar</span></div><div class="iname">Spiedino de Camarón</div><div class="isub">A la brasa</div><div class="idesc">Brocheta de camarón al ajillo, terminada al grill.</div><div class="imeta">2 brochetas<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Mar</span></div><div class="iname">Panino di Mare</div><div class="isub">Handheld</div><div class="idesc">Hamburguesa de chillo fresco con chips de batata.</div><div class="imeta">1 panino + chips<span class="dot"></span>RD$1,690</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Del Mar</span></div><div class="iname">Panino di Mare</div><div class="isub">Handheld</div><div class="idesc">Sliders de chillo fresco en pan suave de la casa.</div><div class="imeta">2 sliders<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Mar</span></div><div class="iname">Ceviche La Costa Mezzo</div><div class="isub">Frío</div><div class="idesc">Pescado curado en leche de tigre cítrica.</div><div class="imeta">1 porción<span class="dot"></span>RD$1,190</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Del Mar</span></div><div class="iname">Ceviche della Costa</div><div class="isub">Frío</div><div class="idesc">Camarón curado en leche de tigre cítrica.</div><div class="imeta">Individual<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Mar</span></div><div class="iname">Dedos de Pescado</div><div class="isub">Frittura</div><div class="idesc">Tiras de pescado empanizadas, doradas al punto.</div><div class="imeta">4 piezas<span class="dot"></span>RD$1,390</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">De Tierra</span></div><div class="iname">Carpaccio de Res</div><div class="isub">Frío</div><div class="idesc">Láminas finas con rúcula, alcaparras, reducción de balsámico y pesto rústico.</div><div class="imeta">Individual<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Mar</span></div><div class="iname">Tartar de Atún</div><div class="isub">Frío</div><div class="idesc">Atún fresco picado a cuchillo, aderezo cítrico y ajonjolí.</div><div class="imeta">1 porción<span class="dot"></span>RD$2,690</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">De Tierra</span></div><div class="iname">Burrata Capri</div><div class="isub">Antipasto</div><div class="idesc">Burrata, prosciutto di parma y tomate, montada sobre crostini.</div><div class="imeta">3 crostini<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Tierra</span></div><div class="iname">Carpaccio de Res</div><div class="isub">Frío</div><div class="idesc">Láminas finas de res con rúcula, alcaparras y reducción de balsámico.</div><div class="imeta">1 porción<span class="dot"></span>RD$1,190</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">De Tierra</span></div><div class="iname">Sliders di Manzo</div><div class="isub">Handheld</div><div class="idesc">Mini de churrasco al grill en pan suave.</div><div class="imeta">2 sliders<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Tierra</span></div><div class="iname">Burrata Capri</div><div class="isub">Antipasto</div><div class="idesc">Burrata cremosa, prosciutto di parma y tomate sobre crostini.</div><div class="imeta">1 ensalada<span class="dot"></span>RD$1,190</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">De Tierra</span></div><div class="iname">Dumplings de la Casa</div><div class="isub">Vapor</div><div class="idesc">Rellenos de cerdo y jengibre, hechos en casa.</div><div class="imeta">4 piezas<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Tierra</span></div><div class="iname">Sliders de Manzo</div><div class="isub">Handheld</div><div class="idesc">Mini hamburguesas de churrasco al grill con chips de batata.</div><div class="imeta">1 panini + chips<span class="dot"></span>RD$1,490</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">De Tierra</span></div><div class="iname">Canastitas Criollas</div><div class="isub">Criollo</div><div class="idesc">Canastita de plátano crujiente, rellena de cerdo BBQ.</div><div class="imeta">3 piezas<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Tierra</span></div><div class="iname">Dumpling de Cerdo</div><div class="isub">Vapor</div><div class="idesc">Empanadillas asiáticas rellenas de cerdo y jengibre.</div><div class="imeta">4 piezas<span class="dot"></span>RD$790</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Ostras Frescas</div><div class="isub">Raw bar</div><div class="idesc">Servidas sobre hielo con mignonette cítrica.</div><div class="imeta">6 unidades<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Tierra</span></div><div class="iname">Canastita Criolla BBQ</div><div class="isub">Criollo</div><div class="idesc">Canastita de plátano crujiente, rellena de cerdo BBQ.</div><div class="imeta">3 piezas<span class="dot"></span>RD$790</div>
         </div>
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Ostras al Grill</div><div class="isub">Gratinadas</div><div class="idesc">Terminadas al grill con mantequilla de hierbas.</div><div class="imeta">6 unidades<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Línea Tierra</span></div><div class="iname">Dedos de Pollo</div><div class="isub">Frittura</div><div class="idesc">Tiras de pollo empanizadas, doradas y crujientes, con papas.</div><div class="imeta">5 piezas + papas<span class="dot"></span>RD$1,090</div>
+        </div>
+        <div class="item">
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Sushi</span></div><div class="iname">Niguiri</div><div class="isub">Tradicional</div><div class="idesc">Bolitas de arroz con pescado fresco encima, al estilo japonés.</div><div class="imeta">2 piezas<span class="dot"></span>RD$590</div>
         </div>
     </div>
+
     <!-- Collapsible sushi -->
     <div class="sushi-collapse" id="sushiCollapse">
       <div class="sushi-top">
         <div class="s-zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="s-zlabel">Sushi Rolls</span></div>
       </div>
       <button class="sushi-trigger" type="button" onclick="document.getElementById('sushiCollapse').classList.toggle('open')">
-        <span class="s-name">Sushi · 8 Piezas</span>
+        <span class="s-name">Sushi · 8 Rodajas</span>
         <span class="s-meta">Ver rolls</span>
         <span class="s-chev">▾</span>
       </button>
       <div class="sushi-body">
-        <div class="sushi-list"><div class="sushi-row"><div class="sr-info"><div class="sr-name">King Crab Roll</div><div class="sr-desc">King crab, camarones panko, cream cheese, aguacate, salsa de miel</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Neptuno Roll</div><div class="sr-desc">King crab, camarón furai, aguacate, plátano maduro, salsa de anguila</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Philadelphia Roll</div><div class="sr-desc">Salmón, queso crema, pepino, cubierta de sésamo</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Spicy Tuna Roll</div><div class="sr-desc">Atún fresco, aguacate, cubierta de atún y sésamo, salsa spicy</div></div><span class="sr-price">8 pzs · RD$xxxx</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div></div>
+        <div class="sushi-list"><div class="sushi-row"><div class="sr-info"><div class="sr-name">King Crab Roll</div><div class="sr-desc">King crab, camarón panko, queso crema, aguacate y salsa de miel.</div></div><span class="sr-price">8 rodajas · RD$990</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Neptuno Roll</div><div class="sr-desc">King crab, camarón furai, aguacate, plátano maduro y salsa de anguila.</div></div><span class="sr-price">8 rodajas · RD$990</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Philadelphia Roll</div><div class="sr-desc">Salmón, queso crema, pepino y cubierta de sésamo.</div></div><span class="sr-price">8 rodajas · RD$990</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div><div class="sushi-row"><div class="sr-info"><div class="sr-name">Spicy Tuna Roll</div><div class="sr-desc">Atún fresco, aguacate, cubierta de atún y salsa spicy.</div></div><span class="sr-price">8 rodajas · RD$990</span><button class="add-btn" type="button" aria-label="Agregar"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 1.5v9M1.5 6h9"/></svg></button></div></div>
       </div>
     </div>
 
     <!-- Boxed share: Cofre Capri -->
     <div class="share-box">
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Cofre Capri</div><div class="isub">Sushi · Para compartir</div><div class="idesc">Selección de cuatro rolls variados — la tabla de sushi de la mesa.</div><div class="inner"><div class="ir"><span class="irn"><b>King Crab Roll</b><small>King crab, camarones panko, cream cheese, aguacate, salsa de miel</small></span><span class="irq">8 pzs</span></div><div class="ir"><span class="irn"><b>Neptuno Roll</b><small>King crab, camarón furai, aguacate, plátano maduro, salsa de anguila</small></span><span class="irq">8 pzs</span></div><div class="ir"><span class="irn"><b>Philadelphia Roll</b><small>Salmón, queso crema, pepino, cubierta de sésamo</small></span><span class="irq">8 pzs</span></div><div class="ir"><span class="irn"><b>Spicy Tuna Roll</b><small>Atún fresco, aguacate, cubierta de atún y sésamo, salsa spicy</small></span><span class="irq">8 pzs</span></div></div><div class="imeta">32 piezas<span class="dot"></span>RD$00000</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Cofre Capri</div><div class="isub">Sushi · 4 rolls a elegir</div><div class="idesc">Mix &amp; match — eliges 4 rolls de los disponibles. La tabla de sushi de la mesa.</div><div class="inner"><div class="ir"><span class="irn"><b>King Crab Roll</b><small>King crab, camarón panko, queso crema, aguacate, salsa de miel</small></span><span class="irq">8 rodajas</span></div><div class="ir"><span class="irn"><b>Neptuno Roll</b><small>King crab, camarón furai, aguacate, plátano maduro, salsa de anguila</small></span><span class="irq">8 rodajas</span></div><div class="ir"><span class="irn"><b>Philadelphia Roll</b><small>Salmón, queso crema, pepino, cubierta de sésamo</small></span><span class="irq">8 rodajas</span></div><div class="ir"><span class="irn"><b>Spicy Tuna Roll</b><small>Atún fresco, aguacate, cubierta de atún, salsa spicy</small></span><span class="irq">8 rodajas</span></div></div><div class="imeta">4 rolls · 32 rodajas<span class="dot"></span>RD$3,590</div>
         </div>
     </div>
 
     <!-- Boxed share: Tabla Capri -->
     <div class="share-box">
         <div class="item">
-          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Tabla Capri</div><div class="isub">Mar &amp; Tierra · Para compartir</div><div class="idesc">Surtido de mar y tierra para la mesa — el festín completo.</div><div class="inner"><div class="ir"><span class="irn"><b>Fritto Misto Capri</b><small>Calamares chipirón con alioli</small></span><span class="irq">4 pzs</span></div><div class="ir"><span class="irn"><b>Catibias del Puerto</b><small>Masa frita rellena de lambí</small></span><span class="irq">3 pzs</span></div><div class="ir"><span class="irn"><b>Spiedino de Camarón</b><small>Brocheta al ajillo</small></span><span class="irq">2 broch.</span></div><div class="ir"><span class="irn"><b>Sliders di Manzo</b><small>Mini de churrasco al grill</small></span><span class="irq">3 sliders</span></div><div class="ir"><span class="irn"><b>Dumplings de la Casa</b><small>Cerdo y jengibre</small></span><span class="irq">4 pzs</span></div></div><div class="imeta">Para 3–4<span class="dot"></span>RD$2,995</div>
+          <div class="zone"><span class="arrow"><svg class="arw" width="40" height="10" viewBox="0 0 40 10" fill="none"><path d="M0 5h36M31 1l5 4-5 4" stroke="#ffffff" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="zlabel">Para Compartir</span></div><div class="iname">Tabla Capri</div><div class="isub">Mar &amp; Tierra · Para 3–4 personas</div><div class="idesc">Surtido de mar y tierra para la mesa — el festín completo de Casa Capri.</div><div class="inner"><div class="ir"><span class="irn"><b>Frito Mixto Capri</b><small>Calamares chipirón con alioli</small></span><span class="irq">1 porción</span></div><div class="ir"><span class="irn"><b>Catibías del Puerto</b><small>Masa frita rellena de lambí</small></span><span class="irq">4 piezas</span></div><div class="ir"><span class="irn"><b>Dumpling de Cerdo</b><small>Cerdo y jengibre al vapor</small></span><span class="irq">4 piezas</span></div><div class="ir"><span class="irn"><b>Canastita Criolla BBQ</b><small>Plátano crujiente con cerdo BBQ</small></span><span class="irq">3 piezas</span></div></div><div class="imeta">Para 3–4 personas<span class="dot"></span>RD$3,290</div>
         </div>
     </div>
 
