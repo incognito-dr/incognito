@@ -216,6 +216,11 @@
     /* ===== FOOTER (Vivre style) ===== */
     footer { border-top: 0.5px solid var(--line); padding: 4rem 2.5rem 0 2.5rem; max-width: 1280px; margin: 0 auto; }
     .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; padding-bottom: 3rem; }
+
+    /* Archive section header with Latest Event badge */
+    .sec-head-archive { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .archive-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--white); background: var(--accent, #C9603F); padding: 6px 12px; border-radius: 2px; font-weight: 500; }
+
     .footer-cta-text { font-family: var(--font-display); font-size: clamp(20px, 2.4vw, 30px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 1.5rem; }
     .footer-let { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--white); border: 0.5px solid rgba(255,255,255,0.25); padding: 11px 22px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; transition: border-color 0.2s; border-radius: 2px; background: transparent; }
     .footer-let:hover { border-color: var(--white); }
@@ -346,7 +351,7 @@
     </ul>
     <div class="nav-actions">
       <button class="nav-guest" onclick="openModal()">Guest List</button>
-      <a href="https://tix.do/event/CasaCapri-1" target="_blank" class="nav-cta">Tickets</a>
+      <a href="https://tix.do/event/CasaCapri-1" target="_blank" class="nav-cta" style="display:none">Tickets</a>
     </div>
   </nav>
 
@@ -369,49 +374,34 @@
     <div class="sec-head"><span class="label">Agenda</span></div>
     <div class="events-list">
 
-      <div class="event-card" id="card-casacapri">
-        <div class="event-head" onclick="toggleEvent('card-casacapri')">
+      <div class="event-card is-soon" id="card-tbd1">
+        <div class="event-head" onclick="toggleEvent('card-tbd1')">
           <span class="event-num">001</span>
           <div class="event-info">
-            <span class="event-name">Casa Capri</span>
-            <span class="event-meta">4 Jun · Día Festivo&nbsp;&nbsp;/&nbsp;&nbsp;Neptuno's, Boca Chica · 11am – 9pm</span>
-            <span class="event-sublabel">✦ Open Bar Premium · Ron / Vodka / Whisky / Gin</span>
+            <span class="event-name">TBD</span>
+            <span class="event-meta">Fecha por anunciar · Stay tuned</span>
           </div>
-          <span class="event-tag">Beach Day</span>
+          <span class="event-tag">Próximamente</span>
           <span class="event-arrow">↓</span>
         </div>
         <div class="event-drawer">
           <div class="drawer-inner">
-            <div class="gallery-strip">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418654/hf_20260520_204743_ac44b6f4-e8ec-4583-9dfc-3cb695497937_h5wqhv.webp" alt="Casa Capri" loading="lazy">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418654/hf_20260520_203309_97e2058a-4b78-48f5-97d1-7df7506ed3f1_1_lzdid6.webp" alt="Casa Capri" loading="lazy">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418654/hf_20260520_203537_c244b62f-19ba-484f-8605-ce2f647ad312_1_iwutui.webp" alt="Casa Capri" loading="lazy">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418653/hf_20260520_202451_e40aac90-0e0a-4a78-a2d1-873f8fc5ccc7_1_w4nlpv.webp" alt="Casa Capri" loading="lazy">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418653/hf_20260520_203609_a908403c-2879-4e10-afc0-08c0d439e79f_1_njbtu3.webp" alt="Casa Capri" loading="lazy">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418653/hf_20260520_203719_1e50a7eb-6b04-4730-8352-4d15019f1350_jifwic.webp" alt="Casa Capri" loading="lazy">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418653/hf_20260520_203644_77877b08-dab1-49e7-8d25-a075380b9368_1_wud2zj.webp" alt="Casa Capri" loading="lazy">
-          <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1779418653/hf_20260520_202952_5ae52653-8c6a-4385-95cb-52eb9cc49571_2_ejuafg.webp" alt="Casa Capri" loading="lazy">
-            </div>
-            <div class="sponsors-bar">
-              <span class="sponsors-label">Patrocinadores</span>
-              <img src="https://res.cloudinary.com/dheiidsny/image/upload/v1780074496/cdcdPatrodark_aongzo.png" alt="Patrocinadores" loading="lazy">
-            </div>
+            <p style="font-family:var(--font-mono);font-size:11px;color:var(--dim);line-height:1.8;padding:1.4rem 0;letter-spacing:0.05em">Detalles próximamente. Únete al Guest List para ser el primero en enterarte.</p>
             <div class="drawer-actions">
-              <a href="https://tix.do/event/CasaCapri-1" target="_blank" class="drawer-btn primary">Tickets</a>
-              <a href="mesas.html" target="_blank" class="drawer-btn secondary">Reservar Mesa</a>
+              <button class="drawer-btn primary" style="background:var(--white);color:#000;border:none;cursor:pointer" onclick="openModal()">Guest List</button>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="event-card is-soon" id="card-omar">
-        <div class="event-head" onclick="toggleEvent('card-omar')">
+      <div class="event-card is-soon" id="card-tbd2">
+        <div class="event-head" onclick="toggleEvent('card-tbd2')">
           <span class="event-num">002</span>
           <div class="event-info">
-            <span class="event-name" id="omar-name">TBD</span>
+            <span class="event-name">TBD</span>
             <span class="event-meta">Fecha por anunciar · Stay tuned</span>
           </div>
-          <span class="event-tag">Concierto</span>
+          <span class="event-tag">Próximamente</span>
           <span class="event-arrow">↓</span>
         </div>
         <div class="event-drawer">
@@ -449,15 +439,15 @@
 
   <!-- GALERÍA -->
   <section id="galeria">
-    <div class="sec-head"><span class="label">Archivo</span></div>
+    <div class="sec-head sec-head-archive"><span class="label">Archivo</span><span class="archive-tag">● Latest Event · Casa Capri</span></div>
     <div class="gallery-grid">
-      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item"><img src="https://i.postimg.cc/ZnhY2jp9/01.jpg" alt="Evento" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item"><img src="https://i.postimg.cc/SRpQ3VC2/02.jpg" alt="Evento" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item"><img src="https://i.postimg.cc/hvq46MTf/03.jpg" alt="Evento" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item"><img src="https://i.postimg.cc/d3KQpnrD/04.jpg" alt="Evento" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com" target="_blank" class="gallery-item"><img src="https://i.postimg.cc/nrtVgTBc/05.jpg" alt="Evento" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/v1780844333/IncognitoNeptunos3_k2gshq.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844351/IncognitoNeptunos112_rt2sut.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844342/IncognitoNeptunos167_hs4jcs.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844392/IncognitoNeptunos144_g5nomc.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844441/IncognitoNeptunos4_txymef.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
     </div>
-    <div class="gallery-foot"><a href="https://incognito10.pixieset.com" target="_blank" class="btn-outline">Ver galería completa →</a></div>
+    <div class="gallery-foot"><a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="btn-outline">Ver galería Casa Capri →</a></div>
   </section>
 
   <!-- CONTACTO -->
@@ -480,8 +470,8 @@
   <footer>
     <div class="footer-top">
       <div>
-        <p class="footer-cta-text">Nos vemos en Casa Capri.<br>4 de Junio.</p>
-        <a href="https://tix.do/event/CasaCapri-1" target="_blank" class="footer-let">Get Tickets ↗</a>
+        <p class="footer-cta-text">Próximos eventos<br>por anunciar.</p>
+        <button class="footer-let" onclick="openModal()">Solicitar Guest List ↗</button>
       </div>
       <div class="footer-col">
         <h4>Menu</h4>
