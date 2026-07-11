@@ -21,17 +21,33 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ===== CASA CORONA FONTS (subir carpeta /fonts junto al index) ===== */
+    @font-face { font-family: 'Corona Headline'; src: url('fonts/CoronaHeadline-SemiBold.otf') format('opentype'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Corona Brush'; src: url('fonts/CoronaBrush-Bold.otf') format('opentype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Arastin Pro'; src: url('fonts/ArastinPro.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+
     :root {
       --black: #000000;
       --white: #ffffff;
       --dim: #888888;
       --faint: rgba(255,255,255,0.5);
-      --accent: #ffe600;
+      --accent: #f79246;
       --line: rgba(255,255,255,0.1);
       --line-soft: rgba(255,255,255,0.06);
       --font-display: 'Inter', sans-serif;
       --font-mono: 'Space Mono', monospace;
       --font-body: 'Inter', sans-serif;
+      /* Paleta Casa Corona */
+      --cc-navy: #0f4a73;
+      --cc-navy-deep: #0a3a5d;
+      --cc-blue: #5b9bd6;
+      --cc-sky: #b9ddf3;
+      --cc-orange: #f79246;
+      --cc-sand: #fae59b;
+      --cc-paper: #f4efe6;
+      --font-cc-head: 'Corona Headline', 'Inter', sans-serif;
+      --font-cc-brush: 'Corona Brush', 'Inter', sans-serif;
+      --font-cc-serif: 'Arastin Pro', Georgia, serif;
     }
 
     html { scroll-behavior: smooth; }
@@ -64,12 +80,14 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 1.6rem 2.5rem;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.85), transparent);
+      padding: 1.6rem 2.5rem 3.4rem;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 45%, transparent 100%);
     }
-    .nav-brand { display: flex; align-items: center; gap: 9px; text-decoration: none; opacity: 0.85; transition: opacity 0.25s; }
+    /* Logo centrado — top bar */
+    .nav-brand { position: absolute; left: 50%; top: 1.5rem; transform: translateX(-50%); display: flex; align-items: center; text-decoration: none; opacity: 0.9; transition: opacity 0.6s var(--ease, cubic-bezier(.22,1,.36,1)), transform 0.6s var(--ease, cubic-bezier(.22,1,.36,1)); }
     .nav-brand:hover { opacity: 1; }
-    .nav-brand-logo { height: 14px; width: auto; }
+    .nav-brand.is-hidden { opacity: 0; transform: translateX(-50%) translateY(-8px); pointer-events: none; }
+    .nav-brand-logo { height: 17px; width: auto; }
     .nav-brand-logo path { fill: #fff; }
     .nav-brand-text { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.85); text-transform: uppercase; white-space: nowrap; }
     .nav-links { display: flex; gap: 2.2rem; list-style: none; }
@@ -90,69 +108,18 @@
     }
     .nav-cta:hover { opacity: 0.85; }
 
-    /* ===== HERO — glitch image bg + disco logo ===== */
-    .hero { position: relative; width:100vw; max-width:100vw; left:50%; transform:translateX(-50vw); padding:0; margin:0; border-top:none; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; cursor: crosshair; background:#000; }
+    /* ===== HERO — Casa Corona × Incognito ===== */
+    .hero { position: relative; width:100vw; max-width:100vw; left:50%; transform:translateX(-50vw); padding:0; margin:0; border-top:none; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; background:#000; }
 
-    /* Background image layers (glitch + ken burns) */
     .hero-bg { position:absolute; inset:0; overflow:hidden; z-index:0; }
-    .hero-bg-layer { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position: center 72%; display:block; }
-    .hero-bg-layer.base {
-      filter: saturate(1.02) contrast(1.06) brightness(0.92);
-      animation: heroKenburns 80s ease-in-out infinite alternate, heroTear 7s steps(1) infinite;
+    .hero-bg-layer { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position: center; display:block;
+      filter: saturate(1.02) contrast(1.05) brightness(0.9);
+      animation: heroKenburns 70s ease-in-out infinite alternate;
     }
     @keyframes heroKenburns {
-      0%   { transform: scale(1.06) translate(0, 0); }
-      100% { transform: scale(1.16) translate(-1.5%, -2.5%); }
+      0%   { transform: scale(1.04) translate(0, 0); }
+      100% { transform: scale(1.12) translate(-1.2%, -2%); }
     }
-    /* RGB split layers for chromatic aberration glitch */
-    .hero-bg-layer.red, .hero-bg-layer.cyan { opacity:0; mix-blend-mode:screen; }
-    .hero-bg-layer.red  { filter: sepia(1) hue-rotate(-32deg) saturate(7) brightness(0.95); animation: heroGlitchR 7s steps(1) infinite; }
-    .hero-bg-layer.cyan { filter: sepia(1) hue-rotate(150deg) saturate(7) brightness(0.95); animation: heroGlitchC 7s steps(1) infinite; }
-
-    /* Refined glitch — multiple micro-bursts within the cycle, more "pro" */
-    @keyframes heroGlitchR {
-      0%, 100%   { opacity:0; transform: translate(0,0) scale(1.06); }
-      85.5%      { opacity:0; transform: translate(0,0) scale(1.06); }
-      86%        { opacity:0.55; transform: translate(-7px, 1px) scale(1.06); }
-      87%        { opacity:0.35; transform: translate(5px, -2px) scale(1.062); }
-      88%        { opacity:0.6;  transform: translate(-4px, 2px) scale(1.06); }
-      89%        { opacity:0; transform: translate(0,0) scale(1.06); }
-      93%        { opacity:0; transform: translate(0,0) scale(1.06); }
-      93.4%      { opacity:0.5; transform: translate(6px, -1px) scale(1.063); }
-      94%        { opacity:0; transform: translate(0,0) scale(1.06); }
-    }
-    @keyframes heroGlitchC {
-      0%, 100%   { opacity:0; transform: translate(0,0) scale(1.06); }
-      85.5%      { opacity:0; transform: translate(0,0) scale(1.06); }
-      86%        { opacity:0.5;  transform: translate(7px, -1px) scale(1.06); }
-      87%        { opacity:0.4;  transform: translate(-5px, 2px) scale(1.058); }
-      88%        { opacity:0.55; transform: translate(4px, -2px) scale(1.06); }
-      89%        { opacity:0; transform: translate(0,0) scale(1.06); }
-      93%        { opacity:0; transform: translate(0,0) scale(1.06); }
-      93.4%      { opacity:0.45; transform: translate(-6px, 1px) scale(1.057); }
-      94%        { opacity:0; transform: translate(0,0) scale(1.06); }
-    }
-    /* Horizontal tear on the base image during glitch */
-    @keyframes heroTear {
-      0%, 85%, 100% { clip-path: inset(0 0 0 0); }
-      86%   { clip-path: inset(32% 0 55% 0); }
-      86.5% { clip-path: inset(0 0 0 0); }
-      87.5% { clip-path: inset(64% 0 14% 0); }
-      88%   { clip-path: inset(0 0 0 0); }
-      93.4% { clip-path: inset(46% 0 38% 0); }
-      93.8% { clip-path: inset(0 0 0 0); }
-    }
-
-    /* Scanlines — more visible between glitches */
-    .hero-scanlines {
-      position:absolute; inset:0; pointer-events:none; z-index:2;
-      background-image: linear-gradient(rgba(255,255,255,0.055) 50%, rgba(0,0,0,0.12) 50%);
-      background-size: 100% 3px;
-      mix-blend-mode: overlay;
-      opacity: 0.85;
-      animation: heroScan 7s linear infinite;
-    }
-    @keyframes heroScan { 0%{ background-position:0 0; } 100%{ background-position:0 6px; } }
 
     /* Film grain */
     .hero-grain { position:absolute; inset:-120%; width:340%; height:340%; pointer-events:none; z-index:3; opacity:0.12; mix-blend-mode:overlay;
@@ -172,50 +139,26 @@
       background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.72) 14%, rgba(0,0,0,0.38) 30%, rgba(0,0,0,0.10) 44%, transparent 58%);
     }
 
-    .hero-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.3em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 2rem; z-index: 10; }
+    .hero-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.3em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 2.2rem; z-index: 10; }
     .hero-tag span { color: var(--white); text-shadow: 0 0 12px rgba(255,255,255,0.5); animation: tagGlow 2.6s ease-in-out infinite; }
     @keyframes tagGlow { 0%,100% { text-shadow: 0 0 8px rgba(255,255,255,0.25); opacity: 0.7; } 50% { text-shadow: 0 0 18px rgba(255,255,255,0.7); opacity: 1; } }
-    .logo-stack { position: relative; width: min(46vw, 660px); aspect-ratio: 6336/2688; z-index: 10; margin-top: 13vh; }
-    /* Environment reflection — soft color glow behind the logo picking up the photo's tones */
-    .logo-stack::before {
-      content:''; position:absolute; inset:-18% -8%; z-index:1; pointer-events:none; border-radius:50%;
-      background:
-        radial-gradient(ellipse at 30% 40%, rgba(120,180,210,0.30) 0%, transparent 60%),
-        radial-gradient(ellipse at 72% 62%, rgba(225,170,110,0.26) 0%, transparent 62%),
-        radial-gradient(ellipse at 50% 50%, rgba(90,130,170,0.18) 0%, transparent 70%);
-      filter: blur(34px);
-      mix-blend-mode: screen;
-      animation: envShift 9s ease-in-out infinite alternate;
-    }
-    @keyframes envShift {
-      0%   { opacity:0.75; transform: scale(1) translate(0,0); }
-      100% { opacity:1; transform: scale(1.06) translate(1%, -1%); }
-    }
-    .logo-base { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2; }
-    /* Tint overlay that lets the photo's environment color wash over the logo */
-    .logo-env { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; z-index:2;
-      mix-blend-mode: color; opacity:0.38; pointer-events:none; }
-    .logo-glint { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 3;
-      filter: brightness(2.4) contrast(1.3) saturate(1.6); opacity: 0;
-      -webkit-mask-image: radial-gradient(circle 52px at var(--mx,-999px) var(--my,-999px), #000 0%, rgba(0,0,0,0.5) 45%, transparent 72%);
-      mask-image: radial-gradient(circle 52px at var(--mx,-999px) var(--my,-999px), #000 0%, rgba(0,0,0,0.5) 45%, transparent 72%);
-      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; pointer-events: none; }
-    .logo-prism { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; z-index: 4;
-      mix-blend-mode: overlay; opacity: 0;
-      -webkit-mask-image: radial-gradient(circle 40px at var(--mx,-999px) var(--my,-999px), rgba(0,0,0,0.85) 0%, transparent 68%);
-      mask-image: radial-gradient(circle 40px at var(--mx,-999px) var(--my,-999px), rgba(0,0,0,0.85) 0%, transparent 68%);
-      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; pointer-events: none; }
-    #fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; mix-blend-mode: screen; }
-    #sparkles { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; mix-blend-mode: screen; }
 
-    /* Gallery button (replaces hero-sub) */
-    .hero-gallery-btn { position:relative; z-index:10; margin-top: 2.6rem; display:inline-flex; align-items:center; gap:11px;
-      font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color:#fff; text-decoration:none;
-      padding: 14px 26px; border: 0.5px solid rgba(255,255,255,0.4); border-radius: 2px; background: rgba(0,0,0,0.3); backdrop-filter: blur(8px);
-      transition: background 0.25s, border-color 0.25s, transform 0.25s; }
-    .hero-gallery-btn:hover { background: rgba(255,255,255,0.95); color:#000; border-color:#fff; transform: translateY(-1px); }
-    .hero-gallery-btn .hgb-arrow { font-size:13px; transition: transform 0.25s; }
-    .hero-gallery-btn:hover .hgb-arrow { transform: translateX(4px); }
+    /* Logo central — pequeño, minimalista */
+    .hero-mark { position: relative; z-index: 10; width: min(300px, 60vw); height: auto; display: block;
+      filter: drop-shadow(0 12px 42px rgba(0,0,0,0.5));
+      animation: markFloat 7s ease-in-out infinite; }
+    @keyframes markFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+
+    .hero-cc-logo { z-index: 10; height: clamp(110px, 16vh, 160px); width: auto; display: block; margin-top: 2.2rem; filter: drop-shadow(0 8px 30px rgba(0,0,0,0.5)); }
+    .hero-meta { z-index: 10; margin-top: 1rem; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.75); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: center; padding: 0 1.5rem; }
+    .hero-meta .hm-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cc-orange); box-shadow: 0 0 8px var(--cc-orange); }
+    .hero-meta .hm-tbd { color: var(--cc-sand); }
+    .hero-cta { position: relative; z-index: 10; margin-top: 2.6rem; display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-cc-head); font-weight: 600; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--cc-navy-deep); background: var(--cc-orange); border: none; cursor: pointer;
+      padding: 17px 34px; border-radius: 3px; box-shadow: 0 14px 40px rgba(247,146,70,0.35);
+      transition: transform 0.25s, box-shadow 0.25s, background 0.25s; }
+    .hero-cta:hover { transform: translateY(-2px); background: var(--cc-sand); box-shadow: 0 18px 48px rgba(250,229,155,0.3); }
 
     .hero-sub { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.4em; color: var(--dim); text-transform: uppercase; margin-top: 2.5rem; z-index: 10; text-align: center; padding: 0 1.5rem; }
     .hero-scroll { position: absolute; bottom: 2.2rem; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; flex-direction: column; align-items: center; gap: 8px; }
@@ -283,24 +226,54 @@
     .artist-sep { color: var(--dim); font-size: 7px; }
 
 
-    /* ===== WHO'S GOING WALL ===== */
-    .wall-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
-    .wall-counter { display: flex; align-items: baseline; gap: 0.5rem; }
-    .wall-count-num { font-family: var(--font-display); font-size: clamp(28px, 3.4vw, 44px); font-weight: 400; letter-spacing: -0.025em; color: var(--white); font-variant-numeric: tabular-nums; }
-    .wall-count-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
+    /* ===== GUEST LIST — CASA CORONA ===== */
+    .cc-section { position: relative; width: 100vw; max-width: 100vw; left: 50%; transform: translateX(-50vw); margin: 0; border-top: none;
+      padding: 6.5rem 2.5rem 7rem; background: var(--cc-navy); overflow: hidden; }
+    /* Textura de papel arrugado sobre el navy */
+    .cc-section::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: url('https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783796492/textura-de-papel-blanco-arrugado_vfny1l.webp') center / cover;
+      opacity: 0.4; mix-blend-mode: overlay; }
+    .cc-section::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.35), transparent 18%, transparent 84%, rgba(0,0,0,0.3)); }
+    .cc-inner { position: relative; max-width: 1180px; margin: 0 auto; z-index: 2; }
+    .cc-sun { position: absolute; top: -70px; right: -50px; width: 280px; height: auto; z-index: 1; opacity: 0.95;
+      animation: sunSpin 90s linear infinite; }
+    @keyframes sunSpin { to { transform: rotate(360deg); } }
+    .cc-wave { position: absolute; bottom: -34px; left: -50px; width: 360px; height: auto; z-index: 1; opacity: 0.1; }
+    .cc-logo { display: block; height: clamp(130px, 20vw, 190px); width: auto; filter: drop-shadow(0 6px 24px rgba(0,0,0,0.25)); }
+    .cc-vida { display: block; width: min(380px, 68vw); height: auto; margin: 1.8rem 0 1.2rem; filter: drop-shadow(0 8px 30px rgba(0,0,0,0.3)); }
+    .cc-sub { font-family: var(--font-cc-head); font-weight: 600; font-size: clamp(13px, 1.5vw, 17px); letter-spacing: 0.26em; text-transform: uppercase; color: var(--white); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .cc-sub .hm-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cc-orange); box-shadow: 0 0 8px var(--cc-orange); }
+    .cc-sub .hm-tbd { color: var(--cc-sand); }
+    .cc-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 4rem; margin-top: 3.5rem; align-items: start; }
+    .cc-live { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cc-sky); }
+    .cc-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cc-sand); box-shadow: 0 0 10px var(--cc-sand); animation: livePulse 1.5s ease-in-out infinite; }
+    @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .cc-counter { display: flex; align-items: baseline; gap: 0.8rem; margin-top: 0.8rem; }
+    .cc-count-num { font-family: var(--font-cc-head); font-weight: 600; font-size: clamp(64px, 8.5vw, 118px); line-height: 1; color: var(--white); font-variant-numeric: tabular-nums; letter-spacing: 0.01em; text-shadow: 0 8px 34px rgba(0,0,0,0.3); }
+    .cc-count-num.tick { animation: countTick 0.45s cubic-bezier(0.16,1,0.3,1); }
+    @keyframes countTick { 0% { transform: scale(1); color: var(--white); } 30% { transform: scale(1.045); color: var(--cc-sand); } 100% { transform: scale(1); color: var(--white); } }
+    .cc-count-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cc-sky); margin-top: 0.9rem; }
+    .cc-bar { height: 6px; border-radius: 99px; background: rgba(255,255,255,0.14); margin-top: 1.6rem; max-width: 420px; overflow: hidden; }
+    .cc-bar-fill { height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, var(--cc-orange), var(--cc-sand)); box-shadow: 0 0 16px rgba(247,146,70,0.5); transition: width 1.2s cubic-bezier(0.16,1,0.3,1); }
+    .cc-bar-note { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 0.7rem; line-height: 1.8; max-width: 420px; }
+    .cc-btn { position: relative; display: inline-flex; align-items: center; gap: 10px; margin-top: 2.4rem;
+      font-family: var(--font-cc-head); font-weight: 600; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--cc-navy-deep); background: var(--cc-orange); border: none; cursor: pointer;
+      padding: 18px 36px; border-radius: 3px; box-shadow: 0 14px 40px rgba(0,0,0,0.3);
+      transition: transform 0.25s, background 0.25s, box-shadow 0.25s; }
+    .cc-btn:hover { transform: translateY(-2px); background: var(--cc-sand); box-shadow: 0 18px 48px rgba(0,0,0,0.35); }
+    .cc-wall-label { font-family: var(--font-cc-head); font-weight: 600; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--cc-sky); margin-bottom: 1.2rem; }
     .wall-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem; }
     .wall-chip {
       display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px; border: 0.5px solid var(--line); border-radius: 3px;
-      background: rgba(255,255,255,0.015);
+      padding: 10px 14px; border: 0.5px solid rgba(185,221,243,0.28); border-radius: 3px;
+      background: rgba(255,255,255,0.05);
       animation: chipIn 0.5s cubic-bezier(0.16,1,0.3,1);
     }
     @keyframes chipIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .wall-avatar { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #333, #555); filter: blur(2px); }
-    .wall-handle { font-family: var(--font-mono); font-size: 11px; color: var(--faint); letter-spacing: 0.02em; filter: blur(3px); user-select: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .wall-live { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
-    .wall-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 8px #4ade80; animation: livePulse 1.5s ease-in-out infinite; }
-    @keyframes livePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .wall-avatar { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--cc-blue), var(--cc-orange)); filter: blur(2px); opacity: 0.8; }
+    .wall-handle { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.72); letter-spacing: 0.02em; filter: blur(3px); user-select: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ===== GALLERY ===== */
     .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 240px 180px; gap: 5px; margin-top: 1rem; }
@@ -372,6 +345,27 @@
     .modal-submit:hover { opacity: 0.85; }
     .modal-note { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.04em; color: var(--dim); line-height: 1.7; margin-top: 1.3rem; border-left: 0.5px solid var(--line); padding-left: 1rem; }
 
+    /* ===== MODAL — CASA CORONA ===== */
+    .modal.cc { border: none; color: var(--cc-navy-deep); box-shadow: 0 30px 90px rgba(0,0,0,0.55); overflow: hidden auto; max-height: 92vh;
+      background: var(--cc-paper) url('https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783796492/textura-de-papel-blanco-arrugado_vfny1l.webp') center / cover; }
+    .modal-cc-head { margin: -2.8rem -3rem 1.8rem; padding: 1.8rem 3rem 1.6rem; background: var(--cc-navy); display: flex; justify-content: center;
+      position: relative; }
+    .modal-cc-head::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: url('https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783796492/textura-de-papel-blanco-arrugado_vfny1l.webp') center / cover;
+      opacity: 0.28; mix-blend-mode: soft-light; }
+    .modal-cc-head img { height: 110px; width: auto; display: block; position: relative; }
+    .modal.cc .label { font-family: var(--font-cc-head); font-weight: 600; color: var(--cc-orange); letter-spacing: 0.26em; }
+    .modal.cc .modal-title { font-family: var(--font-cc-head); font-weight: 600; color: var(--cc-navy); font-size: 24px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .modal.cc .modal-close { color: rgba(10,58,93,0.55); }
+    .modal.cc .modal-close:hover { color: var(--cc-navy-deep); }
+    .modal.cc .modal-field label { font-family: var(--font-cc-head); font-weight: 600; color: rgba(10,58,93,0.6); }
+    .modal.cc .modal-field input { color: var(--cc-navy-deep); border-bottom-color: rgba(10,58,93,0.3); }
+    .modal.cc .modal-field input:focus { border-bottom-color: var(--cc-orange); }
+    .modal.cc .modal-field input::placeholder { color: rgba(10,58,93,0.35); }
+    .modal.cc .modal-submit { font-family: var(--font-cc-head); font-weight: 600; background: var(--cc-orange); color: var(--white); letter-spacing: 0.2em; }
+    .modal.cc .modal-submit:hover { opacity: 1; background: var(--cc-navy); }
+    .modal.cc .modal-note { color: rgba(10,58,93,0.6); border-left-color: rgba(10,58,93,0.3); }
+
 
     @property --glow-angle {
       syntax: '<angle>'; initial-value: 0deg; inherits: false;
@@ -407,7 +401,11 @@
       nav { padding: 1.2rem 1.3rem; }
       .nav-links, .nav-guest { display: none; }
       section { padding: 4.5rem 1.3rem; }
-      .logo-stack { width: 78vw; }
+      .hero-mark { width: 66vw; }
+      .cc-section { padding: 4.5rem 1.3rem 5rem; }
+      .cc-grid { grid-template-columns: 1fr; gap: 2.6rem; }
+      .cc-sun { width: 170px; top: -46px; right: -44px; }
+      .cc-wave { width: 240px; }
       .event-head { grid-template-columns: 1fr auto; gap: 1rem; padding: 1.4rem 1.3rem; }
       .event-num, .event-tag { display: none; }
       .gallery-strip { grid-template-columns: repeat(2, 1fr); }
@@ -453,9 +451,9 @@
       <svg class="nav-brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 851.93 204.55" aria-label="Incognito">
         <path d="M12.15,44.78c1.35,1.35,2.93,2.03,4.73,2.03,2.55,0,6.22-1.72,11.03-5.18,2.1-1.5,4.28-3,6.53-4.5,2.25-1.5,3.97-2.62,5.18-3.38,2.7-1.65,5.06-4.42,7.09-8.33,2.03-3.9,3.04-8.02,3.04-12.38s-1.2-7.61-3.6-9.79c-2.4-2.17-5.33-3.26-8.78-3.26s-6.86,1.01-10.69,3.04c-3.83,2.03-7.31,5.14-10.46,9.34-1.95,2.55-3.53,5.4-4.73,8.55-1.2,3.15-1.99,6.23-2.36,9.23-.38,3-.3,5.82.23,8.44.52,2.63,1.46,4.69,2.81,6.19Z"/><path d="M53.78,124.89c-2.4-3.75-3.71-9.26-3.94-16.54-.23-7.27-.34-15.26-.34-23.97,0-7.95.04-14.25.11-18.9.07-4.65.07-8.25,0-10.8-.08-2.55-.22-4.35-.45-5.4-.22-1.05-.71-1.95-1.46-2.7-1.5-1.5-3.23-2.25-5.18-2.25-2.7,0-5.74,1.5-9.11,4.5-3.38,3-7.09,7.35-11.14,13.05-3,4.2-5.63,7.39-7.88,9.56-2.25,2.18-4.73,4.02-7.43,5.51-3,1.65-4.92,2.93-5.74,3.83-.83.9-1.24,2.25-1.24,4.05,0,1.65.23,2.78.68,3.38.45.6,1.5.98,3.15,1.12,6.45.75,9.68,6.15,9.68,16.2,0,4.35-.75,8.14-2.25,11.36-1.5,3.23-3.38,6.49-5.63,9.79-2.25,3.15-3.75,5.78-4.5,7.88-.75,2.1-.08,4.2,2.02,6.3.45.45,1.16.75,2.14.9.97.15,2.44.3,4.39.45,1.95.15,4.5.22,7.65.22h29.7c4.95,0,8.17-.3,9.68-.9,1.95-.75,2.66-2.73,2.14-5.96-.53-3.22-2.22-6.79-5.06-10.69Z"/><path d="M190.71,127.25c-.98-1.72-1.99-3.9-3.04-6.53-1.05-2.62-1.95-6.49-2.7-11.59-2.85-20.7-7.62-35.74-14.29-45.12-6.68-9.37-14.96-14.06-24.87-14.06-4.35,0-8.36.75-12.04,2.25-3.68,1.5-7.62,4.43-11.81,8.78l-6.75,7.2v-8.55c0-.9-.04-2.21-.11-3.94-.08-1.72-.38-3.45-.9-5.18-.53-1.72-1.39-3.22-2.59-4.5-1.2-1.27-2.93-1.91-5.18-1.91-3,0-6,1.35-9,4.05-3,2.7-6.45,6.75-10.35,12.15-3.15,4.35-5.82,7.62-7.99,9.79-2.18,2.18-4.61,3.94-7.31,5.29-3,1.65-4.95,2.96-5.85,3.94-.9.98-1.35,2.29-1.35,3.94,0,1.8.23,2.96.68,3.49.45.53,1.5.94,3.15,1.24,6.45.6,9.68,6.23,9.68,16.88,0,4.8-.56,8.85-1.69,12.15-1.13,3.3-3.12,6.53-5.96,9.68-4.5,4.8-5.7,9.08-3.6,12.83.45.75.9,1.35,1.35,1.8.45.45,1.58.75,3.38.9,1.8.15,4.5.22,8.1.22h15.3c17.85,0,27.08-.52,27.68-1.58,1.05-1.65,1.27-3.83.67-6.53-.6-2.7-2.1-5.7-4.5-9-1.5-2.1-2.7-4.01-3.6-5.74-.9-1.72-1.54-3.56-1.91-5.51-.38-1.95-.49-4.09-.34-6.41.15-2.32.45-4.99.9-7.99,1.8-12.3,6.45-22.43,13.95-30.38,3.6-3.75,6.75-5.63,9.45-5.63,2.1,0,3.86.98,5.29,2.93,1.42,1.95,2.51,4.47,3.26,7.54.75,3.08,1.27,6.41,1.58,10.01.3,3.6.3,7.05,0,10.35-.15,3.9-.38,7.2-.68,9.9-.3,2.7-.75,5.29-1.35,7.76-.6,2.48-1.35,4.99-2.25,7.54-.9,2.55-2.18,5.63-3.83,9.23-1.35,3-2.25,5.44-2.7,7.31-.45,1.88.19,3.26,1.91,4.16,1.72.9,4.73,1.5,9,1.8,4.28.3,10.46.37,18.56.22,8.7,0,15.64-.11,20.81-.34,5.18-.22,7.76-1.54,7.76-3.94,0-2.7-.41-4.76-1.24-6.19-.83-1.42-1.73-3-2.7-4.73Z"/><path d="M283.53,97.89c-1.05-.3-2.25.19-3.6,1.46-1.35,1.28-3.08,3.04-5.18,5.29-3.45,3.6-7.43,6.38-11.93,8.33-4.5,1.95-8.93,2.33-13.28,1.13-3.75-1.05-7.2-2.89-10.35-5.51-3.15-2.62-5.82-5.74-7.99-9.34-2.18-3.6-3.86-7.46-5.06-11.59-1.2-4.12-1.8-8.29-1.8-12.49,0-2.55.49-5.1,1.46-7.65.97-2.55,2.81-3.83,5.51-3.83,2.55,0,4.87.56,6.98,1.69,2.1,1.13,3.97,2.51,5.63,4.16,1.8,2.1,3.22,4.69,4.28,7.76,1.05,3.08,1.57,6.49,1.57,10.24s.49,6.68,1.46,8.33c.97,1.65,2.74,2.48,5.29,2.48,1.8,0,3.49-.82,5.06-2.48,1.58-1.65,3.41-4.5,5.51-8.55.75-1.65,1.91-3.49,3.49-5.51,1.58-2.03,3.11-3.64,4.61-4.84,1.95-1.65,3.38-3.11,4.28-4.39.9-1.27,1.24-2.48,1.01-3.6-.23-1.13-.98-2.32-2.25-3.6-1.28-1.27-3.19-2.74-5.74-4.39-3.6-2.55-6.94-4.54-10.01-5.96-3.08-1.42-6.11-2.51-9.11-3.26h-.22c-4.35-1.2-8.55-1.8-12.6-1.8-6.3,0-12.26,1.16-17.89,3.49-5.63,2.33-10.58,5.51-14.85,9.56-4.28,4.05-7.69,8.85-10.24,14.4-2.55,5.55-3.83,11.48-3.83,17.78,0,7.05,1.24,13.47,3.71,19.24,2.48,5.78,5.81,10.69,10.01,14.74,4.2,4.05,9.11,7.2,14.74,9.45,5.63,2.25,11.59,3.38,17.89,3.38,5.85,0,11.4-.97,16.65-2.93,5.25-1.95,9.9-4.69,13.95-8.21,4.05-3.52,7.39-7.73,10.01-12.6,2.62-4.87,4.39-10.24,5.29-16.09.15-1.05-.08-1.99-.68-2.81-.6-.82-1.2-1.31-1.8-1.46Z"/><path d="M371.07,64.46c-4.23-4.42-9-7.84-14.31-10.25-5.32-2.41-11.03-3.75-17.13-4.02-6.11-.27-12.12.7-18.01,2.92-5.9,2.22-11.06,5.44-15.48,9.66-4.42,4.22-7.84,8.99-10.25,14.31-2.41,5.31-3.75,11.03-4.02,17.13-.27,6.11.71,12.11,2.92,18.01,2.22,5.9,5.44,11.06,9.66,15.48,4.22,4.42,8.99,7.84,14.31,10.25,5.31,2.41,11.02,3.75,17.13,4.02,6.11.27,12.12-.71,18.01-2.92,5.9-2.22,11.06-5.44,15.48-9.66,4.42-4.23,7.84-8.99,10.25-14.31,2.41-5.31,3.75-11.02,4.02-17.13.27-6.11-.71-12.11-2.92-18.01-2.22-5.9-5.44-11.06-9.66-15.48ZM360.07,88.3c-3.05,5.55-7.39,11.47-13.04,17.76-3,3.53-6.03,6.67-9.08,9.42-3.05,2.75-5.95,4.96-8.69,6.63-2.74,1.67-5.16,2.7-7.25,3.09-2.1.39-3.79-.06-5.07-1.34-.55-.6-1-1.15-1.34-1.66-.35-.51-.66-1.12-.92-1.82-1.53-4.07-.77-8.97,2.3-14.68,3.06-5.72,7.22-11.81,12.49-18.27,2.68-3.09,5.63-6.24,8.83-9.45,3.2-3.21,6.33-5.74,9.4-7.62,3.06-1.87,5.86-2.73,8.41-2.56,2.54.16,4.48,2,5.8,5.51,1.83,4.44,1.22,9.44-1.82,14.99Z"/><path d="M480.87,63.01c-.45-.6-.86-1.24-1.24-1.91-.38-.68-.64-1.46-.79-2.36-.3-2.1-1.16-3.38-2.59-3.83-1.43-.45-3.12-.68-5.06-.68-3,0-5.96.9-8.89,2.7-2.74,1.69-5.17,3.44-7.32,5.26-1.46-1.05-2.97-2.05-4.6-2.93-4.99-2.7-10.22-4.3-15.7-4.81-5.48-.51-10.74-.02-15.77,1.48-5.04,1.5-9.71,3.96-14.01,7.38-4.31,3.42-7.81,7.63-10.51,12.62-2.7,4.99-4.3,10.22-4.81,15.7-.51,5.48-.02,10.74,1.48,15.77.89,3,2.17,5.85,3.74,8.59.38,1.11.61,2.17.67,3.17.07,1.43-.04,2.59-.34,3.49-1.05,3.15-1.65,5.85-1.8,8.1-.15,2.25,0,4.24.45,5.96.45,1.73,1.09,3.34,1.91,4.84.82,1.5,1.69,3,2.59,4.5,1.65,2.55,4.12,5.06,7.43,7.54,3.3,2.48,8.1,5.44,14.4,8.89,8.1,4.5,12.15,10.13,12.15,16.88s-2.33,9.9-6.98,9.9c-3,0-5.44-.53-7.31-1.58-1.88-1.05-3.3-2.44-4.28-4.16-.98-1.73-1.65-3.6-2.02-5.63-.38-2.03-.56-3.94-.56-5.74,0-2.85-.53-5.21-1.58-7.09-1.05-1.88-2.33-2.81-3.83-2.81-1.35,0-2.7.34-4.05,1.01-1.35.68-2.48,2.44-3.38,5.29-.9,2.55-1.76,4.12-2.59,4.73-.83.6-2.06,1.35-3.71,2.25-2.1,1.2-3,2.74-2.7,4.61.3,1.87.82,3.71,1.58,5.51,1.5,4.05,3.67,7.31,6.53,9.79,2.85,2.47,5.96,4.39,9.34,5.74,3.38,1.35,6.75,2.25,10.13,2.7,3.38.45,6.41.68,9.11.68,14.4,0,24.98-2.7,31.73-8.1,6.75-5.4,10.13-13.2,10.13-23.4.15-7.2-2.06-13.24-6.64-18.12-4.58-4.88-11.67-8.14-21.26-9.79-4.95-.9-9.11-1.65-12.49-2.25-3.38-.6-6.19-1.2-8.44-1.8-2.25-.6-4.09-1.31-5.51-2.14-1.43-.82-2.74-1.84-3.94-3.04-1.2-1.2-1.91-2.17-2.14-2.93-.22-.75-.19-1.72.11-2.92,3.45,2.25,7.12,4.02,11.03,5.29,3.9,1.28,8.02,1.91,12.38,1.91,5.7,0,11.06-1.09,16.09-3.26,5.02-2.17,9.37-5.1,13.05-8.78,3.67-3.67,6.6-8.02,8.78-13.05,2.17-5.02,3.26-10.39,3.26-16.09,0-1.23-.07-2.43-.17-3.63-.21-2.96-.7-5.85-1.54-8.67-1.2-4.04-3.05-7.83-5.5-11.4l1.8-2.4c1.35-1.8,2.62-2.7,3.83-2.7.75,0,1.5.22,2.25.68.75.45,1.5,1.05,2.25,1.8,1.95,1.5,3.6,2.25,4.95,2.25,1.65,0,2.47-1.2,2.47-3.6,0-1.35-.15-2.44-.45-3.26-.3-.82-.67-1.54-1.13-2.14ZM419.98,94.61c0-3.69.14-7.56.42-11.63.28-4.07.91-7.64,1.89-10.72.97-3.08,2.38-5.31,4.2-6.7,1.82-1.39,4.22-1.28,7.19.32,3.86,1.94,6.4,5.69,7.61,11.26,1.21,5.57,1.75,12.15,1.62,19.76.05,4.17-.16,8.09-.61,11.76-.45,3.67-1.12,6.88-1.99,9.63-.88,2.75-1.91,4.88-3.11,6.38-1.2,1.5-2.61,2.2-4.24,2.08-.73-.08-1.36-.19-1.89-.33-.54-.14-1.11-.37-1.7-.69-3.44-1.86-5.81-5.64-7.11-11.33-1.3-5.69-2.06-12.29-2.3-19.78Z"/><path d="M609.7,127.25c-.98-1.72-1.99-3.9-3.04-6.53-1.05-2.62-1.95-6.49-2.7-11.59-2.85-20.7-7.62-35.74-14.29-45.12-6.68-9.37-14.96-14.06-24.87-14.06-4.35,0-8.36.75-12.04,2.25-3.68,1.5-7.62,4.43-11.81,8.78l-6.75,7.2v-8.55c0-.9-.04-2.21-.11-3.94-.08-1.72-.38-3.45-.9-5.18-.53-1.72-1.39-3.22-2.59-4.5-1.2-1.27-2.93-1.91-5.18-1.91-3,0-6,1.35-9,4.05-3,2.7-6.45,6.75-10.35,12.15-3.15,4.35-5.82,7.62-7.99,9.79-2.18,2.18-4.61,3.94-7.31,5.29-3,1.65-4.95,2.96-5.85,3.94-.9.98-1.35,2.29-1.35,3.94,0,1.8.23,2.96.68,3.49.45.53,1.5.94,3.15,1.24,6.45.6,9.68,6.23,9.68,16.88,0,4.8-.56,8.85-1.69,12.15-1.13,3.3-3.12,6.53-5.96,9.68-4.5,4.8-5.7,9.08-3.6,12.83.45.75.9,1.35,1.35,1.8.45.45,1.58.75,3.38.9,1.8.15,4.5.22,8.1.22h15.3c17.85,0,27.08-.52,27.68-1.58,1.05-1.65,1.27-3.83.67-6.53-.6-2.7-2.1-5.7-4.5-9-1.5-2.1-2.7-4.01-3.6-5.74-.9-1.72-1.54-3.56-1.91-5.51-.38-1.95-.49-4.09-.34-6.41.15-2.32.45-4.99.9-7.99,1.8-12.3,6.45-22.43,13.95-30.38,3.6-3.75,6.75-5.63,9.45-5.63,2.1,0,3.86.98,5.29,2.93,1.42,1.95,2.51,4.47,3.26,7.54.75,3.08,1.27,6.41,1.58,10.01.3,3.6.3,7.05,0,10.35-.15,3.9-.38,7.2-.68,9.9-.3,2.7-.75,5.29-1.35,7.76-.6,2.48-1.35,4.99-2.25,7.54-.9,2.55-2.18,5.63-3.83,9.23-1.35,3-2.25,5.44-2.7,7.31-.45,1.88.19,3.26,1.91,4.16,1.72.9,4.73,1.5,9,1.8,4.28.3,10.46.37,18.57.22,8.7,0,15.64-.11,20.82-.34,5.18-.22,7.76-1.54,7.76-3.94,0-2.7-.41-4.76-1.24-6.19-.83-1.42-1.73-3-2.7-4.73Z"/><path d="M631.41,44.78c1.35,1.35,2.93,2.03,4.73,2.03,2.55,0,6.22-1.72,11.03-5.18,2.1-1.5,4.28-3,6.53-4.5,2.25-1.5,3.97-2.62,5.18-3.38,2.7-1.65,5.06-4.42,7.09-8.33,2.02-3.9,3.04-8.02,3.04-12.38s-1.2-7.61-3.6-9.79c-2.4-2.17-5.33-3.26-8.78-3.26s-6.86,1.01-10.69,3.04c-3.83,2.03-7.31,5.14-10.46,9.34-1.95,2.55-3.53,5.4-4.73,8.55-1.2,3.15-1.99,6.23-2.36,9.23-.38,3-.3,5.82.23,8.44.52,2.63,1.46,4.69,2.81,6.19Z"/><path d="M673.04,124.89c-2.4-3.75-3.71-9.26-3.94-16.54-.22-7.27-.34-15.26-.34-23.97,0-7.95.04-14.25.11-18.9.07-4.65.07-8.25,0-10.8-.08-2.55-.22-4.35-.45-5.4-.22-1.05-.71-1.95-1.46-2.7-1.5-1.5-3.23-2.25-5.18-2.25-2.7,0-5.74,1.5-9.11,4.5-3.38,3-7.09,7.35-11.14,13.05-3,4.2-5.63,7.39-7.88,9.56-2.25,2.18-4.73,4.02-7.43,5.51-3,1.65-4.92,2.93-5.74,3.83-.83.9-1.24,2.25-1.24,4.05,0,1.65.23,2.78.68,3.38.45.6,1.5.98,3.15,1.12,6.45.75,9.68,6.15,9.68,16.2,0,4.35-.75,8.14-2.25,11.36-1.5,3.23-3.38,6.49-5.63,9.79-2.25,3.15-3.75,5.78-4.5,7.88-.75,2.1-.08,4.2,2.03,6.3.45.45,1.16.75,2.14.9.97.15,2.44.3,4.39.45,1.95.15,4.5.22,7.65.22h29.7c4.95,0,8.18-.3,9.68-.9,1.95-.75,2.66-2.73,2.14-5.96-.53-3.22-2.22-6.79-5.06-10.69Z"/><path d="M757.65,118.14c-.75-.45-1.46-.34-2.14.34-.67.67-1.84,1.84-3.49,3.49-1.65,1.8-3.71,3.26-6.19,4.39-2.47,1.12-4.91,1.69-7.31,1.69-2.55,0-4.8-.71-6.75-2.14-1.95-1.42-3.3-3.86-4.05-7.31-.6-2.55-.94-5.93-1.01-10.13-.08-4.2-.11-9.75-.11-16.65v-26.33h13.05c4.5,0,8.06-.04,10.69-.11,2.62-.07,4.54-.26,5.74-.56,1.2-.3,1.95-.82,2.25-1.58.3-.75.45-1.8.45-3.15s-.15-2.4-.45-3.15c-.3-.75-1.05-1.27-2.25-1.58-1.2-.3-3-.49-5.4-.56-2.4-.07-5.78-.11-10.13-.11h-13.5l.22-21.15v-17.1c0-1.8-.04-3.15-.11-4.05-.08-.9-1.31-1.42-3.71-1.58-1.8,0-3.49.15-5.06.45-1.57.3-3.19.98-4.84,2.02-1.65,1.05-3.41,2.55-5.29,4.5-1.88,1.95-3.94,4.5-6.19,7.65-1.5,2.25-2.92,4.16-4.27,5.74-1.35,1.58-2.66,3-3.94,4.28-1.28,1.28-2.59,2.4-3.94,3.38-1.35.98-2.85,1.99-4.5,3.04-5.1,3.15-8.55,5.93-10.35,8.33-1.8,2.4-2.55,5.18-2.25,8.33.3,2.4.75,4.16,1.35,5.29.6,1.13,2.63,1.69,6.07,1.69,2.7,0,4.76.04,6.19.11,1.42.08,2.47.3,3.15.67.68.38,1.09.98,1.24,1.8.15.83.22,1.99.22,3.49v22.95c0,7.35.07,13.43.22,18.23.15,4.8.52,8.78,1.13,11.93.6,3.15,1.39,5.7,2.36,7.65.97,1.95,2.21,3.75,3.71,5.4,3.45,3.45,7.54,6.04,12.26,7.76,4.73,1.72,9.64,2.51,14.74,2.36,7.2.15,13.5-1.54,18.9-5.06,5.4-3.52,9.6-8.74,12.6-15.64,2.4-4.95,2.62-7.95.67-9Z"/><path d="M848.33,78.2c-2.4-5.63-5.66-10.5-9.79-14.63-4.13-4.12-9-7.39-14.63-9.79-5.63-2.4-11.59-3.6-17.89-3.6s-12.26,1.2-17.89,3.6c-5.63,2.4-10.5,5.66-14.63,9.79-4.13,4.13-7.39,9-9.79,14.63-2.4,5.63-3.6,11.59-3.6,17.89s1.2,12.26,3.6,17.89c2.4,5.63,5.66,10.5,9.79,14.63,4.12,4.13,9,7.39,14.63,9.79,5.63,2.4,11.59,3.6,17.89,3.6s12.26-1.2,17.89-3.6c5.63-2.4,10.5-5.66,14.63-9.79,4.13-4.12,7.39-9,9.79-14.63,2.4-5.63,3.6-11.59,3.6-17.89s-1.2-12.26-3.6-17.89ZM827.74,121.06c-.38,2.1-1.39,3.53-3.04,4.28-.75.3-1.43.53-2.03.67-.6.15-1.28.22-2.02.22-4.35,0-8.66-2.44-12.94-7.31-4.28-4.87-8.52-10.91-12.71-18.11-1.95-3.6-3.86-7.46-5.74-11.59-1.88-4.12-3.15-7.95-3.83-11.48-.67-3.52-.49-6.45.56-8.78,1.05-2.32,3.45-3.49,7.2-3.49,4.8-.15,9.26,2.18,13.39,6.98,4.12,4.8,8.14,10.95,12.04,18.45,2.25,4.05,4.12,7.99,5.63,11.81,1.5,3.83,2.55,7.31,3.15,10.46.6,3.15.71,5.78.34,7.88Z"/>
       </svg>
-      <span class="nav-brand-text">Day in the Sun</span>
     </a>
     <ul class="nav-links">
+      <li><a href="#guestlist">Guest List</a></li>
       <li><a href="#eventos">Eventos</a></li>
       <li><a href="#galeria">Galería</a></li>
       <li><a href="#contacto">Contacto</a></li>
@@ -466,32 +464,52 @@
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- HERO — Casa Corona × Incognito -->
   <section class="hero" id="stage">
-    <!-- Glitch image background -->
     <div class="hero-bg">
-      <img class="hero-bg-layer base" src="https://res.cloudinary.com/dheiidsny/image/upload/v1780844342/IncognitoNeptunos167_hs4jcs.jpg" alt="Incognito · Day in the Sun" crossorigin="anonymous">
-      <img class="hero-bg-layer red" src="https://res.cloudinary.com/dheiidsny/image/upload/v1780844342/IncognitoNeptunos167_hs4jcs.jpg" alt="" aria-hidden="true" crossorigin="anonymous">
-      <img class="hero-bg-layer cyan" src="https://res.cloudinary.com/dheiidsny/image/upload/v1780844342/IncognitoNeptunos167_hs4jcs.jpg" alt="" aria-hidden="true" crossorigin="anonymous">
-      <div class="hero-scanlines"></div>
+      <img class="hero-bg-layer" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783796140/palmas_en_negro1_2_ofkyxj.webp" alt="Casa Corona × Incognito">
       <div class="hero-grain"></div>
       <div class="hero-vignette"></div>
       <div class="hero-darken"></div>
     </div>
 
-    <canvas id="sparkles"></canvas>
-    <p class="hero-tag"><span>Curated or nothing.</span></p>
-    <div class="logo-stack" id="logoStack">
-      <img class="logo-base" id="logoBase" src="https://res.cloudinary.com/dheiidsny/image/upload/v1779416674/cdshf_20260522_022113_6e0d803e-cd0a-4037-857f-c671daec294a_cv5myj.webp" alt="Incognito" crossorigin="anonymous">
-      <img class="logo-env" id="logoEnv" src="https://res.cloudinary.com/dheiidsny/image/upload/v1780844342/IncognitoNeptunos167_hs4jcs.jpg" alt="" aria-hidden="true" crossorigin="anonymous" style="-webkit-mask-image:url('https://res.cloudinary.com/dheiidsny/image/upload/v1779416674/cdshf_20260522_022113_6e0d803e-cd0a-4037-857f-c671daec294a_cv5myj.webp');mask-image:url('https://res.cloudinary.com/dheiidsny/image/upload/v1779416674/cdshf_20260522_022113_6e0d803e-cd0a-4037-857f-c671daec294a_cv5myj.webp');-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;object-fit:cover;object-position:center 72%;">
-      <img class="logo-glint" id="logoGlint" src="https://res.cloudinary.com/dheiidsny/image/upload/v1779416674/cdshf_20260522_022113_6e0d803e-cd0a-4037-857f-c671daec294a_cv5myj.webp" alt="" aria-hidden="true" crossorigin="anonymous">
-      <img class="logo-prism" id="logoPrism" src="https://res.cloudinary.com/dheiidsny/image/upload/v1779416674/cdshf_20260522_022113_6e0d803e-cd0a-4037-857f-c671daec294a_cv5myj.webp" alt="" aria-hidden="true" crossorigin="anonymous">
-      <canvas id="fx"></canvas>
-    </div>
-    <a class="hero-gallery-btn" href="https://incognito10.pixieset.com/casacapri/" target="_blank" rel="noopener">
-      <span class="hgb-arrow">→</span><span class="hgb-text">Ver Galería · Casa Capri</span>
-    </a>
+    <img class="hero-mark" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783797015/el_mar_is_calling_yrssgd.png" alt="El Mar Is Calling — Casa Corona × Incognito">
+    <img class="hero-cc-logo" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito">
+    <!-- Fecha real: 02 · Agosto · 2026 — mantener oculta hasta el anuncio oficial -->
+    <button class="hero-cta" onclick="openModal()">Join the Guest List ↗</button>
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- GUEST LIST — CASA CORONA -->
+  <section class="cc-section" id="guestlist">
+    <svg class="cc-sun" viewBox="0 0 81.09 84.19" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path fill="#f79246" d="M56.46,3.39c.14-.42-.25-1.12-.7-.96l-.63.41c-.28.19-.48.38-.59.54-.29.34-.3.32-.53.55l-1.39,1.38c-.88.87-1.38,1.95-1.88,3.07-1.14,2.6-1.4,5.55-2.18,7.02l-.86,1.65-.7.97c-.16.22-.25.35-.49.46-.49.23-.9.17-1.26-.2-.25-.26-.29-.44-.37-.8-.07-.33-.25-.63-.1-1.05-.21.05-.14.18-.17.31-.14-.17.03-.53-.08-.74-.23-.47-.3-.9-.39-1.4l-.16-.85-.79-3.85-.12-.63-.47-2.4-.36-1.97-.83-4-.02-.1c-.09-.6-.74-.98-1.29-.72-.02.01-.05.02-.07.04-.32.18-.37,1.13-.52,1.91l-.38,1.95-.4,2.2-.17.95-.18,1.11c-.12.73-.32,1.39-.38,2.13l-.22.7c.04.72-.31,1.29-.43,1.95l-.19,1.11c-.05.28-.06.48-.21.76l-.03.89c-.25.49-.08.93-.42,1.56-.15-.11-.11-.21-.12-.28-.02-.1-.16-.17-.26-.15-.29.07-.27-.14-.35-.23-.31-.36-.5-.72-.77-1.11l-.53-.76-.93-1.12c-.18-.21-.41-.5-.64-.64-.25-.15-.58-.59-1.22-1.04-1.81-1.27-3.44-2.8-4.39-4.81l-.27-.57c-.18-.39-.37-.83-.5-1.26l-.34-1.06c-.13-.4-.2-.82-.63-1.08-.24-.15-.73-.12-1,.02-.13.06-.22.29-.24.43-.28,1.65-.38,3.34-.09,5.01l.52,1.99.77,1.83,1.69,3.15c.55,1.03,1.66,4.21,1.63,5.1-.02.71-.52,1.45-1.33,1.37-.33-.03-1.55-1-2.3-1.5l-1.13-.74-3.7-2.61-1.81-1.27-2.37-1.63-1.01-.66-1.84-1.26c-.26-.18-.62-.64-1-.53-.22.06-.4.23-.56.43-.25.29-.27.71-.06,1.03l1.85,2.86c.19.29.39.59.6.79.05.05.17.14.19.22.07.31.25.5.42.76l1.45,2.28c.31.48.62.91.93,1.4l1.27,1.99,1.26,1.9,1.21,1.88c.07.11.05.43-.09.44-.67.03-1.25-.32-1.88-.41l-1.8-.26c-.72-.11-1.52-.11-2.25-.01l-1.42.18c-.47.06-.9.11-1.41.15l-1.95.15-1.83-.27c-.54-.08-1.02-.2-1.53-.43l-1.42-.63-1.32-.72c-.14-.07-.22-.17-.36-.17-.21,0-1.09.78-.91,1.15.14.29.27.61.47.86l.95,1.17c.58.72,1.16.98,1.63,1.62.19.08.39.14.59.27l1.01.65,1.1.51c.43.2.78.46,1.26.58.43.11.87.35,1.3.42,2.22.35,4.51,1.25,6.23,2.64.41.33.68.66.68,1.21,0,.11.12.29.04.44-.21.43-.6.7-1.07.8l-2.61.57-2.82.61-1.1.3-1.5.26-2.82.61-1,.21c-.27.06-.52.09-.78.14l-2.29.47-1.91.43c-.32.36-.03,1.34.46,1.52.37.13.74.14,1.11.22l.94.19c.95.2,1.93.4,2.87.58l.86.16.85.17c.3.06.61.19.89.22.87.08,1.5.31,1.79.34.66.07,1.22.28,1.88.39l1.03.17c.27.04.55.16.81.2l.97.16.96.22,1.53.28c.16.03.22.36.11.43l-.49.28c-1.16.5-2.12,1.23-3.05,2.07-.41.37-.78.68-1.11,1.13l-1.47,2.06c-1.45,2.03-3.72,3.77-6.09,4.61l-1.22.43c-.53.19-.74.83-.41,1.29.12.17.25.32.39.46l.93.17,3.25.04c.36,0,2.44-.59,3.09-.93l2.27-1.19c1.12-.59,2.14-1.23,3.35-1.65l3.07-1.07c.78-.27,1.44.29,1.67.94.11.31.14.37-.05.65l-2.15,3.33-.89,1.35-.4.63-3.44,5.48-1.7,2.57-1.07,1.65c-.11.16-.08.59,0,.76.07.16.28.33.37.42.34.34.64.12.93-.08l3.54-2.5,1.86-1.32,2.27-1.61,1.05-.71,1.37-.98,3.95-2.78c.15.25,0,.54-.07.79l-.2.73-.18.74c-.09.36-.15.67-.19,1.03l-.15,1.55c-.08.82-.05,1.55.07,2.33l.14.95.21,1.12v3.03s-.19,1.21-.19,1.21l-.19.72-.18.56-1.4,3.51c-.04.09-.03.2.03.29.17.26.41.49.66.65.69-.06,1.13-.54,1.62-.92.78-.6,1.88-1.89,2.38-2.75l.55-.94.33-.68c.21-.44.43-.82.58-1.29l.38-1.19.48-1.84.36-1.31c.29-1.05.73-2.07,1.25-3.01.13-.24.22-.37.32-.65.12-.35.35-.44.78-.88.32-.33.75-.46,1.18-.34.77.21.83,1.15.97,1.81l.33,1.5.3,1.58.82,4.27.48,2.43.54,2.84.15.78.39,2.02.18.91c.07.37.31.45.63.5.34.05.74.01.9-.38.32-.79.39-1.67.54-2.53l.9-5.13.19-1.15.39-2.07.22-1.1.75-4.08c.04-.41.32-.6.29-.95.13.27.21-.06.51.02.08.41.4.75.6,1.07.25.41.43.79.75,1.16l.97,1.13c.63.74,1.26,1.46,2.09,2.03,2.16,1.46,3.87,3.36,4.86,5.82l.35.87.37,1.29.12.27c.13.28.4.46.71.46h.63c.28,0,.5-.22.5-.5l-.02-4.04-.09-.93c-.12-1.23-.58-2.4-1.15-3.49l-1.09-2.1c-.56-1.09-1.3-2.05-1.66-3.25l-.28-.93-.22-1.01c-.34-.95-.11-2.17.91-2.61.43-.11.9.37,1.22.6l2.58,1.82,1.56,1.04,4.49,3.13,2.03,1.41,1.14.81c.62.44.99.55,1.51,1.13.13.14.42.34.58.36.2.03.4-.11.54-.21.27-.18.42-.3.52-.67.07-.24-.06-.45-.2-.63-.16-.21-.2-.34-.37-.61l-.8-1.23-.55-.84-2.03-3.1-2.93-4.5-1.02-1.51-1.08-1.72c-.23-.37-.56-.66-.66-1.19.34-.06.66.1.97.22.73.27,1.47.35,2.24.48,1.5.25,3.03.2,4.55-.11,2.5-.5,5.04-.37,7.34.77l1.98.98c.67.33,1.34-.42,1.37-.59.03-.22-.03-.43-.17-.61l-1.36-1.79c-1.26-1.65-4.14-3.11-6.2-3.75l-1.36-.32-1.45-.42c-.59-.17-1.12-.36-1.64-.7l-.95-.44-1.17-.79c-.48-.32-1.02-.61-1.13-1.3-.06-.37.24-1.13.65-1.23l2.77-.65,1.01-.18.9-.21.77-.17c1.07-.24,2.01-.4,3.06-.57l.67-.11c.22-.04.53-.25.83-.31l.89-.19c.62-.13,1.2-.3,1.83-.4l1.04-.16,1.19-.25,1.81-.41c.51-.11.7-.5.63-1-.02-.2,0-.36-.11-.51-.12-.17-.35-.14-.54-.18l-.94-.2-.83-.18-1.02-.18-.94-.19-.72-.18-.96-.16-1.1-.21-2.01-.4-1.46-.3-6.35-1.25c-.1-.02-.2-.07-.24-.11-.04-.04-.03-.2.06-.24,1.61-.8,3.66-2.19,4.66-3.62l.66-.73.65-.85.59-.79.9-1.06c.48-.57,1-1.04,1.62-1.45l.63-.42.88-.5,2.18-1.06,1.26-.62c.29-.14.42-.62.23-.9-.11-.16-.34-.41-.53-.47-.9-.27-1.8-.31-2.74-.26l-1.6.08c-2.02.37-3.86,1.11-5.57,2.23l-.66.37-.94.55-1.35.78-1.57.57c-.63.23-1.21.31-1.91.36-.69.05-1.68-.6-1.43-1.38.21-.67,1.1-1.81,1.7-2.77l1.57-2.51.75-1.13,1.22-1.95,4.38-6.78c.13-.2.3-.31.22-.56-.04-.14-.2-.33-.39-.34-.15,0-.26-.01-.43-.12-.42-.26-.77.16-1.01.12-.43-.06-.47.31-.96.46-.27.36-.54.57-.93.77l-.44.39-5.25,3.69c-.24.17-.51.28-.78.39-.16.06-.39.32-.52.42l-.58.47-.8.58-2.03,1.44c-.45.32-.9.78-1.31.68l.3-1.11.16-.77.2-1.57v-2.74s-.2-1.78-.2-1.78l-.18-1.12c-.21-1.26-.21-2.35.17-3.58l.39-1.27"/>
+    </svg>
+    <svg class="cc-wave" viewBox="0 0 289.32 164.3" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path fill="#fff" d="M236.29,20.68c.11.43.22.85.51,1.19l.04,1.55.11,2.75.03,1.68c.14,9.34-5.59,16.8-15.17,18.83-14.57,3.1-32.57-3.33-36.18-17.8-.11-.46-.04-1.18-.04-1.66l.07-4.73,1.31-4.46c1.22-4.16,7.26-11.9,10.61-13.86,10.72-6.26,25.4-6,32.05,4.07,2.67,4.05,5.53,7.88,6.65,12.41Z"/>
+      <path fill="#fff" d="M59.65,108.98l8.87-13.26,1.47-2.07,11.1-16.12.99-1.15,8.59-9.86c5.64-6.48,14.05-9.96,22.66-10.05l3.18-.03c4.16-.04,8.32,1.57,12.03,3.63.59.33,1.56,1.1,2.04,1.57,2.44,2.4,4.63,4.74,5.89,8.54l-9.2,1.33c-12.85,2.57-22.27,13.04-23.53,26.38-.59,6.3-.49,12.16,1.75,18,1.98,5.16,6.22,7.3,12.23,7.34,7.75.06,15.84-1.83,21.34-10.45l11.18-16.67c3.99-4.54,8.98-7.44,15.09-7.24,4.45.14,8.7,1.96,10.7,6.12-5.85,3.48-9.4,9.1-9.47,15.62-.06,6.19,1.92,10.78,6.36,13.62,12.05,7.69,22.15-1.76,31.89-10.59,6.17-5.6,13.84-8.72,21.99-6.52,3.28.88,5.78,3.13,6.49,6.63-4.86,1.28-6.63,5.29-6.46,9.77.15,3.97,2.69,7.31,7.07,9,5.08,1.96,49.13,1.82,54.02.23l1.15,12.54-.04,5.98.11,2.73.19,2.31c.05.22-.06.64-.05.87l.02,1.87c-.68,1.71-2.04,3.4-4.61,3.52-67.26,3.15-174.09,1.5-241.17-1.06l-11.02-.42-3.64-.06-5.86-.14c-.5-.01-1.7-.07-1.85.41-1.25-.93-2.77-.95-4.29-1.02l-13.26-.62-1.7-1.19-1.52-2.51-.35-1.09.3-16.95,22.51-6.38c10.55-2.99,20.29-7.61,28.86-14.4l6.62-6.64"/>
+    </svg>
+    <div class="cc-inner">
+      <img class="cc-logo" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito">
+      <h2 style="margin:0"><img class="cc-vida" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798192/vuelve_a_la_vida_logo_Artboard_1_copy_4_pwbec2.png" alt="Vuelve a la Vida, Mar"></h2>
+      <div class="cc-sub"><span>Guest List</span><span class="hm-dot"></span><span>Fecha · <span class="hm-tbd">TBD</span></span></div>
+      <div class="cc-grid">
+        <div>
+          <span class="cc-live">Live</span>
+          <div class="cc-counter">
+            <span class="cc-count-num" id="wallCount">800</span>
+          </div>
+          <div class="cc-count-label">ya están en la lista</div>
+          <div class="cc-bar"><div class="cc-bar-fill" id="ccBarFill"></div></div>
+          <div class="cc-bar-note" id="ccBarNote">La lista cierra al llegar al máximo · Estar en la lista es el primer paso. Los seleccionados recibirán su invitación por correo.</div>
+          <button class="cc-btn" onclick="openModal()">Join the Guest List ↗</button>
+        </div>
+        <div>
+          <div class="cc-wall-label">Últimas solicitudes</div>
+          <div class="wall-grid" id="wallGrid"></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- EVENTOS -->
@@ -499,21 +517,23 @@
     <div class="sec-head"><span class="label">Agenda</span></div>
     <div class="events-list">
 
-      <div class="event-card is-soon" id="card-tbd1">
-        <div class="event-head" onclick="toggleEvent('card-tbd1')">
+      <!-- Fecha real: 02 · Agosto · 2026 — no publicar hasta el anuncio oficial -->
+      <div class="event-card is-soon" id="card-cc">
+        <div class="event-head" onclick="toggleEvent('card-cc')">
           <span class="event-num">001</span>
           <div class="event-info">
-            <span class="event-name">TBD</span>
-            <span class="event-meta">Fecha por anunciar · Stay tuned</span>
+            <span class="event-sublabel" style="color:var(--cc-orange)">Próximo Evento · Guest List Abierto</span>
+            <span class="event-name"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito" style="height:72px;width:auto;display:block;max-width:100%;object-fit:contain"></span>
+            <span class="event-meta">Fecha · TBD — Vuelve a la Vida, Mar</span>
           </div>
-          <span class="event-tag">Próximamente</span>
+          <span class="event-tag" style="border-color:rgba(247,146,70,0.5);color:var(--cc-orange)">Guest List</span>
           <span class="event-arrow">↓</span>
         </div>
         <div class="event-drawer">
           <div class="drawer-inner">
-            <p style="font-family:var(--font-mono);font-size:11px;color:var(--dim);line-height:1.8;padding:1.4rem 0;letter-spacing:0.05em">Detalles próximamente. Únete al Guest List para ser el primero en enterarte.</p>
-            <div class="drawer-actions">
-              <button class="drawer-btn primary" style="background:var(--white);color:#000;border:none;cursor:pointer" onclick="openModal()">Guest List</button>
+            <div class="drawer-actions" style="padding-top:1.6rem">
+              <button class="drawer-btn primary" style="background:var(--cc-orange);color:var(--cc-navy-deep);border:none;cursor:pointer;font-family:var(--font-cc-head);font-weight:600" onclick="openModal()">Join the Guest List</button>
+              <a class="drawer-btn secondary" href="#guestlist" style="border-color:var(--line);color:var(--white)">Ver la lista →</a>
             </div>
           </div>
         </div>
@@ -549,19 +569,6 @@
   </div>
 
 
-  <!-- WHO'S GOING WALL -->
-  <section id="wall">
-    <div class="wall-head">
-      <div class="sec-head" style="margin-bottom:0"><span class="label">Guest List Requests</span></div>
-      <span class="wall-live">Live</span>
-    </div>
-    <div class="wall-counter">
-      <span class="wall-count-num" id="wallCount">887</span>
-      <span class="wall-count-label">requested guest list access</span>
-    </div>
-    <div class="wall-grid" id="wallGrid" style="margin-top:2rem"></div>
-  </section>
-
   <!-- GALERÍA -->
   <section id="galeria">
     <div class="sec-head sec-head-archive"><span class="label">Archivo</span><span class="archive-tag">● Latest Event · Casa Capri</span></div>
@@ -595,7 +602,8 @@
   <footer>
     <div class="footer-top">
       <div>
-        <p class="footer-cta-text">Próximos eventos<br>por anunciar.</p>
+        <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito" style="height:110px;width:auto;display:block;margin-bottom:1rem;max-width:100%;object-fit:contain">
+        <p class="footer-cta-text" style="font-size:15px;color:var(--faint)">Fecha por anunciar.</p>
         <button class="footer-let" onclick="openModal()">Solicitar Guest List ↗</button>
       </div>
       <div class="footer-col">
@@ -635,28 +643,28 @@
 
   <!-- GUEST LIST MODAL -->
   <div class="modal-overlay" id="guestModal">
-    <div class="modal">
-      <button class="modal-close" onclick="closeModal()">✕ Cerrar</button>
-      <div class="label">Guest List Request</div>
-      <div class="modal-title">Solicitar acceso</div>
+    <div class="modal cc">
+      <div class="modal-cc-head"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito"></div>
+      <button class="modal-close" onclick="closeModal()" style="color:rgba(255,255,255,0.75)">✕ Cerrar</button>
+      <div class="modal-title">Join the Guest List</div>
       <div class="modal-field"><label>Nombre completo</label><input type="text" id="gl-nombre" placeholder="Tu nombre" /></div>
       <div class="modal-field"><label>Instagram</label><input type="text" id="gl-ig" placeholder="@usuario" /></div>
       <div class="modal-field"><label>Correo electrónico</label><input type="email" id="gl-email" placeholder="tu@email.com" /></div>
       <div class="modal-field"><label>Teléfono (WhatsApp)</label><input type="tel" id="gl-tel" placeholder="+1 (000) 000-0000" /></div>
       <div class="modal-field"><label>Dirección</label><input type="text" id="gl-dir" placeholder="Ciudad, País" /></div>
-      <button class="modal-submit" onclick="submitGuestList()">Solicitar acceso ↗</button>
-      <p class="modal-note">El Guest List es un proceso de selección. Esto es una solicitud, no una confirmación — revisamos cada perfil. Si entras, lo sabrás cuando llegue tu invitación.</p>
+      <button class="modal-submit" onclick="submitGuestList()">Unirme al Guest List ↗</button>
+      <p class="modal-note">Cupo limitado. Esto es una solicitud, no una confirmación — revisamos cada perfil. Si entras, lo sabrás cuando llegue tu invitación. El mar está llamando.</p>
     </div>
   </div>
 
 
   <!-- CONFIRMATION OVERLAY -->
   <div class="modal-overlay" id="confirmOverlay">
-    <div class="modal" style="text-align:center;max-width:440px">
-      <div class="label" style="justify-content:center;margin-bottom:1.4rem">Request Received</div>
-      <div class="modal-title" style="font-size:32px;margin-bottom:1rem;line-height:1.1">We'll be in touch.</div>
-      <p style="font-family:var(--font-body);font-weight:300;font-size:14px;color:var(--faint);line-height:1.7;margin-bottom:2rem">You know how this works.</p>
-      <button class="modal-submit" onclick="closeConfirm()" style="max-width:200px;margin:0 auto">Entendido</button>
+    <div class="modal cc" style="text-align:center;max-width:440px">
+      <div class="label" style="justify-content:center;margin-bottom:1.4rem">Solicitud Recibida</div>
+      <div class="modal-title" style="margin-bottom:1rem;line-height:1.05">Estás en la lista de espera.</div>
+      <p style="font-family:var(--font-cc-serif);font-size:15px;color:rgba(10,58,93,0.75);line-height:1.7;margin-bottom:2rem">El mar te llamará. Atento a tu invitación.</p>
+      <button class="modal-submit" onclick="closeConfirm()" style="max-width:220px;margin:0 auto">Entendido</button>
     </div>
   </div>
 
@@ -796,9 +804,25 @@
 
     // ===== FLOATING GUEST BUTTON (appears after scroll) =====
     const floatBtn=document.getElementById('floatGuest');
-    window.addEventListener('scroll',()=>{ if(window.scrollY>window.innerHeight*0.6){ floatBtn.classList.add('show'); } else { floatBtn.classList.remove('show'); } });
+    const navBrand=document.querySelector('.nav-brand');
+    window.addEventListener('scroll',()=>{
+      try{
+        if(window.scrollY>window.innerHeight*0.6){ floatBtn.classList.add('show'); } else { floatBtn.classList.remove('show'); }
+        if(navBrand){ navBrand.classList.toggle('is-hidden', window.scrollY>80); }
+      }catch(e){}
+    },{passive:true});
 
-    // ===== WHO'S GOING WALL =====
+    // ===== GUEST LIST — CASA CORONA =====
+    // El contador crece solo con el tiempo: 800 → 1,753 (tope) hacia la fecha del evento.
+    const GL_MIN=800, GL_MAX=1753;
+    const GL_T0=Date.parse('2026-07-12T00:00:00-04:00');           // arranque de campaña
+    const GL_T1=Date.parse('2026-08-01T20:00:00-04:00');           // la lista "se llena" la víspera
+    function glTarget(){
+      const p=Math.min(1,Math.max(0,(Date.now()-GL_T0)/(GL_T1-GL_T0)));
+      const e=1-Math.pow(1-p,1.55); // arranca rápido, desacelera al final
+      return Math.min(GL_MAX, Math.floor(GL_MIN+(GL_MAX-GL_MIN)*e));
+    }
+
     const firstNames=['maria','juan','andrea','carlos','sofia','luis','valeria','diego','camila','jose','daniela','miguel','gabriela','rafael','isabella','pedro','alejandra','fernando','natalia','ricardo','paola','antonio','laura','manuel','adriana','victor','carolina','eduardo','mariana','francisco','lucia','sergio','elena','jorge','patricia','david','veronica','raul','melissa','hector'];
     const lastBits=['rodz','mtz','glz','prz','snchz','cruz','vargas','reyes','rosario','santos','pena','jimenez','castro','mejia','duarte','frias','tejada','nunez','ramirez','herrera'];
     const styles=['_','.','',' '];
@@ -811,8 +835,16 @@
     }
     const wallGrid=document.getElementById('wallGrid');
     const wallCount=document.getElementById('wallCount');
-    let count=887;
+    const ccBarFill=document.getElementById('ccBarFill');
+    const ccBarNote=document.getElementById('ccBarNote');
     const MAX_CHIPS=18;
+    let count=GL_MIN;
+    function renderCount(pop){
+      wallCount.textContent=count.toLocaleString('en-US');
+      ccBarFill.style.width=((count/GL_MAX)*100).toFixed(1)+'%';
+      if(count>=GL_MAX){ ccBarNote.textContent='Lista llena — solo quedan cupos por revisión de perfil'; }
+      if(pop){ wallCount.classList.remove('tick'); void wallCount.offsetWidth; wallCount.classList.add('tick'); }
+    }
     function addChip(handle, real){
       const chip=document.createElement('div'); chip.className='wall-chip';
       const av=document.createElement('div'); av.className='wall-avatar';
@@ -822,84 +854,30 @@
       wallGrid.insertBefore(chip, wallGrid.firstChild);
       while(wallGrid.children.length>MAX_CHIPS){ wallGrid.removeChild(wallGrid.lastChild); }
     }
-    function addRealRequest(handle){ count++; wallCount.textContent=count; addChip(handle,true); }
+    function addRealRequest(handle){ if(count<GL_MAX) count++; renderCount(true); addChip(handle,true); }
     // seed initial chips
     for(let i=0;i<MAX_CHIPS;i++){ addChip(fakeHandle(),false); }
-    // auto-add fake requests periodically to simulate live activity
+    // count-up de entrada: 800 → valor actual, con easing
+    (function countUp(){
+      const target=glTarget(), dur=2200, start=performance.now();
+      function step(now){
+        const p=Math.min(1,(now-start)/dur), e=1-Math.pow(1-p,3);
+        count=Math.floor(GL_MIN+(target-GL_MIN)*e);
+        renderCount(false);
+        if(p<1) requestAnimationFrame(step); else { count=target; renderCount(true); }
+      }
+      requestAnimationFrame(step);
+    })();
+    // goteo en vivo: sube de a 1 hacia el objetivo del momento
     function scheduleNext(){
-      const delay=2500+Math.random()*5000;
-      setTimeout(()=>{ count++; wallCount.textContent=count; addChip(fakeHandle(),false); scheduleNext(); }, delay);
+      const delay=4000+Math.random()*9000;
+      setTimeout(()=>{
+        const t=glTarget();
+        if(count<Math.min(GL_MAX,t+3)){ count++; renderCount(true); addChip(fakeHandle(),false); }
+        scheduleNext();
+      }, delay);
     }
     scheduleNext();
-
-    // ===== DISCO BALL HERO =====
-    const stage=document.getElementById('stage');
-    const stack=document.getElementById('logoStack');
-    const glint=document.getElementById('logoGlint');
-    const prism=document.getElementById('logoPrism');
-    let tmx=-999,tmy=-999,mx=-999,my=-999,inside=false,targetOpacity=0,curOpacity=0;
-    stage.addEventListener('mousemove',e=>{ const r=stack.getBoundingClientRect(); tmx=e.clientX-r.left; tmy=e.clientY-r.top; inside=tmx>=0&&tmx<=r.width&&tmy>=0&&tmy<=r.height; targetOpacity=inside?1:0; });
-    stage.addEventListener('mouseleave',()=>{ inside=false; targetOpacity=0; });
-    function tick(){
-      if(mx<-900&&inside){mx=tmx;my=tmy;}
-      mx+=(tmx-mx)*0.22; my+=(tmy-my)*0.22;
-      curOpacity+=(targetOpacity-curOpacity)*0.1;
-      glint.style.setProperty('--mx',mx+'px'); glint.style.setProperty('--my',my+'px');
-      prism.style.setProperty('--mx',mx+'px'); prism.style.setProperty('--my',my+'px');
-      glint.style.opacity=curOpacity*0.85; prism.style.opacity=curOpacity*0.5;
-      requestAnimationFrame(tick);
-    }
-    tick();
-    let hue=0;
-    function prismLoop(){ hue=(hue+0.7)%360; prism.style.filter=`brightness(1.4) hue-rotate(${hue}deg) saturate(3.5)`; requestAnimationFrame(prismLoop); }
-    prismLoop();
-
-    // FX canvas — mirror tiles + mini flares
-    const fx=document.getElementById('fx'); const fxc=fx.getContext('2d');
-    const dpr=Math.min(window.devicePixelRatio||1,2);
-    const tiles=[];
-    for(let i=0;i<160;i++){ tiles.push({x:0.04+Math.random()*0.92,y:0.18+Math.random()*0.64,size:0.5+Math.random()*1.1,fireT:0,nextFire:0}); }
-    function resizeFx(){ fx.width=stack.offsetWidth*dpr; fx.height=stack.offsetHeight*dpr; fxc.setTransform(dpr,0,0,dpr,0,0); }
-    resizeFx(); window.addEventListener('resize',resizeFx);
-    const flares=[];
-    let ft=0;
-    function fxLoop(){
-      ft+=0.016; const W=stack.offsetWidth,H=stack.offsetHeight;
-      fxc.clearRect(0,0,W,H); fxc.globalCompositeOperation='lighter';
-      if(inside){
-        tiles.forEach(tile=>{
-          const tx=tile.x*W,ty=tile.y*H,dist=Math.hypot(tx-mx,ty-my);
-          if(dist<58){ if(ft>tile.nextFire){ tile.fireT=1; tile.nextFire=ft+0.3+Math.random()*1.2; } }
-          if(tile.fireT>0){
-            tile.fireT-=0.04; const a=Math.max(0,tile.fireT),prox=Math.max(0,1-dist/70),intensity=a*prox;
-            if(intensity>0.02){
-              fxc.fillStyle=`rgba(255,255,255,${intensity*0.9})`; fxc.beginPath(); fxc.arc(tx,ty,tile.size*0.5,0,Math.PI*2); fxc.fill();
-              const g=fxc.createRadialGradient(tx,ty,0,tx,ty,tile.size*3.5); g.addColorStop(0,`rgba(255,255,255,${intensity*0.4})`); g.addColorStop(1,'rgba(255,255,255,0)');
-              fxc.fillStyle=g; fxc.beginPath(); fxc.arc(tx,ty,tile.size*3.5,0,Math.PI*2); fxc.fill();
-              if(intensity>0.4){ fxc.save(); fxc.globalAlpha=(intensity-0.4)/0.6*0.5; fxc.strokeStyle='rgba(255,255,255,1)'; fxc.lineWidth=0.5; const sp=tile.size*3; fxc.beginPath(); fxc.moveTo(tx-sp,ty); fxc.lineTo(tx+sp,ty); fxc.moveTo(tx,ty-sp); fxc.lineTo(tx,ty+sp); fxc.stroke(); fxc.restore(); }
-            }
-          }
-        });
-        if(Math.random()<0.04){ const ang=Math.random()*Math.PI*2,rd=14+Math.random()*40; flares.push({x:mx+Math.cos(ang)*rd,y:my+Math.sin(ang)*rd,life:1,hue:Math.random()*360,size:1.5+Math.random()*2}); }
-      }
-      for(let i=flares.length-1;i>=0;i--){ const f=flares[i]; f.life-=0.025; if(f.life<=0){flares.splice(i,1);continue;} const g=fxc.createRadialGradient(f.x,f.y,0,f.x,f.y,f.size*3); g.addColorStop(0,`hsla(${f.hue},90%,70%,${f.life*0.22})`); g.addColorStop(1,`hsla(${f.hue},90%,70%,0)`); fxc.fillStyle=g; fxc.beginPath(); fxc.arc(f.x,f.y,f.size*3,0,Math.PI*2); fxc.fill(); }
-      requestAnimationFrame(fxLoop);
-    }
-    fxLoop();
-
-    // Ambient sparkles
-    const canvas=document.getElementById('sparkles'); const ctx=canvas.getContext('2d');
-    function resize(){ canvas.width=stage.offsetWidth*dpr; canvas.height=stage.offsetHeight*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); }
-    resize(); window.addEventListener('resize',resize);
-    const sparks=Array.from({length:16},()=>({x:Math.random(),y:Math.random(),size:0.4+Math.random()*1.0,phase:Math.random()*Math.PI*2,speed:0.4+Math.random()*1.2,drift:(Math.random()-0.5)*0.00009,warm:Math.random()<0.35}));
-    let t=0;
-    function sparkLoop(){
-      t+=0.01; const W=stage.offsetWidth,H=stage.offsetHeight; ctx.clearRect(0,0,W,H); ctx.globalCompositeOperation='lighter';
-      sparks.forEach(s=>{ s.x+=s.drift; if(s.x<0)s.x=1; if(s.x>1)s.x=0; const tw=Math.max(0,Math.sin(t*s.speed+s.phase)); if(tw<0.12)return; const sx=s.x*W,sy=s.y*H,col=s.warm?'255,240,200':'210,225,255',a=tw*0.4; const g=ctx.createRadialGradient(sx,sy,0,sx,sy,s.size*8); g.addColorStop(0,`rgba(${col},${a*0.35})`); g.addColorStop(1,`rgba(${col},0)`); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(sx,sy,s.size*8,0,Math.PI*2); ctx.fill(); ctx.fillStyle=`rgba(255,255,255,${a})`; ctx.beginPath(); ctx.arc(sx,sy,s.size*0.7,0,Math.PI*2); ctx.fill(); });
-      requestAnimationFrame(sparkLoop);
-    }
-    sparkLoop();
-
 
   </script>
 </body>
