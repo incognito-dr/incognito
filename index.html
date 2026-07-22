@@ -512,7 +512,11 @@
       radial-gradient(720px 520px at -10% 110%, rgba(91,155,214,0.28), transparent 58%),
       linear-gradient(180deg, #12547f 0%, var(--cc-navy) 42%, var(--cc-navy-deep) 100%); }
     .cc-sun { filter: drop-shadow(0 0 34px rgba(247,146,70,0.5)); }
-    .cc-count-num { background: linear-gradient(180deg, #ffffff 40%, #ffedbd 78%, var(--cc-sand) 100%);
+    /* Número con textura de papel arrugado (grunge Corona) recortada en los dígitos */
+    .cc-count-num { color: var(--cc-paper);
+      background: url('https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783796492/textura-de-papel-blanco-arrugado_vfny1l.webp') center / 460px auto,
+        linear-gradient(180deg, #ffffff 25%, #fdf3cf 70%, var(--cc-sand) 100%);
+      background-blend-mode: multiply;
       -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none; }
     @keyframes countTick { 0% { transform: scale(1); filter: brightness(1); } 30% { transform: scale(1.045); filter: brightness(1.6); } 100% { transform: scale(1); filter: brightness(1); } }
     .cc-bar { background: rgba(0,0,0,0.25); box-shadow: inset 0 1px 3px rgba(0,0,0,0.35); }
@@ -525,6 +529,14 @@
       transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, background 0.3s; }
     .wall-chip:hover { transform: translateY(-2px); border-color: rgba(250,229,155,0.55);
       background: linear-gradient(160deg, rgba(255,255,255,0.13), rgba(255,255,255,0.05)); }
+
+    /* FOMO — cupos restantes, cierre y tiempos de actividad */
+    .cc-live-today { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cc-sand); margin-left: 12px; }
+    .cc-countdown { color: var(--cc-sand); }
+    .cc-bar-note.urgent { color: var(--cc-sand); animation: livePulse 1.6s ease-in-out infinite; }
+    .wall-handle { flex: 1 1 auto; min-width: 0; }
+    .wall-time { flex-shrink: 0; margin-left: auto; padding-left: 8px; font-family: var(--font-mono); font-size: 8.5px; color: rgba(185,221,243,0.5); white-space: nowrap; }
+    .modal-fomo { text-align: center; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(185,221,243,0.85); margin: -0.5rem 0 1.5rem; font-variant-numeric: tabular-nums; }
 
     /* Event cards — lift al hover + filo luminoso en el destacado */
     .event-card { position: relative; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease; }
@@ -672,13 +684,14 @@
       <div class="cc-sub"><span>Guest List</span><span class="hm-dot"></span><span class="hm-tbd">Sábado, Agosto 1</span></div>
       <div class="cc-grid">
         <div>
-          <span class="cc-live">Live</span>
+          <span class="cc-live">Live</span><span class="cc-live-today" id="ccToday"></span>
           <div class="cc-counter">
             <span class="cc-count-num" id="wallCount">800</span>
           </div>
           <div class="cc-count-label">ya están en la lista</div>
           <div class="cc-bar"><div class="cc-bar-fill" id="ccBarFill"></div></div>
           <div class="cc-bar-note" id="ccBarNote">La lista cierra al llegar al máximo</div>
+          <div class="cc-bar-note cc-countdown" id="ccCountdown"></div>
           <button class="cc-btn" onclick="openModal()">Join the Guest List ↗</button>
         </div>
         <div>
@@ -822,6 +835,7 @@
       <div class="modal-cc-head"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito"></div>
       <button class="modal-close" onclick="closeModal()">✕ Cerrar</button>
       <div class="modal-title">Join the Guest List</div>
+      <div class="modal-fomo" id="modalFomo"></div>
       <div class="modal-field"><label>Nombre completo</label><input type="text" id="gl-nombre" placeholder="Tu nombre" /></div>
       <div class="modal-field"><label>Instagram</label><input type="text" id="gl-ig" placeholder="@usuario" /></div>
       <div class="modal-field"><label>Correo electrónico</label><input type="email" id="gl-email" placeholder="tu@email.com" /></div>
@@ -986,11 +1000,12 @@
     const GL_MIN=800, GL_MAX=1753;
     const GL_T0=Date.parse('2026-07-12T00:00:00-04:00');           // arranque de campaña
     const GL_T1=Date.parse('2026-08-01T20:00:00-04:00');           // la lista "se llena" la víspera
-    function glTarget(){
-      const p=Math.min(1,Math.max(0,(Date.now()-GL_T0)/(GL_T1-GL_T0)));
+    function targetAt(ts){
+      const p=Math.min(1,Math.max(0,(ts-GL_T0)/(GL_T1-GL_T0)));
       const e=1-Math.pow(1-p,1.55); // arranca rápido, desacelera al final
       return Math.min(GL_MAX, Math.floor(GL_MIN+(GL_MAX-GL_MIN)*e));
     }
+    function glTarget(){ return targetAt(Date.now()); }
 
     const firstNames=['maria','juan','andrea','carlos','sofia','luis','valeria','diego','camila','jose','daniela','miguel','gabriela','rafael','isabella','pedro','alejandra','fernando','natalia','ricardo','paola','antonio','laura','manuel','adriana','victor','carolina','eduardo','mariana','francisco','lucia','sergio','elena','jorge','patricia','david','veronica','raul','melissa','hector'];
     const lastBits=['rodz','mtz','glz','prz','snchz','cruz','vargas','reyes','rosario','santos','pena','jimenez','castro','mejia','duarte','frias','tejada','nunez','ramirez','herrera'];
@@ -1006,26 +1021,64 @@
     const wallCount=document.getElementById('wallCount');
     const ccBarFill=document.getElementById('ccBarFill');
     const ccBarNote=document.getElementById('ccBarNote');
+    const ccCountdown=document.getElementById('ccCountdown');
+    const ccToday=document.getElementById('ccToday');
+    const modalFomo=document.getElementById('modalFomo');
     const MAX_CHIPS=18;
     let count=GL_MIN;
+    function timeAgo(ts){
+      const m=Math.max(0,Math.round((Date.now()-ts)/60000));
+      if(m<1) return 'ahora';
+      if(m<60) return 'hace '+m+' min';
+      const h=Math.floor(m/60);
+      return 'hace '+h+(h===1?' hora':' horas');
+    }
     function renderCount(pop){
       wallCount.textContent=count.toLocaleString('en-US');
-      ccBarFill.style.width=((count/GL_MAX)*100).toFixed(1)+'%';
-      if(count>=GL_MAX){ ccBarNote.textContent='Lista llena — solo quedan cupos por revisión de perfil'; }
+      const pct=(count/GL_MAX)*100;
+      ccBarFill.style.width=pct.toFixed(1)+'%';
+      const left=GL_MAX-count;
+      if(left<=0){ ccBarNote.textContent='Lista llena — solo quedan cupos por revisión de perfil'; }
+      else { ccBarNote.textContent='Quedan '+left.toLocaleString('en-US')+' cupos · '+Math.round(pct)+'% llena'; }
+      ccBarNote.classList.toggle('urgent', pct>=90);
+      if(modalFomo) modalFomo.textContent=count.toLocaleString('en-US')+' en la lista · quedan '+Math.max(0,left).toLocaleString('en-US')+' cupos';
       if(pop){ wallCount.classList.remove('tick'); void wallCount.offsetWidth; wallCount.classList.add('tick'); }
     }
-    function addChip(handle, real){
+    function renderClock(){
+      let ms=GL_T1-Date.now();
+      if(ms<=0){ ccCountdown.textContent='La lista está por cerrar'; }
+      else {
+        const d=Math.floor(ms/86400000), h=Math.floor(ms%86400000/3600000), m=Math.floor(ms%3600000/60000);
+        ccCountdown.textContent='La lista cierra en '+(d>0? d+'d '+h+'h' : h>0? h+'h '+m+'min' : m+' min');
+      }
+      const mid=new Date(); mid.setHours(0,0,0,0);
+      const today=targetAt(Date.now())-targetAt(mid.getTime());
+      ccToday.textContent=today>0? '+'+today+' hoy' : '';
+    }
+    function addChip(handle, real, ts, delayMs){
       const chip=document.createElement('div'); chip.className='wall-chip';
+      chip.dataset.ts=ts||Date.now();
+      if(delayMs) chip.style.animationDelay=delayMs+'ms';
       const av=document.createElement('div'); av.className='wall-avatar';
       const h=document.createElement('span'); h.className='wall-handle'; h.textContent=handle;
+      const t=document.createElement('span'); t.className='wall-time'; t.textContent=timeAgo(chip.dataset.ts*1);
       if(real){ h.style.filter='blur(1px)'; av.style.filter='blur(1px)'; }
-      chip.appendChild(av); chip.appendChild(h);
+      chip.appendChild(av); chip.appendChild(h); chip.appendChild(t);
       wallGrid.insertBefore(chip, wallGrid.firstChild);
       while(wallGrid.children.length>MAX_CHIPS){ wallGrid.removeChild(wallGrid.lastChild); }
     }
-    function addRealRequest(handle){ if(count<GL_MAX) count++; renderCount(true); addChip(handle,true); }
-    // seed initial chips
-    for(let i=0;i<MAX_CHIPS;i++){ addChip(fakeHandle(),false); }
+    function refreshTimes(){
+      Array.prototype.forEach.call(wallGrid.children, function(c){
+        const t=c.querySelector('.wall-time'); if(t) t.textContent=timeAgo(c.dataset.ts*1);
+      });
+    }
+    function addRealRequest(handle){ if(count<GL_MAX) count++; renderCount(true); addChip(handle,true,Date.now()); }
+    // seed: solicitudes con edades creíbles (huecos irregulares) y entrada en cascada
+    (function seed(){
+      const ages=[]; let a=1.5+Math.random()*3;
+      for(let i=0;i<MAX_CHIPS;i++){ ages.push(a); a+=3+Math.random()*16; }
+      for(let i=MAX_CHIPS-1;i>=0;i--){ addChip(fakeHandle(), false, Date.now()-ages[i]*60000, (MAX_CHIPS-1-i)*70); }
+    })();
     // count-up de entrada: 800 → valor actual, con easing
     (function countUp(){
       const target=glTarget(), dur=2200, start=performance.now();
@@ -1037,16 +1090,28 @@
       }
       requestAnimationFrame(step);
     })();
-    // goteo en vivo: sube de a 1 hacia el objetivo del momento
+    // goteo en vivo: ritmo variable según la hora local, con ráfagas ocasionales (grupos)
     function scheduleNext(){
-      const delay=4000+Math.random()*9000;
+      const hr=new Date().getHours();
+      const base = (hr>=19||hr<1) ? 7000 : hr>=14 ? 10000 : hr>=9 ? 16000 : 34000; // noche activa, madrugada lenta
+      const delay = base*(0.45+Math.random()*1.6);
       setTimeout(()=>{
-        const t=glTarget();
-        if(count<Math.min(GL_MAX,t+3)){ count++; renderCount(true); addChip(fakeHandle(),false); }
+        const cap=Math.min(GL_MAX, glTarget()+3);
+        if(count<cap){
+          const burst=(Math.random()<0.2 && cap-count>2) ? 2+Math.floor(Math.random()*2) : 1;
+          let added=0;
+          (function step(){
+            if(added>=burst || count>=Math.min(GL_MAX, glTarget()+3)) return;
+            count++; renderCount(true); addChip(fakeHandle(), false, Date.now());
+            added++; setTimeout(step, 800+Math.random()*2200);
+          })();
+        }
         scheduleNext();
       }, delay);
     }
     scheduleNext();
+    renderClock();
+    setInterval(function(){ renderClock(); refreshTimes(); }, 30000);
 
   </script>
 
