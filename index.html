@@ -490,7 +490,16 @@
     .hero-mark { animation: sauceRise 1.1s cubic-bezier(0.16,1,0.3,1) 0.2s backwards, markFloat 7s ease-in-out 1.5s infinite; }
     .hero-cc-logo { animation: sauceRise 1.1s cubic-bezier(0.16,1,0.3,1) 0.45s backwards; }
     .hero-meta { animation: sauceRise 1s cubic-bezier(0.16,1,0.3,1) 0.65s backwards; }
-    .hero-cta { animation: sauceRise 1s cubic-bezier(0.16,1,0.3,1) 0.8s backwards; }
+    /* CTA del hero con luz de alarma: entra con sauceRise y luego late en naranja */
+    .hero-cta { animation: sauceRise 1s cubic-bezier(0.16,1,0.3,1) 0.8s backwards, ctaAlarm 1.9s ease-in-out 1.9s infinite; }
+    @keyframes ctaAlarm {
+      0%, 100% { box-shadow: 0 14px 40px rgba(247,146,70,0.3), 0 0 0 0 rgba(247,146,70,0.55); }
+      50%      { box-shadow: 0 14px 54px rgba(247,146,70,0.75), 0 0 0 16px rgba(247,146,70,0); }
+    }
+    .hero-close-note { position: relative; z-index: 10; margin-top: 1.1rem; display: inline-flex; align-items: center; gap: 9px;
+      font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cc-sand); }
+    .hero-close-note::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cc-orange);
+      box-shadow: 0 0 10px var(--cc-orange); animation: livePulse 1.2s ease-in-out infinite; }
     .hero-scroll { animation: sauceFade 1s ease 1.5s backwards; }
 
     /* CTAs — gradiente cálido + barrido de brillo */
@@ -529,6 +538,14 @@
       transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, background 0.3s; }
     .wall-chip:hover { transform: translateY(-2px); border-color: rgba(250,229,155,0.55);
       background: linear-gradient(160deg, rgba(255,255,255,0.13), rgba(255,255,255,0.05)); }
+
+    /* Alarma suave — resplandor naranja pulsante en los costados de la sección */
+    .cc-alarm { position: absolute; inset: 0; pointer-events: none; z-index: 1;
+      background:
+        linear-gradient(to right, rgba(247,146,70,0.38), rgba(247,146,70,0.1) 9%, transparent 20%),
+        linear-gradient(to left, rgba(247,146,70,0.38), rgba(247,146,70,0.1) 9%, transparent 20%);
+      animation: alarmPulse 1.9s ease-in-out infinite; }
+    @keyframes alarmPulse { 0%, 100% { opacity: 0.18; } 50% { opacity: 1; } }
 
     /* FOMO — cupos restantes, cierre y tiempos de actividad */
     .cc-live-today { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cc-sand); margin-left: 12px; }
@@ -627,7 +644,6 @@
     .reveal.in { opacity: 1; transform: translateY(0); }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
       .reveal { opacity: 1; transform: none; }
     }
 
@@ -664,13 +680,15 @@
 
     <img class="hero-mark" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783797015/el_mar_is_calling_yrssgd.png" alt="El Mar Is Calling — Casa Corona × Incognito">
     <img class="hero-cc-logo" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito">
-    <div class="hero-meta"><span class="hm-tbd">Sábado, Agosto 1</span><span class="hm-dot"></span><span>Vuelve a la Vida, Mar</span></div>
+    <div class="hero-meta"><span class="hm-tbd">Sábado, Agosto 1 · 6–10 PM</span><span class="hm-dot"></span><span>Vuelve a la Vida, Mar</span></div>
     <button class="hero-cta" onclick="openModal()">Join the Guest List ↗</button>
+    <div class="hero-close-note">Cierra el próximo martes</div>
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
   </section>
 
   <!-- GUEST LIST — CASA CORONA -->
   <section class="cc-section" id="guestlist">
+    <div class="cc-alarm" aria-hidden="true"></div>
     <svg class="cc-sun" viewBox="0 0 81.09 84.19" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path fill="#f79246" d="M56.46,3.39c.14-.42-.25-1.12-.7-.96l-.63.41c-.28.19-.48.38-.59.54-.29.34-.3.32-.53.55l-1.39,1.38c-.88.87-1.38,1.95-1.88,3.07-1.14,2.6-1.4,5.55-2.18,7.02l-.86,1.65-.7.97c-.16.22-.25.35-.49.46-.49.23-.9.17-1.26-.2-.25-.26-.29-.44-.37-.8-.07-.33-.25-.63-.1-1.05-.21.05-.14.18-.17.31-.14-.17.03-.53-.08-.74-.23-.47-.3-.9-.39-1.4l-.16-.85-.79-3.85-.12-.63-.47-2.4-.36-1.97-.83-4-.02-.1c-.09-.6-.74-.98-1.29-.72-.02.01-.05.02-.07.04-.32.18-.37,1.13-.52,1.91l-.38,1.95-.4,2.2-.17.95-.18,1.11c-.12.73-.32,1.39-.38,2.13l-.22.7c.04.72-.31,1.29-.43,1.95l-.19,1.11c-.05.28-.06.48-.21.76l-.03.89c-.25.49-.08.93-.42,1.56-.15-.11-.11-.21-.12-.28-.02-.1-.16-.17-.26-.15-.29.07-.27-.14-.35-.23-.31-.36-.5-.72-.77-1.11l-.53-.76-.93-1.12c-.18-.21-.41-.5-.64-.64-.25-.15-.58-.59-1.22-1.04-1.81-1.27-3.44-2.8-4.39-4.81l-.27-.57c-.18-.39-.37-.83-.5-1.26l-.34-1.06c-.13-.4-.2-.82-.63-1.08-.24-.15-.73-.12-1,.02-.13.06-.22.29-.24.43-.28,1.65-.38,3.34-.09,5.01l.52,1.99.77,1.83,1.69,3.15c.55,1.03,1.66,4.21,1.63,5.1-.02.71-.52,1.45-1.33,1.37-.33-.03-1.55-1-2.3-1.5l-1.13-.74-3.7-2.61-1.81-1.27-2.37-1.63-1.01-.66-1.84-1.26c-.26-.18-.62-.64-1-.53-.22.06-.4.23-.56.43-.25.29-.27.71-.06,1.03l1.85,2.86c.19.29.39.59.6.79.05.05.17.14.19.22.07.31.25.5.42.76l1.45,2.28c.31.48.62.91.93,1.4l1.27,1.99,1.26,1.9,1.21,1.88c.07.11.05.43-.09.44-.67.03-1.25-.32-1.88-.41l-1.8-.26c-.72-.11-1.52-.11-2.25-.01l-1.42.18c-.47.06-.9.11-1.41.15l-1.95.15-1.83-.27c-.54-.08-1.02-.2-1.53-.43l-1.42-.63-1.32-.72c-.14-.07-.22-.17-.36-.17-.21,0-1.09.78-.91,1.15.14.29.27.61.47.86l.95,1.17c.58.72,1.16.98,1.63,1.62.19.08.39.14.59.27l1.01.65,1.1.51c.43.2.78.46,1.26.58.43.11.87.35,1.3.42,2.22.35,4.51,1.25,6.23,2.64.41.33.68.66.68,1.21,0,.11.12.29.04.44-.21.43-.6.7-1.07.8l-2.61.57-2.82.61-1.1.3-1.5.26-2.82.61-1,.21c-.27.06-.52.09-.78.14l-2.29.47-1.91.43c-.32.36-.03,1.34.46,1.52.37.13.74.14,1.11.22l.94.19c.95.2,1.93.4,2.87.58l.86.16.85.17c.3.06.61.19.89.22.87.08,1.5.31,1.79.34.66.07,1.22.28,1.88.39l1.03.17c.27.04.55.16.81.2l.97.16.96.22,1.53.28c.16.03.22.36.11.43l-.49.28c-1.16.5-2.12,1.23-3.05,2.07-.41.37-.78.68-1.11,1.13l-1.47,2.06c-1.45,2.03-3.72,3.77-6.09,4.61l-1.22.43c-.53.19-.74.83-.41,1.29.12.17.25.32.39.46l.93.17,3.25.04c.36,0,2.44-.59,3.09-.93l2.27-1.19c1.12-.59,2.14-1.23,3.35-1.65l3.07-1.07c.78-.27,1.44.29,1.67.94.11.31.14.37-.05.65l-2.15,3.33-.89,1.35-.4.63-3.44,5.48-1.7,2.57-1.07,1.65c-.11.16-.08.59,0,.76.07.16.28.33.37.42.34.34.64.12.93-.08l3.54-2.5,1.86-1.32,2.27-1.61,1.05-.71,1.37-.98,3.95-2.78c.15.25,0,.54-.07.79l-.2.73-.18.74c-.09.36-.15.67-.19,1.03l-.15,1.55c-.08.82-.05,1.55.07,2.33l.14.95.21,1.12v3.03s-.19,1.21-.19,1.21l-.19.72-.18.56-1.4,3.51c-.04.09-.03.2.03.29.17.26.41.49.66.65.69-.06,1.13-.54,1.62-.92.78-.6,1.88-1.89,2.38-2.75l.55-.94.33-.68c.21-.44.43-.82.58-1.29l.38-1.19.48-1.84.36-1.31c.29-1.05.73-2.07,1.25-3.01.13-.24.22-.37.32-.65.12-.35.35-.44.78-.88.32-.33.75-.46,1.18-.34.77.21.83,1.15.97,1.81l.33,1.5.3,1.58.82,4.27.48,2.43.54,2.84.15.78.39,2.02.18.91c.07.37.31.45.63.5.34.05.74.01.9-.38.32-.79.39-1.67.54-2.53l.9-5.13.19-1.15.39-2.07.22-1.1.75-4.08c.04-.41.32-.6.29-.95.13.27.21-.06.51.02.08.41.4.75.6,1.07.25.41.43.79.75,1.16l.97,1.13c.63.74,1.26,1.46,2.09,2.03,2.16,1.46,3.87,3.36,4.86,5.82l.35.87.37,1.29.12.27c.13.28.4.46.71.46h.63c.28,0,.5-.22.5-.5l-.02-4.04-.09-.93c-.12-1.23-.58-2.4-1.15-3.49l-1.09-2.1c-.56-1.09-1.3-2.05-1.66-3.25l-.28-.93-.22-1.01c-.34-.95-.11-2.17.91-2.61.43-.11.9.37,1.22.6l2.58,1.82,1.56,1.04,4.49,3.13,2.03,1.41,1.14.81c.62.44.99.55,1.51,1.13.13.14.42.34.58.36.2.03.4-.11.54-.21.27-.18.42-.3.52-.67.07-.24-.06-.45-.2-.63-.16-.21-.2-.34-.37-.61l-.8-1.23-.55-.84-2.03-3.1-2.93-4.5-1.02-1.51-1.08-1.72c-.23-.37-.56-.66-.66-1.19.34-.06.66.1.97.22.73.27,1.47.35,2.24.48,1.5.25,3.03.2,4.55-.11,2.5-.5,5.04-.37,7.34.77l1.98.98c.67.33,1.34-.42,1.37-.59.03-.22-.03-.43-.17-.61l-1.36-1.79c-1.26-1.65-4.14-3.11-6.2-3.75l-1.36-.32-1.45-.42c-.59-.17-1.12-.36-1.64-.7l-.95-.44-1.17-.79c-.48-.32-1.02-.61-1.13-1.3-.06-.37.24-1.13.65-1.23l2.77-.65,1.01-.18.9-.21.77-.17c1.07-.24,2.01-.4,3.06-.57l.67-.11c.22-.04.53-.25.83-.31l.89-.19c.62-.13,1.2-.3,1.83-.4l1.04-.16,1.19-.25,1.81-.41c.51-.11.7-.5.63-1-.02-.2,0-.36-.11-.51-.12-.17-.35-.14-.54-.18l-.94-.2-.83-.18-1.02-.18-.94-.19-.72-.18-.96-.16-1.1-.21-2.01-.4-1.46-.3-6.35-1.25c-.1-.02-.2-.07-.24-.11-.04-.04-.03-.2.06-.24,1.61-.8,3.66-2.19,4.66-3.62l.66-.73.65-.85.59-.79.9-1.06c.48-.57,1-1.04,1.62-1.45l.63-.42.88-.5,2.18-1.06,1.26-.62c.29-.14.42-.62.23-.9-.11-.16-.34-.41-.53-.47-.9-.27-1.8-.31-2.74-.26l-1.6.08c-2.02.37-3.86,1.11-5.57,2.23l-.66.37-.94.55-1.35.78-1.57.57c-.63.23-1.21.31-1.91.36-.69.05-1.68-.6-1.43-1.38.21-.67,1.1-1.81,1.7-2.77l1.57-2.51.75-1.13,1.22-1.95,4.38-6.78c.13-.2.3-.31.22-.56-.04-.14-.2-.33-.39-.34-.15,0-.26-.01-.43-.12-.42-.26-.77.16-1.01.12-.43-.06-.47.31-.96.46-.27.36-.54.57-.93.77l-.44.39-5.25,3.69c-.24.17-.51.28-.78.39-.16.06-.39.32-.52.42l-.58.47-.8.58-2.03,1.44c-.45.32-.9.78-1.31.68l.3-1.11.16-.77.2-1.57v-2.74s-.2-1.78-.2-1.78l-.18-1.12c-.21-1.26-.21-2.35.17-3.58l.39-1.27"/>
     </svg>
@@ -681,16 +699,15 @@
     <div class="cc-inner">
       <img class="cc-logo" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito">
       <h2 style="margin:0"><img class="cc-vida" src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798192/vuelve_a_la_vida_logo_Artboard_1_copy_4_pwbec2.png" alt="Vuelve a la Vida, Mar"></h2>
-      <div class="cc-sub"><span>Guest List</span><span class="hm-dot"></span><span class="hm-tbd">Sábado, Agosto 1</span></div>
+      <div class="cc-sub"><span>Guest List</span><span class="hm-dot"></span><span class="hm-tbd">Sábado, Agosto 1 · 6–10 PM</span></div>
       <div class="cc-grid">
         <div>
           <span class="cc-live">Live</span><span class="cc-live-today" id="ccToday"></span>
           <div class="cc-counter">
-            <span class="cc-count-num" id="wallCount">800</span>
+            <span class="cc-count-num" id="wallCount">2,873</span>
           </div>
-          <div class="cc-count-label">ya están en la lista</div>
-          <div class="cc-bar"><div class="cc-bar-fill" id="ccBarFill"></div></div>
-          <div class="cc-bar-note" id="ccBarNote">La lista cierra al llegar al máximo</div>
+          <div class="cc-count-label"><span id="ccPct" style="color:var(--cc-sand)">88%</span> ya están en la lista</div>
+          <div class="cc-bar"><div class="cc-bar-fill" id="ccBarFill" style="width:88%"></div></div>
           <div class="cc-bar-note cc-countdown" id="ccCountdown"></div>
           <button class="cc-btn" onclick="openModal()">Join the Guest List ↗</button>
         </div>
@@ -713,7 +730,7 @@
           <div class="event-info">
             <span class="event-sublabel" style="color:var(--cc-orange)">Próximo Evento · Guest List Abierto</span>
             <span class="event-name"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito" style="height:72px;width:auto;display:block;max-width:100%;object-fit:contain"></span>
-            <span class="event-meta">Sábado, Agosto 1 — Vuelve a la Vida, Mar</span>
+            <span class="event-meta">Sábado, Agosto 1 · 6–10 PM — Vuelve a la Vida, Mar</span>
           </div>
           <span class="event-tag" style="border-color:rgba(247,146,70,0.5);color:var(--cc-orange)">Guest List</span>
           <span class="event-arrow">↓</span>
@@ -791,7 +808,7 @@
     <div class="footer-top">
       <div>
         <img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1783798348/Casa_Corona_x_incognito_white_gjckc1.png" alt="Casa Corona × Incognito" style="height:110px;width:auto;display:block;margin-bottom:1rem;max-width:100%;object-fit:contain">
-        <p class="footer-cta-text" style="font-size:15px;color:var(--faint)">Sábado, Agosto 1.</p>
+        <p class="footer-cta-text" style="font-size:15px;color:var(--faint)">Sábado, Agosto 1 · 6–10 PM.</p>
         <button class="footer-let" onclick="openModal()">Solicitar Guest List ↗</button>
       </div>
       <div class="footer-col">
@@ -997,15 +1014,10 @@
 
     // ===== GUEST LIST — CASA CORONA =====
     // El contador crece solo con el tiempo: 800 → 1,753 (tope) hacia la fecha del evento.
-    const GL_MIN=800, GL_MAX=1753;
-    const GL_T0=Date.parse('2026-07-12T00:00:00-04:00');           // arranque de campaña
-    const GL_T1=Date.parse('2026-08-01T20:00:00-04:00');           // la lista "se llena" la víspera
-    function targetAt(ts){
-      const p=Math.min(1,Math.max(0,(ts-GL_T0)/(GL_T1-GL_T0)));
-      const e=1-Math.pow(1-p,1.55); // arranca rápido, desacelera al final
-      return Math.min(GL_MAX, Math.floor(GL_MIN+(GL_MAX-GL_MIN)*e));
-    }
-    function glTarget(){ return targetAt(Date.now()); }
+    // Contador de sesión: arranca en ~2,873 y sube lento mientras el visitante está en la página (tope 4,200).
+    const GL_START=2873, GL_CAP=4200;
+    const PCT_START=88, PCT_END=97;                                // la barra arranca en 88% y sube apenas
+    const GL_CLOSE=Date.parse('2026-07-28T23:59:00-04:00');        // cierre de la lista: martes 28 jul 2026
 
     const firstNames=['maria','juan','andrea','carlos','sofia','luis','valeria','diego','camila','jose','daniela','miguel','gabriela','rafael','isabella','pedro','alejandra','fernando','natalia','ricardo','paola','antonio','laura','manuel','adriana','victor','carolina','eduardo','mariana','francisco','lucia','sergio','elena','jorge','patricia','david','veronica','raul','melissa','hector'];
     const lastBits=['rodz','mtz','glz','prz','snchz','cruz','vargas','reyes','rosario','santos','pena','jimenez','castro','mejia','duarte','frias','tejada','nunez','ramirez','herrera'];
@@ -1020,12 +1032,15 @@
     const wallGrid=document.getElementById('wallGrid');
     const wallCount=document.getElementById('wallCount');
     const ccBarFill=document.getElementById('ccBarFill');
-    const ccBarNote=document.getElementById('ccBarNote');
+    const ccPct=document.getElementById('ccPct');
     const ccCountdown=document.getElementById('ccCountdown');
     const ccToday=document.getElementById('ccToday');
     const modalFomo=document.getElementById('modalFomo');
     const MAX_CHIPS=18;
-    let count=GL_MIN;
+    const startCount=GL_START+Math.floor(Math.random()*7);   // pequeña variación por visita
+    const todayBase=140+Math.floor(Math.random()*60);        // "+N hoy" creíble
+    let count=startCount;
+    function glPct(){ return Math.min(PCT_END, PCT_START+(count-GL_START)/(GL_CAP-GL_START)*(PCT_END-PCT_START)); }
     function timeAgo(ts){
       const m=Math.max(0,Math.round((Date.now()-ts)/60000));
       if(m<1) return 'ahora';
@@ -1035,25 +1050,21 @@
     }
     function renderCount(pop){
       wallCount.textContent=count.toLocaleString('en-US');
-      const pct=(count/GL_MAX)*100;
-      ccBarFill.style.width=pct.toFixed(1)+'%';
-      const left=GL_MAX-count;
-      if(left<=0){ ccBarNote.textContent='Lista llena — solo quedan cupos por revisión de perfil'; }
-      else { ccBarNote.textContent='Quedan '+left.toLocaleString('en-US')+' cupos · '+Math.round(pct)+'% llena'; }
-      ccBarNote.classList.toggle('urgent', pct>=90);
-      if(modalFomo) modalFomo.textContent=count.toLocaleString('en-US')+' en la lista · quedan '+Math.max(0,left).toLocaleString('en-US')+' cupos';
+      const pct=glPct();
+      ccBarFill.style.width=pct.toFixed(2)+'%';
+      ccPct.textContent=Math.round(pct)+'%';
+      if(modalFomo) modalFomo.textContent=count.toLocaleString('en-US')+' en la lista · pre-selección activa';
       if(pop){ wallCount.classList.remove('tick'); void wallCount.offsetWidth; wallCount.classList.add('tick'); }
     }
     function renderClock(){
-      let ms=GL_T1-Date.now();
-      if(ms<=0){ ccCountdown.textContent='La lista está por cerrar'; }
+      let ms=GL_CLOSE-Date.now();
+      if(ms<=0){ ccCountdown.textContent='El Guest List está cerrado'; }
       else {
         const d=Math.floor(ms/86400000), h=Math.floor(ms%86400000/3600000), m=Math.floor(ms%3600000/60000);
-        ccCountdown.textContent='La lista cierra en '+(d>0? d+'d '+h+'h' : h>0? h+'h '+m+'min' : m+' min');
+        ccCountdown.textContent='El Guest List cierra el martes — '+(d>0? d+'d '+h+'h' : h>0? h+'h '+m+'min' : m+' min');
       }
-      const mid=new Date(); mid.setHours(0,0,0,0);
-      const today=targetAt(Date.now())-targetAt(mid.getTime());
-      ccToday.textContent=today>0? '+'+today+' hoy' : '';
+      const today=todayBase+(count-startCount);
+      ccToday.textContent='+'+today+' hoy';
     }
     function addChip(handle, real, ts, delayMs){
       const chip=document.createElement('div'); chip.className='wall-chip';
@@ -1072,38 +1083,37 @@
         const t=c.querySelector('.wall-time'); if(t) t.textContent=timeAgo(c.dataset.ts*1);
       });
     }
-    function addRealRequest(handle){ if(count<GL_MAX) count++; renderCount(true); addChip(handle,true,Date.now()); }
+    function addRealRequest(handle){ if(count<GL_CAP) count++; renderCount(true); addChip(handle,true,Date.now()); }
     // seed: solicitudes con edades creíbles (huecos irregulares) y entrada en cascada
     (function seed(){
       const ages=[]; let a=1.5+Math.random()*3;
       for(let i=0;i<MAX_CHIPS;i++){ ages.push(a); a+=3+Math.random()*16; }
       for(let i=MAX_CHIPS-1;i>=0;i--){ addChip(fakeHandle(), false, Date.now()-ages[i]*60000, (MAX_CHIPS-1-i)*70); }
     })();
-    // count-up de entrada: 800 → valor actual, con easing
+    // count-up de entrada: llega al valor de sesión con easing
     (function countUp(){
-      const target=glTarget(), dur=2200, start=performance.now();
+      const from=startCount-90, dur=2200, start=performance.now();
       function step(now){
         const p=Math.min(1,(now-start)/dur), e=1-Math.pow(1-p,3);
-        count=Math.floor(GL_MIN+(target-GL_MIN)*e);
+        count=Math.floor(from+(startCount-from)*e);
         renderCount(false);
-        if(p<1) requestAnimationFrame(step); else { count=target; renderCount(true); }
+        if(p<1) requestAnimationFrame(step); else { count=startCount; renderCount(true); }
       }
       requestAnimationFrame(step);
     })();
-    // goteo en vivo: ritmo variable según la hora local, con ráfagas ocasionales (grupos)
+    // goteo en vivo mientras el visitante permanece: lento y realista, ritmo según la hora local
     function scheduleNext(){
       const hr=new Date().getHours();
-      const base = (hr>=19||hr<1) ? 7000 : hr>=14 ? 10000 : hr>=9 ? 16000 : 34000; // noche activa, madrugada lenta
-      const delay = base*(0.45+Math.random()*1.6);
+      const base = (hr>=19||hr<1) ? 12000 : hr>=14 ? 17000 : hr>=9 ? 24000 : 42000; // noche activa, madrugada lenta
+      const delay = base*(0.55+Math.random()*1.5);
       setTimeout(()=>{
-        const cap=Math.min(GL_MAX, glTarget()+3);
-        if(count<cap){
-          const burst=(Math.random()<0.2 && cap-count>2) ? 2+Math.floor(Math.random()*2) : 1;
+        if(count<GL_CAP){
+          const burst=(Math.random()<0.14 && GL_CAP-count>2) ? 2 : 1;   // ráfaga ocasional de 2 (un grupo)
           let added=0;
           (function step(){
-            if(added>=burst || count>=Math.min(GL_MAX, glTarget()+3)) return;
+            if(added>=burst || count>=GL_CAP) return;
             count++; renderCount(true); addChip(fakeHandle(), false, Date.now());
-            added++; setTimeout(step, 800+Math.random()*2200);
+            added++; setTimeout(step, 1400+Math.random()*2600);
           })();
         }
         scheduleNext();
@@ -1122,7 +1132,7 @@
       function onScroll(){ nav.classList.toggle('scrolled', window.scrollY>48); }
       window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
 
-      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      if(!('IntersectionObserver' in window)) return;
       var targets=document.querySelectorAll('.sec-head, .events-list .event-card, .gallery-item, .gallery-foot, .contact-grid > *, .footer-top > *, .cc-logo, .cc-vida, .cc-sub, .cc-grid > *');
       var io=new IntersectionObserver(function(entries){
         entries.filter(function(e){ return e.isIntersecting; }).forEach(function(e,i){
