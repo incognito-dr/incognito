@@ -343,6 +343,12 @@
     .modal-submit { width: 100%; margin-top: 1.5rem; background: var(--white); border: none; color: #000; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; padding: 15px; cursor: pointer; transition: opacity 0.2s; border-radius: 2px; }
     .modal-submit:hover { opacity: 0.85; }
     .modal-note { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.04em; color: var(--dim); line-height: 1.7; margin-top: 1.3rem; border-left: 0.5px solid var(--line); padding-left: 1rem; }
+    .modal-consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 1.5rem; cursor: pointer;
+      font-family: var(--font-body); font-size: 12px; line-height: 1.6; color: rgba(185,221,243,0.85); }
+    .modal-consent input { width: 15px; height: 15px; margin-top: 2px; flex-shrink: 0; accent-color: var(--cc-orange); cursor: pointer; }
+    .modal-consent.error { color: #ffb08a; animation: consentShake 0.35s ease; }
+    .modal-consent.error input { outline: 2px solid var(--cc-orange); outline-offset: 1px; border-radius: 2px; }
+    @keyframes consentShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
     /* ===== MODAL — CASA CORONA ===== */
     .modal.cc { border: none; color: var(--cc-navy-deep); box-shadow: 0 30px 90px rgba(0,0,0,0.55); overflow: hidden auto; max-height: 92vh;
@@ -858,6 +864,10 @@
       <div class="modal-field"><label>Correo electrónico</label><input type="email" id="gl-email" placeholder="tu@email.com" /></div>
       <div class="modal-field"><label>Teléfono (WhatsApp)</label><input type="tel" id="gl-tel" placeholder="+1 (000) 000-0000" /></div>
       <div class="modal-field"><label>Dirección</label><input type="text" id="gl-dir" placeholder="Ciudad, País" /></div>
+      <label class="modal-consent" id="glConsentWrap" for="gl-consent">
+        <input type="checkbox" id="gl-consent">
+        <span>Acepto recibir correos y comunicaciones de Incognito sobre este evento y futuros eventos. Puedo darme de baja en cualquier momento.</span>
+      </label>
       <button class="modal-submit" onclick="submitGuestList()">Unirme al Guest List ↗</button>
       <p class="modal-note">Cupo limitado. Esto es una solicitud, no una confirmación — revisamos cada perfil. Si entras, lo sabrás cuando llegue tu invitación. El mar está llamando.</p>
     </div>
@@ -982,6 +992,13 @@
       const tel=document.getElementById('gl-tel').value.trim();
       const dir=document.getElementById('gl-dir').value.trim();
       if(!nombre||!email){ alert('Por favor completa al menos tu nombre y correo.'); return; }
+      const consent=document.getElementById('gl-consent');
+      const consentWrap=document.getElementById('glConsentWrap');
+      if(!consent.checked){
+        consentWrap.classList.remove('error'); void consentWrap.offsetWidth; consentWrap.classList.add('error');
+        return;
+      }
+      consentWrap.classList.remove('error');
       const btn=document.querySelector('.modal-submit'); btn.textContent='Enviando...'; btn.disabled=true;
       const fd=new FormData();
       fd.append('entry.1878848955',nombre); fd.append('entry.606152112',ig); fd.append('entry.1036826748',email); fd.append('entry.1279170666',tel); fd.append('entry.1876775928',dir);
