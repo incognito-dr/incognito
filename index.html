@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="format-detection" content="telephone=no" />
-  <title>Incognito · kind of night</title>
+  <title>Incognito · Day in the Sun</title>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LK5YVM3CPM"></script>
   <script>
@@ -325,7 +325,7 @@
       animation: chipIn 0.5s cubic-bezier(0.16,1,0.3,1);
     }
     @keyframes chipIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .wall-avatar { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--cc-blue), var(--cc-orange)); filter: blur(2px); opacity: 0.8; }
+    .wall-avatar { width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #b3261e, var(--cc-orange)); filter: blur(2px); opacity: 0.8; }
     .wall-handle { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.72); letter-spacing: 0.02em; filter: blur(3px); user-select: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* ===== GALLERY ===== */
@@ -509,8 +509,8 @@
     /* Profundidad atmosférica detrás de toda la página */
     body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
       background:
-        radial-gradient(1100px 720px at 82% -8%, rgba(15,74,115,0.32), transparent 62%),
-        radial-gradient(900px 640px at -12% 42%, rgba(15,74,115,0.18), transparent 58%),
+        radial-gradient(1100px 720px at 82% -8%, rgba(150,22,22,0.34), transparent 62%),
+        radial-gradient(900px 640px at -12% 42%, rgba(150,22,22,0.20), transparent 58%),
         radial-gradient(1000px 700px at 55% 115%, rgba(247,146,70,0.08), transparent 60%);
     }
     ::selection { background: rgba(247,146,70,0.4); color: #fff; }
@@ -542,7 +542,7 @@
 
     /* Hero — entrada cinematográfica + color grade */
     .hero::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-      background: linear-gradient(168deg, rgba(15,74,115,0.45) 0%, transparent 42%, transparent 62%, rgba(239,127,51,0.28) 100%);
+      background: linear-gradient(168deg, rgba(155,20,20,0.48) 0%, transparent 42%, transparent 62%, rgba(239,127,51,0.24) 100%);
       mix-blend-mode: soft-light; }
     @keyframes sauceFade { from { opacity: 0; } to { opacity: 1; } }
     @keyframes sauceRise { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: translateY(0); } }
@@ -644,11 +644,11 @@
     .gallery-item img { filter: saturate(0.92) contrast(1.02);
       transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), opacity 0.35s, filter 0.35s; }
     .gallery-item:hover img { filter: saturate(1.08) contrast(1.03); transform: scale(1.05); }
-    .gallery-item .overlay { background: linear-gradient(to top, rgba(0,0,0,0.72), rgba(15,74,115,0.18) 55%, transparent 75%); }
+    .gallery-item .overlay { background: linear-gradient(to top, rgba(0,0,0,0.72), rgba(150,22,22,0.22) 55%, transparent 75%); }
     .archive-tag { background: linear-gradient(140deg, #e0723f, var(--cc-orange)); box-shadow: 0 8px 24px rgba(247,146,70,0.28); }
 
     /* Contacto */
-    .contact-lead em { background: linear-gradient(120deg, #cfe7f7, var(--cc-blue));
+    .contact-lead em { background: linear-gradient(120deg, #ff9a7a, #b3261e);
       -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
     .btn-outline, .footer-let { transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.25s; }
     .btn-outline:hover, .footer-let:hover { background: rgba(255,255,255,0.06); transform: translateY(-1px); }
@@ -780,7 +780,7 @@
   <!-- HERO — video -->
   <section class="hero" id="stage">
     <div class="hero-bg">
-      <video class="hero-video" autoplay muted playsinline preload="auto" disablepictureinpicture>
+      <video class="hero-video" muted playsinline preload="auto" disablepictureinpicture>
         <source src="https://res.cloudinary.com/dheiidsny/video/upload/v1785788249/vfsdvfdUntitled_Project_27_td8jtr.webm" type="video/webm">
       </video>
       <div class="hero-scan"></div>
@@ -913,11 +913,11 @@
   <section id="galeria">
     <div class="sec-head sec-head-archive"><span class="label">Archivo</span><span class="archive-tag">● Latest Event · Casa Corona 2026</span></div>
     <div class="gallery-grid">
-      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/v1780844333/IncognitoNeptunos3_k2gshq.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844351/IncognitoNeptunos112_rt2sut.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844342/IncognitoNeptunos167_hs4jcs.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844392/IncognitoNeptunos144_g5nomc.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
-      <a href="https://incognito10.pixieset.com/casacapri/" target="_blank" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/q_auto/f_auto/v1780844441/IncognitoNeptunos4_txymef.jpg" alt="Casa Capri" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacoronaxincognito-1/" target="_blank" rel="noopener" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,g_auto:faces,ar_4:3,w_1400,q_auto,f_auto/v1785858580/JHH01875_w9xvey.webp" alt="Casa Corona × Incognito" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacoronaxincognito-1/" target="_blank" rel="noopener" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,g_auto:faces,ar_5:4,w_800,q_auto,f_auto/v1785858580/JHH02587_qgphb8.webp" alt="Casa Corona × Incognito" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacoronaxincognito-1/" target="_blank" rel="noopener" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,g_auto:faces,ar_5:4,w_800,q_auto,f_auto/v1785858580/JHH02080_ohhdch.webp" alt="Casa Corona × Incognito" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacoronaxincognito-1/" target="_blank" rel="noopener" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,g_auto:faces,ar_16:10,w_800,q_auto,f_auto/v1785858580/JHH02013_fyma48.webp" alt="Casa Corona × Incognito" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
+      <a href="https://incognito10.pixieset.com/casacoronaxincognito-1/" target="_blank" rel="noopener" class="gallery-item"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,g_auto:faces,ar_16:10,w_800,q_auto,f_auto/v1785858580/JHH02105_auwuu5.webp" alt="Casa Corona × Incognito" loading="lazy"><div class="overlay"><span class="overlay-label">Ver galería →</span></div></a>
     </div>
     <div class="gallery-foot gallery-foot-2">
       <a href="https://incognito10.pixieset.com/casacoronaxincognito-1/" target="_blank" rel="noopener" class="btn-outline btn-solid">Ver galería Casa Corona 2026 →</a>
@@ -1184,35 +1184,62 @@
       }, {threshold: 0.12, rootMargin: '0px 0px -36px 0px'});
       targets.forEach(function(el){ el.classList.add('reveal'); io.observe(el); });
     })();
-    // ===== HERO VIDEO — loop ping-pong (va y vuelve) =====
+    // ===== HERO VIDEO — avanza con el scroll (scrub) =====
     (function(){
-      var v = document.querySelector('.hero-video'); if(!v) return;
-      v.muted = true; v.playsInline = true; v.loop = false;
-      var dir = 1, last = 0, EDGE = 0.06;
+      var v = document.querySelector('.hero-video');
+      var hero = document.getElementById('stage');
+      if(!v || !hero) return;
 
-      function go(){ var p = v.play(); if(p && p.catch) p.catch(function(){}); }
-      go();
+      v.muted = true; v.playsInline = true; v.loop = false;
+      var target = 0, cur = 0, ready = false;
+
+      // "desbloquear" el decoder para que el seek pinte frames (iOS/Safari)
+      function prime(){
+        var p = v.play();
+        if(p && p.then) p.then(function(){ v.pause(); v.currentTime = 0; }).catch(function(){});
+        else { try{ v.pause(); }catch(e){} }
+      }
+
+      var lastTick = 0;
+
+      function seek(p){
+        if(!ready || !v.duration) return;
+        var t = p * (v.duration - 0.05);
+        if(Math.abs(v.currentTime - t) > 0.012){
+          try { v.currentTime = t; } catch(e){}
+        }
+      }
+
+      function calc(){
+        var range = Math.max(hero.offsetHeight, window.innerHeight, 420);
+        target = Math.min(1, Math.max(0, window.scrollY / range));
+        // si rAF está throttled (pestaña en segundo plano, reduced motion, etc.)
+        // se aplica directo para que el video igual siga al scroll
+        if(performance.now() - lastTick > 250){ cur = target; seek(cur); }
+      }
 
       function frame(t){
-        var dt = last ? (t - last) / 1000 : 0; last = t;
-        if(v.duration){
-          if(dir === 1){
-            if(v.currentTime >= v.duration - EDGE){ dir = -1; v.pause(); }
-          } else {
-            var next = v.currentTime - dt;
-            if(next <= EDGE){ v.currentTime = 0; dir = 1; go(); }
-            else { v.currentTime = next; }
-          }
-        }
+        lastTick = t;
+        cur += (target - cur) * 0.14;                       // suavizado
+        seek(cur);
         requestAnimationFrame(frame);
       }
-      requestAnimationFrame(frame);
 
-      // Safari/iOS: reactivar si el autoplay quedó bloqueado
-      document.addEventListener('visibilitychange', function(){ if(!document.hidden && dir === 1) go(); });
-      ['touchstart','click','scroll','keydown'].forEach(function(e){
-        window.addEventListener(e, function(){ if(dir === 1) go(); }, {once:true, passive:true});
+      var started = false;
+      function start(){
+        if(started) return; started = true;
+        ready = true; calc(); requestAnimationFrame(frame);
+      }
+      if(v.readyState >= 1) start();
+      ['loadedmetadata','loadeddata','canplay'].forEach(function(e){ v.addEventListener(e, start); });
+      setTimeout(start, 1200);           // red de seguridad
+
+      window.addEventListener('scroll', calc, {passive:true});
+      window.addEventListener('resize', calc);
+      ['touchstart','click','keydown'].forEach(function(e){
+        window.addEventListener(e, prime, {once:true, passive:true});
       });
+      prime();
     })();
 
   </script>
