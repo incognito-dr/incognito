@@ -843,6 +843,55 @@
     .hero .hero-grain { opacity:.34 !important; }
     .hero .hero-scan { opacity:.7; }
     .hero .hero-vignette { background: radial-gradient(ellipse at center 50%, transparent 26%, rgba(0,0,0,.62) 78%, rgba(0,0,0,.92) 100%); }
+
+    /* ===== BLURB DEL HERO ===== */
+    .hero-blurb { position:relative; z-index:10; margin-top:2.1rem; text-align:center; padding:0 1.4rem; }
+    .hb-line { font-family: var(--font-mono); font-size:12px; line-height:2.15; letter-spacing:0.2em;
+      text-transform:uppercase; color:rgba(255,255,255,.82);
+      opacity:0; filter:blur(9px); transform:translateY(8px);
+      animation: hbIn 1.15s cubic-bezier(.16,1,.3,1) forwards; }
+    .hb-line:nth-child(1){ animation-delay:.35s; }
+    .hb-line:nth-child(2){ animation-delay:.62s; }
+    .hb-line:nth-child(3){ animation-delay:1.05s; }
+    @keyframes hbIn { to { opacity:1; filter:blur(0); transform:none; } }
+
+    /* la última línea vive en otro registro: se desvanece y glitchea */
+    .hb-ghost { position:relative; margin-top:.55rem; color:rgba(255,255,255,.42);
+      font-style:normal; letter-spacing:0.3em; }
+    .hb-ghost::before, .hb-ghost::after {
+      content:'Before you knew the name.'; position:absolute; left:0; right:0; top:0;
+      opacity:0; pointer-events:none; }
+    .hb-ghost::before { color:#ff3b30; animation: ghostR 6.5s steps(1) infinite 2s; }
+    .hb-ghost::after  { color:#37d6ff; animation: ghostC 6.5s steps(1) infinite 2s; }
+    @keyframes ghostR {
+      0%,100%{ opacity:0; transform:translate(0,0); }
+      42%    { opacity:0; }
+      42.4%  { opacity:.85; transform:translate(-3px,1px); }
+      43.2%  { opacity:.6;  transform:translate(2px,-1px); }
+      44%    { opacity:0; transform:translate(0,0); }
+      74%    { opacity:0; }
+      74.4%  { opacity:.7; transform:translate(2px,0); }
+      75%    { opacity:0; }
+    }
+    @keyframes ghostC {
+      0%,100%{ opacity:0; transform:translate(0,0); }
+      42%    { opacity:0; }
+      42.4%  { opacity:.8; transform:translate(3px,-1px); }
+      43.2%  { opacity:.55; transform:translate(-2px,1px); }
+      44%    { opacity:0; transform:translate(0,0); }
+      74%    { opacity:0; }
+      74.4%  { opacity:.65; transform:translate(-2px,0); }
+      75%    { opacity:0; }
+    }
+    /* respiración lenta de la línea fantasma */
+    .hb-ghost { animation: hbIn 1.15s cubic-bezier(.16,1,.3,1) 1.05s forwards, ghostBreathe 5s ease-in-out 2.2s infinite; }
+    @keyframes ghostBreathe { 0%,100%{ opacity:.42; } 50%{ opacity:.68; } }
+
+    @media (max-width:860px){
+      .hero-blurb { margin-top:1.6rem; }
+      .hb-line { font-size:10px; letter-spacing:0.16em; line-height:2; }
+      .hb-ghost { letter-spacing:0.22em; }
+    }
   </style>
 </head>
 <body>
@@ -890,6 +939,11 @@
         <path fill="#fff" d="M623.37,85.42c-.07-.76-.36-1.45-.93-1.57-.5-.1-1.3.3-1.51.8l-1.79,4.31h-1.91s-1.95-4.55-1.95-4.55c-.16-.38-.85-.76-1.21-.7-.53.09-1,.66-1.07,1.26v12.75s-5.82,0-5.82,0v-28.04s5.8,0,5.8,0l4.09,7.88c.22.42.96.85,1.36.82.46-.03,1.04-.45,1.29-.9l3.88-7.79h5.65s0,28.03,0,28.03h-5.88s0-12.31,0-12.31Z"/>
         <path fill="#fff" d="M595.99,97.73h-6.18s-.01-19.34-.01-19.34c-.41-1.94-1.62-3.5-3.62-3.55l-4.17-.11v-5.05s21.77,0,21.77,0l.03,5.05-4.3.13c-2.19.07-3.47,1.98-3.5,4.11v18.75Z"/>
       </svg>
+    <div class="hero-blurb">
+      <p class="hb-line">A closed series by Incognito.</p>
+      <p class="hb-line">One artist per edition. Limited capacity.</p>
+      <p class="hb-line hb-ghost">Before you knew the name.</p>
+    </div>
     <a class="hero-tix" href="https://tix.do/event/ProjectOMAY-1" target="_blank" rel="noopener">Tickets &mdash; First Release</a>
     <div class="hero-soon">Cantidad limitada &middot; Open Bar</div>
     <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
