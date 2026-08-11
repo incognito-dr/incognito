@@ -77,7 +77,7 @@ section{padding:0 calc(var(--pad) + 22px)}
 .hero-media::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.86) 0%,rgba(0,0,0,.46) 24%,rgba(0,0,0,.10) 52%,rgba(0,0,0,.34) 100%)}
 .hero-grain{position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
-.hero-scan{position:absolute;inset:0;pointer-events:none;opacity:.22;
+.hero-scan{position:absolute;inset:0;pointer-events:none;opacity:.3;
   background:repeating-linear-gradient(to bottom,rgba(0,0,0,.5) 0 1px,transparent 1px 3px)}
 .hero-in{position:relative;z-index:5;width:100%;padding:0 calc(var(--pad) + 22px) calc(var(--pad) + 54px);
   color:#fff;display:flex;align-items:flex-end;justify-content:space-between;gap:3rem;flex-wrap:wrap}
@@ -145,7 +145,7 @@ footer{padding:80px calc(var(--pad) + 22px) calc(var(--pad) + 40px);border-top:1
   opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,background .3s}
 .nextup.show{opacity:1;transform:none}
 .nextup:hover{background:var(--paper)}
-.nextup img{width:74px;height:56px;object-fit:cover;flex:0 0 auto}
+.nextup img{width:62px;height:80px;object-fit:cover;flex:0 0 auto;border:1px solid var(--line)}
 .nextup .t{font-family:var(--mono);font-size:10px;letter-spacing:.03em;text-transform:uppercase;line-height:1.75}
 .nextup .t em{font-style:normal;color:var(--grey);display:flex;align-items:center;gap:7px;margin-bottom:5px}
 .nextup .t em::before{content:'';width:6px;height:6px;background:var(--red)}
@@ -244,7 +244,8 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
 .ev-panel{position:relative;aspect-ratio:21/9;border:1px solid var(--line);overflow:hidden;
   display:flex;align-items:center;justify-content:center;transition:border-color .5s,background .5s;
   background:radial-gradient(120% 140% at 50% 40%,rgba(239,237,234,.05),transparent 70%)}
-.ev:hover .ev-panel{border-color:var(--ink);background:radial-gradient(120% 140% at 50% 40%,rgba(239,237,234,.09),transparent 72%)}
+.ev:hover .ev-panel{border-color:var(--ink)}
+.ev:hover .ev-panel::after{background:radial-gradient(78% 92% at 50% 45%,rgba(11,11,11,.24) 0%,rgba(11,11,11,.72) 100%)}
 .ev-panel .corner{position:absolute;width:14px;height:14px;border:0 solid var(--ink);opacity:.75;z-index:3}
 .ev-panel .c1{top:9px;left:9px;border-top-width:1px;border-left-width:1px}
 .ev-panel .c2{top:9px;right:9px;border-top-width:1px;border-right-width:1px}
@@ -252,7 +253,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
 .ev-panel .c4{bottom:9px;right:9px;border-bottom-width:1px;border-right-width:1px}
 .ev-logo{width:min(34vw,420px);transition:transform .7s cubic-bezier(.16,1,.3,1),opacity .5s}
 .ev-logo svg path{fill:var(--ink)}
-.ev:hover .ev-logo{transform:translateY(-16px) scale(.97);opacity:.5}
+.ev:hover .ev-logo{transform:translateY(-18px) scale(.97);opacity:.72}
 .ev-btn{position:absolute;left:50%;bottom:16%;transform:translate(-50%,14px);opacity:0;
   background:var(--ink);color:var(--paper);font-family:var(--mono);font-size:11px;letter-spacing:.04em;
   text-transform:uppercase;padding:13px 24px;z-index:4;white-space:nowrap;
@@ -271,6 +272,67 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
   display:inline-flex;align-items:center;gap:8px;color:var(--grey);cursor:default;opacity:.55}
 .menu .off::before{content:'';width:6px;height:6px;background:currentColor;flex:0 0 auto}
 
+
+
+
+/* ---------- foto del hero ---------- */
+.hero-img{position:absolute;inset:0;overflow:hidden}
+.hero-img i{position:absolute;inset:0;
+  background:url("https://images.genius.com/1d09ec6df99f1dced8933e425cf86645.1000x1000x1.png") 33% 27%/cover no-repeat;
+  transform-origin:33% 27%;                       /* el sombrero manda */
+  filter:grayscale(.58) contrast(1.14) brightness(.86)}
+.hero-img i:nth-child(1){animation:hzoom 26s ease-in-out infinite alternate}
+.hero-img i:nth-child(2){opacity:.6;mix-blend-mode:screen;animation:hgl1 9s steps(1) infinite}
+.hero-img i:nth-child(3){opacity:.42;mix-blend-mode:screen;animation:hgl2 13s steps(1) infinite}
+/* viñeta que aisla el sombrero */
+.hero-img::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(64% 74% at 33% 30%,transparent 0%,rgba(0,0,0,.30) 52%,rgba(0,0,0,.80) 100%)}
+@keyframes hzoom{from{transform:scale(1.05)}to{transform:scale(1.17)}}
+@keyframes hgl1{
+  0%,90%{clip-path:inset(100% 0 0 0);transform:none}
+  91%{clip-path:inset(16% 0 66% 0);transform:translateX(-14px)}
+  93%{clip-path:inset(44% 0 40% 0);transform:translateX(10px)}
+  95%{clip-path:inset(68% 0 16% 0);transform:translateX(-7px)}
+  97%{clip-path:inset(28% 0 58% 0);transform:translateX(16px)}
+  99%{clip-path:inset(100% 0 0 0);transform:none}}
+@keyframes hgl2{
+  0%,84%{clip-path:inset(100% 0 0 0);transform:none}
+  85%{clip-path:inset(30% 0 56% 0);transform:translateX(12px) scaleY(1.04)}
+  88%{clip-path:inset(60% 0 24% 0);transform:translateX(-17px)}
+  91%{clip-path:inset(6% 0 80% 0);transform:translateX(8px)}
+  94%{clip-path:inset(100% 0 0 0);transform:none}}
+
+/* ---------- foto del artista con glitch ---------- */
+.ev-bg{position:absolute;inset:0;overflow:hidden;z-index:0}
+.ev-bg i{position:absolute;inset:0;
+  background:url("https://yt3.googleusercontent.com/9AIzVVBiA_al6vJn0NuLpwYlPS4Ab_tQ0KB9aem4wgvjUuIUqYQKuhZ0VocCWU1DVQP1yE1wyQ=s900-c-k-c0x00ffffff-no-rj") center/cover no-repeat;
+  filter:grayscale(1) contrast(1.2) brightness(.46)}
+.ev-bg i:nth-child(1){animation:evdrift 9s ease-in-out infinite alternate}
+.ev-bg i:nth-child(2){opacity:.7;mix-blend-mode:screen;animation:evgl1 5.6s steps(1) infinite}
+.ev-bg i:nth-child(3){opacity:.55;mix-blend-mode:screen;animation:evgl2 7.3s steps(1) infinite}
+/* rayado de tubo */
+.ev-bg b{position:absolute;inset:0;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,.42) 0 1px,transparent 1px 3px);
+  opacity:.55}
+.ev-panel::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(78% 92% at 50% 45%,rgba(11,11,11,.42) 0%,rgba(11,11,11,.82) 100%)}
+.ev-logo,.ev-btn,.ev-panel .corner{z-index:3}
+.ev-logo svg path{fill:#fff}
+@keyframes evdrift{from{transform:scale(1.04) translateX(-1%)}to{transform:scale(1.1) translateX(1%)}}
+@keyframes evgl1{
+  0%,88%{clip-path:inset(100% 0 0 0);transform:none}
+  89%{clip-path:inset(14% 0 68% 0);transform:translateX(-11px)}
+  91%{clip-path:inset(46% 0 38% 0);transform:translateX(8px)}
+  93%{clip-path:inset(70% 0 14% 0);transform:translateX(-6px)}
+  95%{clip-path:inset(26% 0 60% 0);transform:translateX(13px)}
+  97%{clip-path:inset(58% 0 26% 0);transform:translateX(-9px)}
+  99%{clip-path:inset(100% 0 0 0);transform:none}}
+@keyframes evgl2{
+  0%,80%{clip-path:inset(100% 0 0 0);transform:none}
+  81%{clip-path:inset(34% 0 52% 0);transform:translateX(10px) scaleY(1.03)}
+  84%{clip-path:inset(62% 0 22% 0);transform:translateX(-14px)}
+  87%{clip-path:inset(8% 0 76% 0);transform:translateX(6px)}
+  90%{clip-path:inset(100% 0 0 0);transform:none}}
 
 /* ---------- menú móvil ---------- */
 .mnav{position:fixed;inset:0;z-index:850;background:var(--paper);display:flex;flex-direction:column;
@@ -303,6 +365,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
   .hero-r{align-items:flex-start;text-align:left;max-width:100%}
   .hero-media::after{background:linear-gradient(to top,rgba(0,0,0,.93) 0%,rgba(0,0,0,.72) 30%,rgba(0,0,0,.34) 58%,rgba(0,0,0,.5) 100%)}
   .hero-logo{width:52vw}
+  .hero-img i{background-position:38% 22%;transform-origin:38% 22%}
   .tix{width:100%;justify-content:center}
   .nextup{display:none}
   .sec{padding-top:88px;padding-bottom:88px}
@@ -381,9 +444,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
 <!-- ===== HERO ===== -->
 <section class="hero" id="top">
   <div class="hero-media">
-    <video autoplay muted playsinline loop preload="auto" disablepictureinpicture>
-      <source src="https://res.cloudinary.com/dheiidsny/video/upload/v1785788249/vfsdvfdUntitled_Project_27_td8jtr.webm" type="video/webm">
-    </video>
+    <div class="hero-img" aria-hidden="true"><i></i><i></i><i></i></div>
     <div class="hero-grain"></div>
     <div class="hero-scan"></div>
   </div>
@@ -427,6 +488,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
   <div class="head rv"><span class="lbl">Próximos eventos</span><a class="act" href="https://tix.do/event/ProjectOMAY-1" target="_blank" rel="noopener">Comprar tickets &#8627;</a></div>
   <a class="ev rv" href="https://tix.do/event/ProjectOMAY-1" target="_blank" rel="noopener">
     <div class="ev-panel">
+      <div class="ev-bg" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
       <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
       <div class="ev-logo"><svg viewBox="0 0 676.13 230.23" xmlns="http://www.w3.org/2000/svg" aria-label="Project" role="img">
         <path  d="M272.89,162.05c2.66-3.35,6.6-3.75,10.23-1.79,4.83,2.62,8.34,7.14,12.29,11.13l8.88,8.99c.68.68,2.32,1.14,3.11,1.1.9-.05,2.5-1.39,2.78-2.43,4.95-18.46,5.09-41.22,5.41-60.76l.57-34.83c.14-8.38.85-16.4,2.52-24.53,1.72-8.33,4.99-15.82,10.04-22.6,5.51-7.39,15.74-11.52,22.96-6.24,8.91,6.53,6.04,22.48.81,31.62-6.49,11.34-11.51,22.75-15.29,35.32-5.91,19.68-8.89,39.72-10.29,60.23-.54,7.88-1.81,15.22-3.89,22.7-2.99,10.7-9.5,20.15-21.11,20.23-14.67.1-33.78-7.71-34.49-22.17-.28-5.77,1.84-11.39,5.46-15.96Z"/>
@@ -529,7 +591,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
 
 <!-- ===== NEXT UP ===== -->
 <a class="nextup" id="nextup" href="https://tix.do/event/ProjectOMAY-1" target="_blank" rel="noopener">
-  <img src="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,g_auto:faces,ar_4:3,w_300,q_auto,f_auto/v1785858580/JHH02013_fyma48.webp" alt="">
+  <img src="https://tix-events.s3.amazonaws.com/tix_main_cover_Foto_Tix_Open_Bar_3fda3e1a87.jpg" alt="Project — Omay">
   <span class="t"><em>Next up</em><b>Project &mdash; Omay</b>22 Agosto 2026</span>
 </a>
 
@@ -746,7 +808,7 @@ function submitGL(){
   }
 
   /* ---- parallax + progreso + nav activo ---- */
-  var media=document.querySelector('.hero-media video'),
+  var media=document.querySelector('.hero-img'),
       heroIn=document.querySelector('.hero-in'),
       prog=document.getElementById('prog'),
       secs=[].slice.call(document.querySelectorAll('section[id]')),
