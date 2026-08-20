@@ -418,6 +418,18 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
 .cal-logo.lg-aperol .mark{max-width:74px}
 .cal-logo.lg-project .mark{max-width:112px}
 
+
+/* ---------- cabecera del formulario con marca del evento ---------- */
+.sheet-mark{display:none;height:52px;margin-bottom:24px}
+.sheet-mark.on{display:flex;align-items:center}
+.sheet-mark .mark{width:auto;height:100%;max-width:190px;color:var(--ink)}
+.sheet-mark img{height:100%;width:auto;max-width:150px;object-fit:contain}
+/* acceso a la lista de Project en el hero */
+.hero-gl{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+  color:#fff;display:inline-flex;align-items:center;gap:7px;border-bottom:1px solid rgba(255,255,255,.35);
+  padding-bottom:3px;transition:border-color .3s}
+.hero-gl:hover{border-color:#fff}
+
 /* ---------- menú móvil ---------- */
 .mnav{position:fixed;inset:0;z-index:850;background:var(--paper);display:flex;flex-direction:column;
   align-items:flex-start;justify-content:center;gap:6px;padding:0 calc(var(--pad) + 22px);
@@ -533,7 +545,8 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
     <a href="#galeria">Galería</a>
     <a href="https://tix.do/event/ProjectOMAY-1" target="_blank" rel="noopener">Tickets</a>
     <span class="off">Merch <span class="n">[Pronto]</span></span>
-    <a href="#guestlist">Guest List</a>
+    <a href="#guestlist" onclick="openM('general');return false;">Guest List</a>
+    <a class="gl-proj" href="#guestlist" onclick="openM('project');return false;">Lista &mdash; Project</a>
     <a href="#contacto">Contacto</a>
   </nav>
   <button class="burger" id="burger" aria-expanded="false">Menu</button>
@@ -545,7 +558,8 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
   <a href="#galeria">Galería</a>
   <a href="https://tix.do/event/ProjectOMAY-1" target="_blank" rel="noopener">Tickets</a>
   <span class="mnav-off">Merch &mdash; Pronto</span>
-  <a href="#guestlist">Guest List</a>
+  <a href="#guestlist" onclick="openM('general');return false;">Guest List</a>
+  <a href="#guestlist" onclick="openM('project');return false;">Lista &mdash; Project</a>
   <a href="#contacto">Contacto</a>
 </div>
 
@@ -573,6 +587,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
     </div>
     <div class="hero-r">
       <a class="tix" href="https://tix.do/event/ProjectOMAY-1" target="_blank" rel="noopener">Tickets &mdash; First Release &#8627;</a>
+      <a class="hero-gl" href="#guestlist" onclick="openM('project');return false;">Entrar a la lista &#8627;</a>
       <span class="hero-note">22 Agosto &middot; Reales Colonial<br>Cantidad limitada &middot; Open Bar</span>
     </div>
   </div>
@@ -608,7 +623,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
       </div>
       <p class="ev-note">First release. Cantidad limitada. Open bar.</p>
     </a>
-    <a class="ev ev-sm" href="#guestlist" onclick="openM();return false;">
+    <a class="ev ev-sm" href="#guestlist" onclick="openM('aperol');return false;">
       <div class="ev-panel" style="--img:url('https://res.cloudinary.com/dheiidsny/image/upload/c_fill,w_900,q_auto,f_auto/v1786652127/162504c2a988c7caa6a1da6c7255784d_eze0uq.jpg')">
         <div class="ev-bg" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
         <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
@@ -621,7 +636,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
       </div>
       <p class="ev-note">Dos días de torneo. Una cancha deja de ser cancha cuando baja el sol.</p>
     </a>
-    <a class="ev ev-sm" href="#guestlist" onclick="openM();return false;">
+    <a class="ev ev-sm" href="#guestlist" onclick="openM('oasis');return false;">
       <div class="ev-panel" style="--img:url('https://res.cloudinary.com/dheiidsny/image/upload/c_fill,w_900,q_auto,f_auto/v1780844342/IncognitoNeptunos167_hs4jcs.jpg')">
         <div class="ev-bg" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
         <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
@@ -634,7 +649,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
       </div>
       <p class="ev-note">Frente al mar. Se anuncia el line-up más cerca de la fecha.</p>
     </a>
-    <a class="ev ev-sm" href="#guestlist" onclick="openM();return false;">
+    <a class="ev ev-sm" href="#guestlist" onclick="openM('noche');return false;">
       <div class="ev-panel" style="--img:url('https://media.timeout.com/images/106195297/image.jpg')">
         <div class="ev-bg" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
         <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
@@ -657,19 +672,19 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
       <span class="cal-l">Reales Colonial &middot; Santo Domingo</span>
       <span class="cal-a">Tickets &#8627;</span>
     </a>
-    <a class="cal-row" href="#guestlist" onclick="openM();return false;">
+    <a class="cal-row" href="#guestlist" onclick="openM('aperol');return false;">
       <span class="cal-d">Ago 29&ndash;30<span>Sáb &amp; Dom</span></span>
       <span class="cal-logo lg-aperol"><svg class="mark"><use href="#lg-aperol"/></svg></span><span class="cal-n">Aperol Sunset</span>
       <span class="cal-l">Grove Padel Club</span>
       <span class="cal-a">Guest List &#8627;</span>
     </a>
-    <a class="cal-row" href="#guestlist" onclick="openM();return false;">
+    <a class="cal-row" href="#guestlist" onclick="openM('oasis');return false;">
       <span class="cal-d">Sep 12<span>Sábado</span></span>
       <span class="cal-logo lg-1800"><img src="https://www.cuervo.com.mx/assets/img/botellas/1800/1800.png" alt="1800"></span><span class="cal-n">Oasis 1800</span>
       <span class="cal-l">Neptuno&rsquo;s &middot; Boca Chica</span>
       <span class="cal-a">Guest List &#8627;</span>
     </a>
-    <a class="cal-row" href="#guestlist" onclick="openM();return false;">
+    <a class="cal-row" href="#guestlist" onclick="openM('noche');return false;">
       <span class="cal-d">Oct<span>Por confirmar</span></span>
       <span class="cal-logo lg-noche"><svg class="mark"><use href="#lg-noche"/></svg></span><span class="cal-n">Noche Eterna</span>
       <span class="cal-l">Locación TBA</span>
@@ -698,7 +713,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
       <h2 class="h2 rv">Todos aplican.<br>No todos entran.</h2>
       <div class="rv">
         <p>La lista se revisa perfil por perfil antes de cada edición. Registrarte no garantiza entrada: garantiza que te vamos a mirar. Si pasas, te llega el correo con tu nombre en puerta.</p>
-        <button class="gl-btn" onclick="openM()">Solicitar acceso &#8627;</button>
+        <button class="gl-btn" onclick="openM('general')">Solicitar acceso &#8627;</button>
       </div>
     </div>
   </div>
@@ -751,7 +766,7 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
     </div>
     <div class="ft-col">
       <h4>[Comunidad]</h4>
-      <a href="#guestlist" onclick="openM();return false;">&#8599; Entrar a la lista</a>
+      <a href="#guestlist" onclick="openM('general');return false;">&#8599; Entrar a la lista</a>
     </div>
   </div>
 </footer>
@@ -766,9 +781,10 @@ a:hover .sw>u+u,button:hover .sw>u+u{transform:none}
 <div class="mask" id="mask">
   <div class="sheet">
     <button class="x" onclick="closeM()">&#10005;</button>
-    <span class="lbl">Guest List</span>
-    <h3>Solicitar acceso</h3>
-    <p class="sub">Se revisa perfil por perfil. Si pasas, te llega el correo.</p>
+    <div class="sheet-mark" id="sheetMark"><svg class="mark"><use href="#lg-project"/></svg></div>
+    <span class="lbl" id="sheetLbl">Guest List</span>
+    <h3 id="sheetTitle">Solicitar acceso</h3>
+    <p class="sub" id="sheetSub">Se revisa perfil por perfil. Si pasas, te llega el correo.</p>
     <div class="fld"><label>Nombre y apellido *</label><input id="gl-nombre" type="text" autocomplete="name"></div>
     <div class="fld"><label>Instagram</label><input id="gl-ig" type="text" placeholder="@"></div>
     <div class="fld"><label>Correo *</label><input id="gl-email" type="email" autocomplete="email"></div>
@@ -795,7 +811,47 @@ window.addEventListener('scroll',function(){
 },{passive:true});
 
 // ---- modal ----
-function openM(){document.getElementById('mask').classList.add('open');document.body.style.overflow='hidden'}
+/* ===== Para que las solicitudes de Project caigan en su propia pestaña del Sheet,
+   el Google Form necesita una pregunta que identifique el evento.
+   Añádela en el form y pega aquí su entry ID (ej: 'entry.123456789').
+   Mientras esté vacío, todo se envía igual pero sin etiqueta de evento. ===== */
+var ENTRY_EVENTO = '';
+
+var EVENTOS_GL = {
+  general: {lbl:'Guest List', titulo:'Solicitar acceso',
+            sub:'Se revisa perfil por perfil. Si pasas, te llega el correo.',
+            marca:null, valor:'General'},
+  project: {lbl:'Guest List &middot; Project', titulo:'Omay &mdash; 22 Agosto',
+            sub:'Capacidad cerrada. La lista se revisa perfil por perfil antes de la fecha.',
+            marca:'#lg-project', valor:'Project — Omay · 22 Ago 2026'},
+  aperol:  {lbl:'Guest List &middot; Aperol Sunset', titulo:'29 &amp; 30 de Agosto',
+            sub:'Grove Padel Club. Dos días de torneo, una cancha que cambia de oficio.',
+            marca:'#lg-aperol', valor:'Aperol Sunset · 29-30 Ago 2026'},
+  oasis:   {lbl:'Guest List &middot; Oasis 1800', titulo:'12 de Septiembre',
+            sub:'Neptuno&rsquo;s, Boca Chica. El line-up se anuncia más cerca de la fecha.',
+            marca:'https://www.cuervo.com.mx/assets/img/botellas/1800/1800.png', valor:'Oasis 1800 · 12 Sep 2026'},
+  noche:   {lbl:'Guest List &middot; Noche Eterna', titulo:'Octubre 2026',
+            sub:'Cierre de temporada. Fecha y locación por confirmar.',
+            marca:'#lg-noche', valor:'Noche Eterna · Oct 2026'}
+};
+var glEvento = 'general';
+
+function openM(cual){
+  var e = EVENTOS_GL[cual] || EVENTOS_GL.general;
+  glEvento = EVENTOS_GL[cual] ? cual : 'general';
+  document.getElementById('sheetLbl').innerHTML = e.lbl;
+  document.getElementById('sheetTitle').innerHTML = e.titulo;
+  document.getElementById('sheetSub').innerHTML = e.sub;
+  var mk = document.getElementById('sheetMark');
+  if(e.marca){
+    mk.innerHTML = e.marca.charAt(0)==='#'
+      ? '<svg class="mark"><use href="'+e.marca+'"/></svg>'
+      : '<img src="'+e.marca+'" alt="">';
+    mk.classList.add('on');
+  } else { mk.innerHTML=''; mk.classList.remove('on'); }
+  document.getElementById('mask').classList.add('open');
+  document.body.style.overflow='hidden';
+}
 function closeM(){document.getElementById('mask').classList.remove('open');document.body.style.overflow=''}
 document.getElementById('mask').addEventListener('click',function(e){if(e.target===this)closeM()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM()});
@@ -814,6 +870,7 @@ function submitGL(){
   var fd=new FormData();
   fd.append('entry.1878848955',nom);fd.append('entry.606152112',ig);
   fd.append('entry.1036826748',em);fd.append('entry.1279170666',tel);fd.append('entry.1876775928',dir);
+  if(ENTRY_EVENTO) fd.append(ENTRY_EVENTO, (EVENTOS_GL[glEvento]||EVENTOS_GL.general).valor);
   fetch('https://docs.google.com/forms/d/e/1FAIpQLScwo44RL7F8o77b61uhhDNDELvwu4e2vqZp6goeofPyNZvIoQ/formResponse',{method:'POST',mode:'no-cors',body:fd})
     .then(function(){
       b.textContent='Recibido &#10003;';
