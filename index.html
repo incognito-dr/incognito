@@ -94,7 +94,7 @@ section{padding:0 calc(var(--pad) + 22px)}
 /* ---------- HERO ---------- */
 .hero{height:100svh;min-height:600px;position:relative;padding:0;display:flex;align-items:flex-end}
 .hero-media{position:absolute;inset:0;overflow:hidden;background:#1a1512}
-.hero-media video{width:100%;height:100%;object-fit:cover;filter:grayscale(.15) contrast(1.08)}
+.hero-media video{width:100%;height:100%;object-fit:cover}
 .hero-media::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.86) 0%,rgba(0,0,0,.46) 24%,rgba(0,0,0,.10) 52%,rgba(0,0,0,.34) 100%)}
 .hero-grain{position:absolute;inset:0;pointer-events:none;opacity:.5;mix-blend-mode:overlay;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
@@ -589,8 +589,9 @@ header.on-light .burger{color:#0c332e;font-weight:500}
 }
 
 /* ================= HERO EN VIDEO ================= */
-.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:saturate(.92) contrast(1.04);
+.hero-media video.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.92) contrast(1.04) blur(5px);
+  transform:scale(1.06);
   /* el póster va como fondo del propio video: se ve desde el primer instante */
   background-position:center center;background-size:cover;background-repeat:no-repeat;
   background-color:#1a1512}
@@ -687,7 +688,7 @@ header.on-light .burger{color:#0c332e;font-weight:500}
 <section class="hero" id="top">
   <div class="hero-media">
     <video class="hero-vid" id="heroVid" autoplay muted loop playsinline preload="metadata" poster="https://res.cloudinary.com/dheiidsny/video/upload/so_1,w_1400,f_jpg,q_auto/v1788379064/Desktop_qofwtx.jpg"
-           data-desktop="https://res.cloudinary.com/dheiidsny/video/upload/f_auto:video,q_auto:low,w_1600,c_limit/v1788379064/Desktop_qofwtx.mp4" data-mobile="https://res.cloudinary.com/dheiidsny/video/upload/f_auto:video,q_auto:eco,w_900,c_limit/v1788379060/Mobile_yzdm6j.mp4" data-poster-mobile="https://res.cloudinary.com/dheiidsny/video/upload/so_1,w_800,f_jpg,q_auto/v1788379060/Mobile_yzdm6j.jpg"></video>
+           data-desktop="https://res.cloudinary.com/dheiidsny/video/upload/v1788379064/Desktop_qofwtx.mov" data-desktop-mp4="https://res.cloudinary.com/dheiidsny/video/upload/q_auto:best/v1788379064/Desktop_qofwtx.mp4" data-mobile="https://res.cloudinary.com/dheiidsny/video/upload/v1788379060/Mobile_yzdm6j.mov" data-mobile-mp4="https://res.cloudinary.com/dheiidsny/video/upload/q_auto:best/v1788379060/Mobile_yzdm6j.mp4" data-poster-mobile="https://res.cloudinary.com/dheiidsny/video/upload/so_1,w_800,f_jpg,q_auto/v1788379060/Mobile_yzdm6j.jpg"></video>
     <div class="hero-grain"></div>
     <div class="hero-scan"></div>
   </div>
@@ -1171,16 +1172,23 @@ function submitGL(){
 })();
 
 
-/* ---- video del hero: se elige uno solo, según el dispositivo ---- */
+/* ---- video del hero: un solo archivo, elegido por dispositivo ---- */
 (function(){
   var v=document.getElementById('heroVid');
   if(!v) return;
   var movil = window.matchMedia('(max-width:760px)').matches;
   var poster = movil && v.dataset.posterMobile ? v.dataset.posterMobile : v.poster;
   v.poster = poster;
-  /* el póster también como fondo: pinta al instante y evita el negro inicial */
   v.style.backgroundImage = 'url("' + poster + '")';
-  v.src = movil ? v.dataset.mobile : v.dataset.desktop;
+  /* el .mov original va primero: Safari lo usa tal cual.
+     Chrome y Firefox no leen QuickTime y caen al mp4 de máxima calidad. */
+  var mov = movil ? v.dataset.mobile : v.dataset.desktop;
+  var mp4 = movil ? v.dataset.mobileMp4 : v.dataset.desktopMp4;
+  [[mov,'video/quicktime'],[mp4,'video/mp4']].forEach(function(par){
+    var so=document.createElement('source');
+    so.src=par[0]; so.type=par[1];
+    v.appendChild(so);
+  });
   v.load();
   var intento = v.play();
   if(intento && intento.catch) intento.catch(function(){});
