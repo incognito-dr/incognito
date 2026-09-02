@@ -564,6 +564,29 @@ header.on-light .burger{color:#0c332e;font-weight:500}
 @media(max-width:760px){
   .hsting{left:auto;right:-6px;top:-88%;width:min(64px,17vw)}
 }
+
+/* ===== hero centrado en móvil ===== */
+@media(max-width:760px){
+  .hero-in{align-items:center;text-align:center;gap:1.4rem;
+    padding-left:calc(var(--pad) + 16px);padding-right:calc(var(--pad) + 16px)}
+  .hero-l{text-align:center;width:100%}
+  .hero-l p{margin:0 auto;max-width:34ch}
+  .hero-logo{margin-left:auto;margin-right:auto;margin-bottom:20px}
+  .hero-r{align-items:center;text-align:center;width:100%;max-width:100%}
+  .hero-note{text-align:center}
+  .hero .tix{width:100%;justify-content:center}
+  /* el stingray se queda arriba del logo, ahora centrado con él */
+  .hsting{left:auto;right:-14%;top:-74%;width:min(60px,16vw)}
+}
+
+/* ===== móvil: el bloque va al centro vertical, no pegado abajo ===== */
+@media(max-width:760px){
+  .hero{align-items:center}
+  .hero-in{padding-top:calc(var(--pad) + 64px);padding-bottom:calc(var(--pad) + 34px)}
+  /* con el espacio recuperado, el logo puede respirar más */
+  .hero-logo{height:min(23vh,190px);margin-bottom:24px}
+  .hsting{right:-2%;top:-64%;width:min(124px,32vw)}
+}
 </style>
 </head>
 <body>
