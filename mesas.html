@@ -365,7 +365,7 @@ const OCCUPIED = new Set([]);
 const VENDIDA_EL = {};            // mesa -> Date de la venta (columna `vendida_el` del Sheet, opcional)
 
 /* ---- Apps Script opcional (ver oasis-apps-script.gs): presencia real + lectura en vivo sin hacer pública la hoja ---- */
-const SCRIPT_URL = '';            // URL /exec de la aplicación web. Vacío = apagado.
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfpCTmgZEHNMzamgdXquBXh_EqVmKzkvYCprse0nxGrZQKTJ_gbbfcJp5-nz_l4_Xm/exec';            // URL /exec de la aplicación web. Vacío = apagado.
 const PRESENCIA_MINIMO = 3;       // "N viendo el mapa" solo se muestra a partir de este número   // todas libres — agrega IDs aquí a medida que se vendan
 const stage = document.getElementById('stage');
 const selected = new Map();
