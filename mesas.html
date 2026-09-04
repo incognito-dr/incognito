@@ -66,6 +66,9 @@ h1 em{font-style:italic;color:var(--plaque)}
 .legend span{display:flex;align-items:center;gap:8px;color:#3d5c56;opacity:1;font-family:var(--body);font-size:11px;letter-spacing:0.02em}
 .viewers{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-family:var(--body);font-size:11px;color:#777;letter-spacing:0.02em}
 .viewers .stamp{opacity:.65}
+/* mientras llega el Sheet, los precios y contadores se ven como placeholder, nunca como un número viejo */
+html.cargando .tier .pr,html.cargando .chips b,html.cargando #total,html.cargando #viewerCount,html.cargando #mbarSub,html.cargando #sellist .rt{color:transparent !important;background:rgba(1,49,49,.08);border-radius:4px;animation:skelPulse 1.2s ease-in-out infinite}
+@keyframes skelPulse{50%{opacity:.4}}
 .actividad{text-align:center;margin-top:6px;font-family:var(--body);font-size:11px;color:#5d716c;letter-spacing:0.02em}
 .viewers-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:vPulse 1.6s ease-in-out infinite}
 @keyframes vPulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -641,6 +644,12 @@ function avisoVendida(ids){
 
 /* ---- lectura: cada pestaña prueba primero en vivo (gviz) y, si falla, el respaldo publicado ---- */
 var sheetEstado = { fuente:{}, hora:null, errores:[], n:0, firma:'', vivoReintento:0, ultimoFallo:null };
+document.documentElement.classList.add('cargando');
+const listo = () => document.documentElement.classList.remove('cargando');
+/* lo último que este dispositivo vio del Sheet se guarda y se pinta al instante en la siguiente visita; la red lo corrige si cambió */
+const CACHE_KEY='oasisSheet';
+function leerCache(){ try{ const c=JSON.parse(localStorage.getItem(CACHE_KEY)||'null'); return (c && c.cats && c.mesas) ? c : null; }catch(_){ return null; } }
+function guardarCache(cats,mesas){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify({cats:cats,mesas:mesas,t:Date.now()})); }catch(_){} }
 const DEV=/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol==='file:';
 const horaCorta = d => d.toTimeString().slice(0,5);
 
@@ -757,11 +766,14 @@ async function cargarSheet(){
         document.documentElement.dataset.sheet='error';
         console.warn('Sheet: no se pudo leer ninguna pestaña; se usan los valores del código', sheetEstado.errores);
       }
+      listo();
       return;
     }
     sheetEstado.ultimoFallo=null;
     const firma=JSON.stringify([cats,mesas]);
     if(firma!==sheetEstado.firma){ sheetEstado.n=applySheet(cats,mesas); sheetEstado.firma=firma; }
+    const prev=leerCache()||{}; guardarCache(cats||prev.cats||null, mesas||prev.mesas||null);
+    listo();
     sheetEstado.hora=new Date();
     renderAvailability();
     document.documentElement.dataset.sheet='ok:'+sheetEstado.n+':'+(sheetEstado.fuente.categorias||'?')+'/'+(sheetEstado.fuente.mesas||'?')+':'+horaCorta(sheetEstado.hora);
@@ -769,6 +781,11 @@ async function cargarSheet(){
     console.warn('Sheet: error inesperado', e);
   }finally{ sheetCargando=false; pintarDebug(); }
 }
+(function(){
+  const c=leerCache();
+  if(c){ sheetEstado.n=applySheet(c.cats,c.mesas); sheetEstado.firma=JSON.stringify([c.cats,c.mesas]); sheetEstado.fuente={categorias:'cache',mesas:'cache'}; listo(); }
+})();
+setTimeout(listo, 3500);   // si el Sheet tarda más, se enseñan los valores del código antes que un hueco
 cargarSheet();
 setInterval(()=>{ if(document.visibilityState==='visible') cargarSheet(); }, 60000);
 document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') cargarSheet(); });
