@@ -225,6 +225,44 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
   .mapcard{border:none}
 }
 }
+
+/* ===== móvil: cabecera compacta + chips de precio pegajosos (recomendación de la auditoría UX) ===== */
+.chips{display:none}
+@media(min-width:761px){.chips{display:none !important}}
+@media(max-width:760px){
+  .layout>div{min-width:0}
+  /* cabecera de 56px: logo a la izquierda, fecha a la derecha */
+  .head{display:flex;align-items:center;justify-content:space-between;gap:10px;height:56px;
+    padding:0 4px;margin-bottom:10px}
+  .head .kicker,.head .ev-line,.head .sting{display:none}
+  .oasis-logo{max-width:none;height:32px;width:auto;margin:0;flex:0 0 auto}
+  .oasis-logo svg{height:32px;width:auto}
+  .ev-facts{margin:0;max-width:none;flex:1 1 auto;justify-content:flex-end;gap:10px}
+  .fact{padding:0;flex:0 0 auto;flex-direction:row;align-items:baseline;gap:5px}
+  .fact+.fact{border-left:none}
+  .fact span{display:none}
+  .fact b{font-size:12px;white-space:nowrap}
+  .fact em{display:none}
+  /* chips */
+  .chips{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+    height:56px;padding:6px 20px;margin:0 -20px 8px;background:rgba(229,230,230,.96);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(1,49,49,.12)}
+  .chips button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+    background:#fff;border:1px solid rgba(1,49,49,.16);border-radius:8px;padding:4px 2px;min-width:0;
+    font-family:var(--body);color:var(--plaque);cursor:pointer}
+  .chips button i{width:7px;height:7px;border-radius:50%;display:block;margin-bottom:2px}
+  .chips button b{font-size:13px;font-weight:700;line-height:1;letter-spacing:-.01em}
+  .chips button span{font-size:9.5px;line-height:1.1;color:#5d716c;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .chips button.on{background:var(--deep);border-color:var(--deep);color:#fff}
+  .chips button.on span{color:rgba(255,255,255,.8)}
+  .map-stage.filter .badge:not(.tier-on){opacity:.35}
+  /* la leyenda de colores sobra: los chips ya los explican */
+  .legend span:not(:nth-last-child(-n+2)){display:none}
+  /* en móvil sobra la lista de selección y el segundo botón: la barra fija ya lo hace */
+  #sellist,#cta{display:none}
+  /* la viñeta oscurecía justo las fichas cerca del pulgar */
+  body::before{display:none}
+}
 </style>
 </head>
 <body>
@@ -243,16 +281,22 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
 
   <div class="layout">
     <div>
+      <div class="chips" id="chips" aria-label="Categorías y precios">
+        <button data-tier="A"><i style="background:#008E87"></i><b>RD$120k</b><span>Stage Lounge</span></button>
+        <button data-tier="B"><i style="background:#257F78"></i><b>RD$80k</b><span>Stage Table</span></button>
+        <button data-tier="C"><i style="background:#83622E"></i><b>RD$50k</b><span>Deck Lounge</span></button>
+        <button data-tier="D"><i style="background:#4F7354"></i><b>RD$30k</b><span>Garden Table</span></button>
+      </div>
       <div class="mapcard">
         <div class="map-stage" id="stage">
-          <img id="mapimg" width="3072" height="5504" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_1400,c_limit/v1788492072/hf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_dxzmxh.webp" alt="Mapa Oasis 1800">
+          <img id="mapimg" width="3072" height="5504" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_1000,c_limit/v1788492072/hf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_dxzmxh.webp" alt="Mapa Oasis 1800">
         </div>
       </div>
-      <div class="legend">
+      <div class="legend" id="legend">
         <span><i class="dot" style="background:#008E87"></i> Stage Lounge</span>
-        <span><i class="dot" style="background:#5FB9B0"></i> Stage Table</span>
-        <span><i class="dot" style="background:#B8935A"></i> Deck Lounge</span>
-        <span><i class="dot" style="background:#7A9E7E"></i> Garden Table</span>
+        <span><i class="dot" style="background:#257F78"></i> Stage Table</span>
+        <span><i class="dot" style="background:#83622E"></i> Deck Lounge</span>
+        <span><i class="dot" style="background:#4F7354"></i> Garden Table</span>
         <span><i class="dot" style="background:var(--selected)"></i> Tu selección</span>
         <span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>
       </div>
@@ -262,20 +306,7 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
     <aside class="panel" id="panel">
       <h2>Tu selección</h2>
       <div class="pnote">Toca una mesa en el mapa</div>
-      <div class="tiers">
-        <div class="tier"><span class="sw" style="background:#008E87"></span>
-          <div><b>Stage Lounge</b><small>Frente al DJ · 6 a 8 pax · mesas 1, 3, 4, 5</small></div>
-          <span class="pr">RD$120,000</span></div>
-        <div class="tier"><span class="sw" style="background:#5FB9B0"></span>
-          <div><b>Stage Table</b><small>Frente al DJ · 2 a 4 pax · mesas 2, 6 a 13</small></div>
-          <span class="pr">RD$80,000</span></div>
-        <div class="tier"><span class="sw" style="background:#B8935A"></span>
-          <div><b>Deck Lounge</b><small>Cabañas y lounges · 6 a 8 pax · 14, 15, 17, 20, 22, 25</small></div>
-          <span class="pr">RD$50,000</span></div>
-        <div class="tier"><span class="sw" style="background:#7A9E7E"></span>
-          <div><b>Garden Table</b><small>Entre las palmas · 4 pax · 16, 18, 19, 21, 23, 24</small></div>
-          <span class="pr">RD$30,000</span></div>
-      </div>
+      <div class="tiers" id="tiers"></div>
       <div class="selbox">
         <h3>Mesas elegidas</h3>
         <div id="sellist"><div class="empty">Aún no has seleccionado<br>ningún espacio.</div></div>
@@ -304,25 +335,25 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
 </div>
 
 <div class="mbar" id="mbar" aria-live="polite">
-  <div class="mbar-info"><b id="mbarTitulo">Toca una mesa en el mapa</b><span id="mbarSub">27 disponibles</span></div>
+  <div class="mbar-info"><b id="mbarTitulo">Toca una mesa en el mapa</b><span id="mbarSub">25 disponibles</span></div>
   <button class="mbar-cta" id="mbarCta" disabled>Reservar</button>
 </div>
 
 <script>
 const TIERS = {
   A:{name:'Stage Lounge', price:120000, color:'#008E87', desc:'Frente al DJ · 6 a 8 pax'},
-  B:{name:'Stage Table',  price:80000,  color:'#5FB9B0', desc:'Frente al DJ · 2 a 4 pax'},
-  C:{name:'Deck Lounge',  price:50000,  color:'#B8935A', desc:'Cabañas y lounges · 6 a 8 pax'},
-  D:{name:'Garden Table', price:30000,  color:'#7A9E7E', desc:'Entre las palmas · 4 pax'},
+  B:{name:'Stage Table',  price:80000,  color:'#257F78', desc:'Frente al DJ · 2 a 4 pax'},
+  C:{name:'Deck Lounge',  price:50000,  color:'#83622E', desc:'Cabañas y lounges · 6 a 8 pax'},
+  D:{name:'Garden Table', price:30000,  color:'#4F7354', desc:'Entre las palmas · 4 pax'},
 };
 const TIER_OF = {1:'A',2:'B',3:'A',4:'A',5:'A',6:'B',7:'B',8:'B',9:'B',10:'B',11:'B',12:'B',13:'B',14:'C',15:'C',16:'D',17:'C',18:'D',19:'D',20:'C',21:'D',22:'C',23:'D',24:'D',25:'C'};
 const PAX_OF  = {1:6,2:4,3:6,4:8,5:8,6:2,7:4,8:4,9:4,10:4,11:2,12:2,13:2,14:6,15:6,16:4,17:8,18:4,19:4,20:8,21:4,22:8,23:4,24:4,25:8};
 const tierOf = id => Object.assign({}, TIERS[TIER_OF[id]], {pax:PAX_OF[id]});
 
 const TABLES = [
-  ['1',18.4,9.5,6], ['2',28.9,9.4,4], ['3',80.5,9.4,6], ['4',24.0,15.7,8], ['5',75.1,15.7,8],
-  ['6',19.9,26.0,2], ['7',34.2,31.0,4], ['8',34.2,24.9,4], ['9',64.0,24.9,4], ['10',64.0,31.0,4],
-  ['11',78.0,26.1,2], ['12',19.9,31.4,2], ['13',78.0,31.8,2], ['14',16.1,45.6,6], ['15',15.7,52.4,6],
+  ['1',17.6,9.5,6], ['2',29.7,9.4,4], ['3',80.5,9.4,6], ['4',24.0,15.7,8], ['5',75.1,15.7,8],
+  ['6',19.9,25.2,2], ['7',34.2,31.0,4], ['8',34.2,24.9,4], ['9',64.0,24.9,4], ['10',64.0,31.0,4],
+  ['11',78.0,25.4,2], ['12',19.9,32.2,2], ['13',78.0,32.5,2], ['14',16.1,45.6,6], ['15',15.7,52.4,6],
   ['16',49.3,66.5,4], ['17',18.5,70.5,8], ['18',40.3,71.7,4], ['19',59.5,71.7,4], ['20',78.6,70.7,8],
   ['21',49.5,77.0,4], ['22',18.7,81.4,8], ['23',40.2,81.9,4], ['24',59.5,81.8,4], ['25',78.6,81.1,8]
 ];
@@ -331,18 +362,22 @@ const OCCUPIED = new Set([]);   // todas libres — agrega IDs aquí a medida qu
 const stage = document.getElementById('stage');
 const selected = new Map();
 
-TABLES.forEach(([id,x,y,pax])=>{
-  const tier = tierOf(id);
-  const isOccupied = OCCUPIED.has(id);
-  const b=document.createElement('button');
-  b.className='badge tier-'+TIER_OF[id]+(isOccupied?' occupied':'');
-  b.style.left=x+'%'; b.style.top=y+'%';
-  b.dataset.id=id;
-  // Occupied tiles keep their tier color but show a bold white X
-  b.innerHTML=`<span class="disc" style="background:${tier.color}"></span><span class="lbl">${isOccupied?'':id}</span>`;
-  b.onclick=()=>{ if(isOccupied) return; toggle(id,b); };
-  stage.appendChild(b);
-});
+function buildBadges(){
+  stage.querySelectorAll('.badge').forEach(b=>b.remove());
+  TABLES.forEach(([id,x,y])=>{
+    const tier = tierOf(id);
+    const isOccupied = OCCUPIED.has(id);
+    const b=document.createElement('button');
+    b.className='badge tier-'+TIER_OF[id]+(isOccupied?' occupied':'')+(selected.has(id)?' selected':'');
+    b.style.left=x+'%'; b.style.top=y+'%';
+    b.dataset.id=id;
+    // la ficha ocupada conserva el color de su categoría y muestra una X
+    b.innerHTML=`<span class="disc" style="background:${selected.has(id)?'var(--selected)':tier.color}"></span><span class="lbl">${isOccupied?'':id}</span>`;
+    b.onclick=()=>{ if(OCCUPIED.has(id)) return; toggle(id,b); };
+    stage.appendChild(b);
+  });
+}
+buildBadges();
 
 function toggle(id,el){
   if(selected.has(id)){
@@ -422,19 +457,13 @@ document.getElementById('cta').onclick=reservar;
 document.getElementById('mbarCta').onclick=reservar;
 
 // ===== DISPONIBILIDAD REAL =====
-// Antes esto era un contador inventado con Math.random() que BAJABA:
-// le decía al cliente que el interés se estaba evaporando mientras decidía.
-// Ahora muestra el dato verdadero, que además crea urgencia legítima.
-(function(){
-  const el=document.getElementById('viewerCount');
-  if(!el) return;
+// (antes era un contador con Math.random() que bajaba; ahora es el dato verdadero)
+function renderAvailability(){
+  const cont=document.querySelector('.viewers'); if(!cont) return;
   const libres = TABLES.length - OCCUPIED.size;
-  el.textContent = libres;
-  const cont = el.closest('.viewers');
-  if(cont) cont.innerHTML =
-    '<span class="viewers-dot"></span><span id="viewerCount">'+libres+'</span> de '+
-    TABLES.length+' mesas disponibles';
-})();
+  cont.innerHTML='<span class="viewers-dot"></span><span id="viewerCount">'+libres+'</span> de '+TABLES.length+' mesas disponibles';
+}
+renderAvailability();
 
 
 /* ---- desktop: la altura del panel manda; el mapa la copia y saca su ancho de la foto ---- */
@@ -447,6 +476,127 @@ document.getElementById('mbarCta').onclick=reservar;
   sync(); window.addEventListener('resize',sync); window.addEventListener('load',sync);
   if(document.fonts) document.fonts.ready.then(sync);
 })();
+
+/* ---- chips: filtrar por categoría y saltar a la primera mesa ---- */
+(function(){
+  var chips=document.getElementById('chips'), stage=document.getElementById('stage');
+  if(!chips||!stage) return;
+  var activo=null;
+  function limpiar(){ activo=null; stage.classList.remove('filter');
+    chips.querySelectorAll('button').forEach(function(b){b.classList.remove('on')});
+    stage.querySelectorAll('.badge').forEach(function(b){b.classList.remove('tier-on')}); }
+  chips.addEventListener('click',function(e){
+    var btn=e.target.closest('button[data-tier]'); if(!btn) return;
+    var t=btn.dataset.tier;
+    if(activo===t){ limpiar(); return; }
+    limpiar(); activo=t; btn.classList.add('on'); stage.classList.add('filter');
+    var primera=null;
+    stage.querySelectorAll('.badge').forEach(function(b){
+      if(b.classList.contains('tier-'+t)){ b.classList.add('tier-on'); if(!primera) primera=b; }});
+    if(primera) primera.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  /* tocar una ficha atenuada la selecciona y quita el filtro */
+  stage.addEventListener('click',function(e){ if(e.target.closest('.badge') && activo) limpiar(); },true);
+})();
+/* la barra fija debe decir 25 y no un número fijo: render() al cargar */
+
+/* ======================================================================
+   PRECIOS, CAPACIDADES Y MESAS VENDIDAS DESDE GOOGLE SHEETS
+   Publica cada pestaña como CSV (Archivo → Compartir → Publicar en la web →
+   elegir pestaña → CSV) y pega aquí las dos URLs. Mientras digan PEGAR_,
+   la página usa los valores escritos arriba.
+   ====================================================================== */
+const SHEET = {
+  categorias: 'PEGAR_URL_CSV_PESTAÑA_CATEGORIAS',
+  mesas:      'PEGAR_URL_CSV_PESTAÑA_MESAS',
+};
+const COLOR_TIER = {A:'#008E87', B:'#257F78', C:'#83622E', D:'#4F7354'};
+const ZONA_TIER  = {A:'Frente al DJ', B:'Frente al DJ', C:'Cabañas y lounges', D:'Entre las palmas'};
+
+function renderTiers(){
+  const cont=document.getElementById('tiers'); if(!cont) return;
+  cont.innerHTML=Object.keys(TIERS).map(k=>{
+    const t=TIERS[k];
+    const mesas=Object.keys(TIER_OF).filter(m=>TIER_OF[m]===k).map(Number).sort((a,b)=>a-b);
+    const paxs=mesas.map(m=>PAX_OF[m]).filter(Boolean);
+    const rango=paxs.length? (Math.min(...paxs)===Math.max(...paxs)? Math.min(...paxs)+' pax' : Math.min(...paxs)+' a '+Math.max(...paxs)+' pax') : '';
+    return `<div class="tier"><span class="sw" style="background:${t.color}"></span>
+      <div><b>${t.name}</b><small>${ZONA_TIER[k]||''}${rango?' · '+rango:''} · mesas ${mesas.join(', ')}</small></div>
+      <span class="pr">${fmt(t.price)}</span></div>`;
+  }).join('');
+  const leg=document.getElementById('legend');
+  if(leg) leg.innerHTML=Object.keys(TIERS).map(k=>`<span><i class="dot" style="background:${TIERS[k].color}"></i> ${TIERS[k].name}</span>`).join('')
+    +'<span><i class="dot" style="background:var(--selected)"></i> Tu selección</span>'
+    +'<span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>';
+  const chips=document.getElementById('chips');
+  if(chips) chips.querySelectorAll('button[data-tier]').forEach(b=>{
+    const t=TIERS[b.dataset.tier]; if(!t) return;
+    b.querySelector('b').textContent='RD$'+Math.round(t.price/1000)+'k';
+    b.querySelector('span').textContent=t.name;
+  });
+}
+renderTiers();
+
+/* --- CSV como lo publica Google: comillas, comas dentro de comillas, CRLF, BOM --- */
+function parseCSV(text){
+  text=text.replace(/^﻿/,'');
+  const rows=[]; let row=[], cell='', q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){cell+='"';i++;} else q=false; } else cell+=c; }
+    else if(c==='"') q=true;
+    else if(c===','){ row.push(cell); cell=''; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(cell); rows.push(row); row=[]; cell=''; }
+    else cell+=c;
+  }
+  if(cell!==''||row.length){ row.push(cell); rows.push(row); }
+  if(!rows.length) return [];
+  const head=rows[0].map(h=>h.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''));
+  return rows.slice(1).filter(r=>r.some(v=>v.trim()!=='')).map(r=>{const o={}; head.forEach((h,i)=>o[h]=(r[i]||'').trim()); return o;});
+}
+const numOf = v => { const n=parseInt(String(v).replace(/[^\d]/g,''),10); return isNaN(n)?null:n; };
+const vendida = v => /^(vendid|ocupad|reservad|x|si|sí|s|no disp|1|true)/i.test(String(v).trim());
+
+function applySheet(cats, mesas){
+  let cambios=0;
+  (cats||[]).forEach(r=>{
+    const k=(r.letra||r.categoria||'').toUpperCase().trim();
+    if(!TIERS[k]) return;
+    if(r.nombre) { TIERS[k].name=r.nombre; cambios++; }
+    const p=numOf(r.precio); if(p!==null && p>0){ TIERS[k].price=p; cambios++; }
+  });
+  if(mesas && mesas.length){
+    const nuevasOcupadas=new Set();
+    mesas.forEach(r=>{
+      const id=numOf(r.mesa); if(id===null || !TIER_OF[id]) return;
+      const k=(r.categoria||'').toUpperCase().trim(); if(TIERS[k]) TIER_OF[id]=k;
+      const px=numOf(r.pax); if(px!==null && px>0) PAX_OF[id]=px;
+      if(vendida(r.estado)) nuevasOcupadas.add(String(id));
+      cambios++;
+    });
+    OCCUPIED.clear(); nuevasOcupadas.forEach(id=>OCCUPIED.add(id));
+    // si el usuario había elegido una mesa que ahora está vendida, se le quita
+    [...selected.keys()].forEach(id=>{ if(OCCUPIED.has(id)) selected.delete(id); });
+  }
+  buildBadges(); renderTiers(); renderAvailability(); render();
+  return cambios;
+}
+
+(function cargarSheet(){
+  let urls=SHEET;
+  if(location.search.indexOf('sheetTest')>-1) urls={categorias:'_test_categorias.csv', mesas:'_test_mesas.csv'};
+  if(/PEGAR_/.test(urls.categorias) && /PEGAR_/.test(urls.mesas)) return;   // sin URLs: se queda con los valores del código
+  const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),7000);
+  const get=u=>/PEGAR_/.test(u)?Promise.resolve(null):fetch(u+(u.indexOf('?')>-1?'&':'?')+'_='+Date.now(),{signal:ctrl.signal,cache:'no-store'}).then(r=>r.ok?r.text():null).catch(()=>null);
+  Promise.all([get(urls.categorias),get(urls.mesas)]).then(([c,m])=>{
+    clearTimeout(t);
+    if(c===null && m===null){ console.warn('Sheet: no se pudo leer; se usan los valores del código'); return; }
+    const n=applySheet(c?parseCSV(c):null, m?parseCSV(m):null);
+    document.documentElement.dataset.sheet='ok:'+n;
+  });
+})();
+
+render();
 </script>
 </body>
 </html>
