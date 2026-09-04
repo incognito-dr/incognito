@@ -65,6 +65,8 @@ h1 em{font-style:italic;color:var(--plaque)}
 .legend{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:18px;font-size:12px;letter-spacing:.04em}
 .legend span{display:flex;align-items:center;gap:8px;color:#3d5c56;opacity:1;font-family:var(--body);font-size:11px;letter-spacing:0.02em}
 .viewers{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-family:var(--body);font-size:11px;color:#777;letter-spacing:0.02em}
+.viewers .stamp{opacity:.65}
+.actividad{text-align:center;margin-top:6px;font-family:var(--body);font-size:11px;color:#5d716c;letter-spacing:0.02em}
 .viewers-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:vPulse 1.6s ease-in-out infinite}
 @keyframes vPulse{0%,100%{opacity:1}50%{opacity:.3}}
 .dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 2px var(--deep)}
@@ -183,7 +185,7 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
 .tier small{color:#5d716c;font-size:12px}
 .empty{color:#5d716c;font-size:13px}
 .lab{color:#5d716c}
-.viewers{color:#5d716c;font-size:12px}
+.viewers,.actividad{color:#5d716c;font-size:12px}
 .c-no{color:#00655e}
 @media(max-width:760px){
   /* el mapa a sangre: gana 42px de ancho, que es lo que separa las mesas */
@@ -301,6 +303,7 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
         <span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>
       </div>
       <div class="viewers"><span class="viewers-dot"></span><span id="viewerCount">8</span> de 27 mesas disponibles</div>
+      <div class="actividad" id="actividad" hidden></div>
     </div>
 
     <aside class="panel" id="panel">
@@ -358,17 +361,24 @@ const TABLES = [
   ['21',49.5,77.0,4], ['22',18.7,81.4,8], ['23',40.2,81.9,4], ['24',59.5,81.8,4], ['25',78.6,81.1,8]
 ];
 
-const OCCUPIED = new Set([]);   // todas libres — agrega IDs aquí a medida que se vendan
+const OCCUPIED = new Set([]);
+const VENDIDA_EL = {};            // mesa -> Date de la venta (columna `vendida_el` del Sheet, opcional)
+
+/* ---- Apps Script opcional (ver oasis-apps-script.gs): presencia real + lectura en vivo sin hacer pública la hoja ---- */
+const SCRIPT_URL = '';            // URL /exec de la aplicación web. Vacío = apagado.
+const PRESENCIA_MINIMO = 3;       // "N viendo el mapa" solo se muestra a partir de este número   // todas libres — agrega IDs aquí a medida que se vendan
 const stage = document.getElementById('stage');
 const selected = new Map();
 
 function buildBadges(){
   stage.querySelectorAll('.badge').forEach(b=>b.remove());
+  const chipOn=document.querySelector('#chips button.on');
+  const filtro=(stage.classList.contains('filter') && chipOn) ? chipOn.dataset.tier : null;   // filtro activo, si lo hay
   TABLES.forEach(([id,x,y])=>{
     const tier = tierOf(id);
     const isOccupied = OCCUPIED.has(id);
     const b=document.createElement('button');
-    b.className='badge tier-'+TIER_OF[id]+(isOccupied?' occupied':'')+(selected.has(id)?' selected':'');
+    b.className='badge tier-'+TIER_OF[id]+(isOccupied?' occupied':'')+(selected.has(id)?' selected':'')+(filtro===TIER_OF[id]?' tier-on':'');
     b.style.left=x+'%'; b.style.top=y+'%';
     b.dataset.id=id;
     // la ficha ocupada conserva el color de su categoría y muestra una X
@@ -403,6 +413,8 @@ function toggle(id,el){
 }
 
 function fmt(n){return 'RD$'+n.toLocaleString('en-US');}
+// todo texto que venga del Sheet pasa por aquí antes de entrar en innerHTML
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function render(){
   const list=document.getElementById('sellist');
@@ -412,7 +424,7 @@ function render(){
     list.innerHTML='';
     [...selected.entries()].forEach(([id,t])=>{
       const r=document.createElement('div');r.className='selrow';
-      r.innerHTML=`<span class="id"><i style="background:${t.color}"></i>${id} <em>${t.name}</em></span>
+      r.innerHTML=`<span class="id"><i style="background:${t.color}"></i>${id} <em>${esc(t.name)}</em></span>
       <span class="rt">${fmt(t.price)} <span class="x" data-x="${id}">&times;</span></span>`;
       list.appendChild(r);
     });
@@ -461,7 +473,11 @@ document.getElementById('mbarCta').onclick=reservar;
 function renderAvailability(){
   const cont=document.querySelector('.viewers'); if(!cont) return;
   const libres = TABLES.length - OCCUPIED.size;
-  cont.innerHTML='<span class="viewers-dot"></span><span id="viewerCount">'+libres+'</span> de '+TABLES.length+' mesas disponibles';
+  const est=window.sheetEstado||{};
+  const viendo=(est.viendo||0)>=PRESENCIA_MINIMO ? '<span id="viendo">'+est.viendo+' viendo el mapa ahora</span> · ' : '';
+  const sello=(est.hora && !viendo)? '<span class="stamp"> · actualizado '+horaCorta(est.hora)+'</span>' : '';
+  cont.innerHTML='<span class="viewers-dot"></span>'+viendo+'<span id="viewerCount">'+libres+'</span> de '+TABLES.length+' mesas disponibles'+sello;
+  renderActividad();
 }
 renderAvailability();
 
@@ -501,14 +517,27 @@ renderAvailability();
 /* la barra fija debe decir 25 y no un número fijo: render() al cargar */
 
 /* ======================================================================
-   PRECIOS, CAPACIDADES Y MESAS VENDIDAS DESDE GOOGLE SHEETS
-   Publica cada pestaña como CSV (Archivo → Compartir → Publicar en la web →
-   elegir pestaña → CSV) y pega aquí las dos URLs. Mientras digan PEGAR_,
-   la página usa los valores escritos arriba.
+   DATOS DESDE GOOGLE SHEETS  (hoja "OASIS — Mesas")
+   Solo se leen dos pestañas: `categorias` (letra, nombre, precio) y
+   `mesas` (mesa, categoria, pax, estado). Cualquier otra pestaña o columna se ignora.
+
+   1) EN VIVO, sin caché: lectura directa por gviz. Requiere que la hoja esté
+      compartida como "Cualquier persona con el enlace → Lector".
+   2) RESPALDO: las URLs de "Publicar en la web" (Google las cachea ~5 min y a
+      veces tarda mucho más en republicar una pestaña).
+   La página relee cada 60 s mientras está abierta y al volver a la pestaña.
+   Añade ?debug a la URL para ver de dónde salen los datos y a qué hora.
    ====================================================================== */
+const SHEET_ID  = '1Px7xTzKKoEIxx4XjyyeTfoOfFB3T-C0_eI7fsVoakc0';
+const SHEET_GID = { categorias: 1631499270, mesas: 0 };
+const SHEET_PUB = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMiaTISme6esS7KFF2qaLdSDPZur73173P8RyXzx042muvblSq1kustnbN6s9xO2ibeV-PsGQu21nk/pub';
+const SHEET_LIVE = {
+  categorias: 'https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&headers=1&gid='+SHEET_GID.categorias,
+  mesas:      'https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:csv&headers=1&gid='+SHEET_GID.mesas,
+};
 const SHEET = {
-  categorias: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMiaTISme6esS7KFF2qaLdSDPZur73173P8RyXzx042muvblSq1kustnbN6s9xO2ibeV-PsGQu21nk/pub?gid=1631499270&single=true&output=csv',
-  mesas:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMiaTISme6esS7KFF2qaLdSDPZur73173P8RyXzx042muvblSq1kustnbN6s9xO2ibeV-PsGQu21nk/pub?gid=0&single=true&output=csv',
+  categorias: SHEET_PUB+'?gid='+SHEET_GID.categorias+'&single=true&output=csv',
+  mesas:      SHEET_PUB+'?gid='+SHEET_GID.mesas+'&single=true&output=csv',
 };
 const COLOR_TIER = {A:'#008E87', B:'#257F78', C:'#83622E', D:'#4F7354'};
 const ZONA_TIER  = {A:'Frente al DJ', B:'Frente al DJ', C:'Cabañas y lounges', D:'Entre las palmas'};
@@ -521,11 +550,11 @@ function renderTiers(){
     const paxs=mesas.map(m=>PAX_OF[m]).filter(Boolean);
     const rango=paxs.length? (Math.min(...paxs)===Math.max(...paxs)? Math.min(...paxs)+' pax' : Math.min(...paxs)+' a '+Math.max(...paxs)+' pax') : '';
     return `<div class="tier"><span class="sw" style="background:${t.color}"></span>
-      <div><b>${t.name}</b><small>${ZONA_TIER[k]||''}${rango?' · '+rango:''} · mesas ${mesas.join(', ')}</small></div>
+      <div><b>${esc(t.name)}</b><small>${ZONA_TIER[k]||''}${rango?' · '+rango:''} · mesas ${mesas.join(', ')}</small></div>
       <span class="pr">${fmt(t.price)}</span></div>`;
   }).join('');
   const leg=document.getElementById('legend');
-  if(leg) leg.innerHTML=Object.keys(TIERS).map(k=>`<span><i class="dot" style="background:${TIERS[k].color}"></i> ${TIERS[k].name}</span>`).join('')
+  if(leg) leg.innerHTML=Object.keys(TIERS).map(k=>`<span><i class="dot" style="background:${TIERS[k].color}"></i> ${esc(TIERS[k].name)}</span>`).join('')
     +'<span><i class="dot" style="background:var(--selected)"></i> Tu selección</span>'
     +'<span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>';
   const chips=document.getElementById('chips');
@@ -554,47 +583,200 @@ function parseCSV(text){
   const head=rows[0].map(h=>h.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''));
   return rows.slice(1).filter(r=>r.some(v=>v.trim()!=='')).map(r=>{const o={}; head.forEach((h,i)=>o[h]=(r[i]||'').trim()); return o;});
 }
-const numOf = v => { const n=parseInt(String(v).replace(/[^\d]/g,''),10); return isNaN(n)?null:n; };
-const vendida = v => /^(vendid|ocupad|reservad|x|si|sí|s|no disp|1|true)/i.test(String(v).trim());
+// Google entrega el texto tal como se ve en la celda: acepta RD$120,000.00 · 120.000,00 · 120,000 · 6.0 · 8 pax; rechaza 6-8, 1e3, vacío
+const numOf = v => {
+  let s=String(v==null?'':v).trim().toLowerCase().replace(/rd\$|us\$|\$|pax|personas?|\s/g,'');
+  if(!/^[\d.,]+$/.test(s)) return null;
+  const pt=s.lastIndexOf('.'), cm=s.lastIndexOf(',');
+  if(pt>-1 && cm>-1) s = pt>cm ? s.replace(/,/g,'') : s.replace(/\./g,'').replace(',','.');   // los dos: el último es el decimal
+  else if(cm>-1) s = /^\d{1,3}(,\d{3})+$/.test(s) ? s.replace(/,/g,'') : s.replace(',','.');
+  else if(pt>-1 && /^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g,'');
+  if(!/^\d+(\.\d+)?$/.test(s)) return null;
+  return Math.round(parseFloat(s));
+};
+// solo palabras completas: "sin confirmar" o "solicitada" NO cuentan como vendida
+const vendida = v => /^(vendid[ao]?|ocupad[ao]?|reservad[ao]?|sold|x|si|s|1|true|no disponible|no disp)$/.test(String(v==null?'':v).trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
 
 function applySheet(cats, mesas){
   let cambios=0;
   (cats||[]).forEach(r=>{
     const k=(r.letra||r.categoria||'').toUpperCase().trim();
     if(!TIERS[k]) return;
-    if(r.nombre) { TIERS[k].name=r.nombre; cambios++; }
-    const p=numOf(r.precio); if(p!==null && p>0){ TIERS[k].price=p; cambios++; }
+    if(r.nombre) { TIERS[k].name=String(r.nombre).trim().slice(0,40); cambios++; }
+    const p=numOf(r.precio); if(p!==null && p>=500 && p<=10000000){ TIERS[k].price=p; cambios++; }
   });
   if(mesas && mesas.length){
     const nuevasOcupadas=new Set();
+    Object.keys(VENDIDA_EL).forEach(k=>delete VENDIDA_EL[k]);
     mesas.forEach(r=>{
       const id=numOf(r.mesa); if(id===null || !TIER_OF[id]) return;
       const k=(r.categoria||'').toUpperCase().trim(); if(TIERS[k]) TIER_OF[id]=k;
-      const px=numOf(r.pax); if(px!==null && px>0) PAX_OF[id]=px;
-      if(vendida(r.estado)) nuevasOcupadas.add(String(id));
+      const px=numOf(r.pax); if(px!==null && px>=1 && px<=30) PAX_OF[id]=px;
+      if(vendida(r.estado)){
+        nuevasOcupadas.add(String(id));
+        const f=fechaDe(r.vendida_el||r['vendida el']||r.fecha||r['fecha venta']); if(f) VENDIDA_EL[id]=f;
+      }
       cambios++;
     });
     OCCUPIED.clear(); nuevasOcupadas.forEach(id=>OCCUPIED.add(id));
-    // si el usuario había elegido una mesa que ahora está vendida, se le quita
-    [...selected.keys()].forEach(id=>{ if(OCCUPIED.has(id)) selected.delete(id); });
   }
+  // si el usuario había elegido una mesa que ahora está vendida, se le quita (y se le avisa)
+  const vendidasEnMano=[...selected.keys()].filter(id=>OCCUPIED.has(id));
+  vendidasEnMano.forEach(id=>selected.delete(id));
+  // lo que sigue seleccionado toma el precio/nombre/pax nuevos (la selección guarda una copia)
+  [...selected.keys()].forEach(id=>selected.set(id,tierOf(id)));
   buildBadges(); renderTiers(); renderAvailability(); render();
+  if(vendidasEnMano.length) avisoVendida(vendidasEnMano);
   return cambios;
 }
+function avisoVendida(ids){
+  const txt = ids.length>1 ? 'Las mesas '+ids.slice(0,-1).join(', ')+' y '+ids[ids.length-1]+' se acaban de vender'
+                           : 'La mesa '+ids[0]+' se acaba de vender';
+  const pn=document.querySelector('.panel .pnote'), bt=document.getElementById('mbarTitulo');
+  if(pn){ if(!pn.dataset.orig) pn.dataset.orig=pn.textContent; pn.textContent=txt; }
+  if(bt) bt.textContent=txt;
+  clearTimeout(avisoVendida.t);
+  avisoVendida.t=setTimeout(()=>{ if(pn) pn.textContent=pn.dataset.orig; render(); }, 6000);
+}
 
-(function cargarSheet(){
-  let urls=SHEET;
-  if(location.search.indexOf('sheetTest')>-1) urls={categorias:'_test_categorias.csv', mesas:'_test_mesas.csv'};
-  if(/PEGAR_/.test(urls.categorias) && /PEGAR_/.test(urls.mesas)) return;   // sin URLs: se queda con los valores del código
-  const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),7000);
-  const get=u=>/PEGAR_/.test(u)?Promise.resolve(null):fetch(u+(u.indexOf('?')>-1?'&':'?')+'_='+Date.now(),{signal:ctrl.signal,cache:'no-store'}).then(r=>r.ok?r.text():null).catch(()=>null);
-  Promise.all([get(urls.categorias),get(urls.mesas)]).then(([c,m])=>{
-    clearTimeout(t);
-    if(c===null && m===null){ console.warn('Sheet: no se pudo leer; se usan los valores del código'); return; }
-    const n=applySheet(c?parseCSV(c):null, m?parseCSV(m):null);
-    document.documentElement.dataset.sheet='ok:'+n;
-  });
-})();
+/* ---- lectura: cada pestaña prueba primero en vivo (gviz) y, si falla, el respaldo publicado ---- */
+var sheetEstado = { fuente:{}, hora:null, errores:[], n:0, firma:'', vivoReintento:0, ultimoFallo:null };
+const DEV=/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol==='file:';
+const horaCorta = d => d.toTimeString().slice(0,5);
+
+function fetchTexto(u, ms){
+  const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(), ms||10000);
+  return fetch(u+(u.indexOf('?')>-1?'&':'?')+'_='+Date.now(), {signal:ctrl.signal, cache:'no-store', credentials:'omit'})
+    .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+    .finally(()=>clearTimeout(t));
+}
+// una tabla vale solo si trae las columnas esperadas (así una página de login o un error no se toma por CSV)
+const tablaValida = (rows, cols) => rows.length>0 && cols.every(c => c in rows[0]);
+
+async function leerTabla(tab, cols){
+  let fuentes=[['vivo',SHEET_LIVE[tab]],['publicado',SHEET[tab]]];
+  if(SCRIPT_URL) fuentes.unshift(['script',SCRIPT_URL+'?tab='+tab]);
+  if(DEV && location.search.indexOf('sheetTest')>-1) fuentes=[['test','_test_'+tab+'.csv']];
+  // si la hoja no está compartida, la lectura en vivo falla por CORS; se reintenta cada 5 min para no llenar la consola
+  else if(Date.now()<sheetEstado.vivoReintento) fuentes=fuentes.filter(f=>f[0]!=='vivo');
+  for(const [nombre,url] of fuentes){
+    try{
+      const rows=parseCSV(await fetchTexto(url));
+      if(!tablaValida(rows,cols)) throw new Error('sin columnas '+cols.join('/'));
+      sheetEstado.fuente[tab]=nombre;
+      return rows;
+    }catch(e){
+      if(nombre==='vivo' && e instanceof TypeError) sheetEstado.vivoReintento=Date.now()+5*60*1000;
+      sheetEstado.errores.push(tab+' ('+nombre+'): '+((e&&e.message)||e));
+    }
+  }
+  if(!sheetEstado.hora) sheetEstado.fuente[tab]='codigo';   // si ya hubo una lectura buena, en pantalla siguen esos datos
+  return null;
+}
+
+/* ---- fecha de venta: acepta 2026-09-04 14:32, 4/9/2026 14:32 (día/mes, formato español) o 4/9/2026 ---- */
+function fechaDe(v){
+  v=String(v||'').trim(); if(!v) return null;
+  let m, d=null, conHora=false;
+  if((m=v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2}))?/))){
+    d=new Date(+m[1],+m[2]-1,+m[3],+(m[4]||0),+(m[5]||0)); conHora=!!m[4];
+  }else if((m=v.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})(?:[ ,]+(\d{1,2}):(\d{2})(?::\d{2})?\s*([ap])?\.?\s*m?\.?)?/i))){
+    let dia=+m[1], mes=+m[2], y=+m[3]; if(y<100) y+=2000;
+    if(mes>12 && dia<=12){ const x=dia; dia=mes; mes=x; }      // venía como mes/día
+    let h=+(m[4]||0); const ap=(m[6]||'').toLowerCase(); if(ap==='p'&&h<12) h+=12; if(ap==='a'&&h===12) h=0;
+    d=new Date(y,mes-1,dia,h,+(m[5]||0)); conHora=!!m[4];
+  }
+  if(!d || isNaN(d)) return null;
+  d.conHora=conHora; return d;
+}
+const hora12 = d => { const h=d.getHours(), m=d.getMinutes(); return (((h+11)%12)+1)+':'+(m<10?'0':'')+m+' '+(h<12?'AM':'PM'); };
+
+/* ---- actividad real: última reserva y reservas de la semana, según la columna vendida_el ---- */
+function renderActividad(){
+  const el=document.getElementById('actividad'); if(!el) return;
+  const fechas=Object.keys(VENDIDA_EL).map(k=>VENDIDA_EL[k]).filter(Boolean).sort((a,b)=>b-a);
+  if(!fechas.length){ el.hidden=true; el.textContent=''; return; }
+  const ahora=new Date(), ult=fechas[0];
+  const semana=fechas.filter(f=>ahora-f<7*864e5 && f<=ahora).length;
+  const hoy=new Date(ahora.getFullYear(),ahora.getMonth(),ahora.getDate());
+  const diaUlt=new Date(ult.getFullYear(),ult.getMonth(),ult.getDate());
+  const dias=Math.round((hoy-diaUlt)/864e5);
+  const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const conHora=ult.conHora? ', '+hora12(ult) : '';
+  const cuando= dias<=0 ? 'hoy'+conHora : dias===1 ? 'ayer'+conHora : dias<7 ? 'el '+DIAS[ult.getDay()] : 'el '+ult.getDate()+' de '+MESES[ult.getMonth()];
+  const partes=[]; if(semana>=2) partes.push(semana+' mesas reservadas esta semana');
+  partes.push('Última reserva '+cuando);
+  el.textContent=partes.join(' · '); el.hidden=false;
+}
+
+/* ---- presencia real: cada dispositivo abierto hace ping al Apps Script; él cuenta los vivos del último minuto ---- */
+function idDispositivo(){
+  try{ let id=localStorage.getItem('oasisId'); if(!id){ id=Math.random().toString(36).slice(2,12); localStorage.setItem('oasisId',id); } return id; }
+  catch(_){ return (window.__oasisId=window.__oasisId||Math.random().toString(36).slice(2,12)); }
+}
+let presenciaEnCurso=false;
+async function presencia(){
+  if(!SCRIPT_URL || presenciaEnCurso) return; presenciaEnCurso=true;
+  try{
+    const j=JSON.parse(await fetchTexto(SCRIPT_URL+'?ping='+encodeURIComponent(idDispositivo()), 8000));
+    sheetEstado.viendo = (typeof j.viendo==='number') ? j.viendo : 0;
+  }catch(e){ sheetEstado.viendo=0; sheetEstado.errores.push('presencia: '+((e&&e.message)||e)); }
+  finally{ presenciaEnCurso=false; renderAvailability(); pintarDebug(); }
+}
+
+function pintarDebug(){
+  if(location.search.indexOf('debug')<0) return;
+  let d=document.getElementById('sheetDebug');
+  if(!d){ d=document.createElement('pre'); d.id='sheetDebug'; document.body.appendChild(d); }
+  const movil=window.matchMedia('(max-width:980px)').matches;
+  d.style.cssText='position:fixed;z-index:9999;margin:0;background:rgba(1,49,49,.93);color:#fff;font:'+(movil?'10px':'11px')+'/1.55 ui-monospace,Menlo,monospace;padding:10px 12px;border-radius:8px;max-width:84vw;white-space:pre-wrap;pointer-events:none;'
+    +(movil ? 'left:8px;top:auto;bottom:calc(76px + env(safe-area-inset-bottom));max-height:40vh;overflow:hidden' : 'top:8px;left:8px');
+  d.textContent='Sheet · '+(sheetEstado.hora?'leído '+horaCorta(sheetEstado.hora):'leyendo…')
+    +(sheetEstado.ultimoFallo?' · último intento falló '+horaCorta(sheetEstado.ultimoFallo):'')+'\n'
+    +'categorias: '+(sheetEstado.fuente.categorias||'…')+' · mesas: '+(sheetEstado.fuente.mesas||'…')+'\n'
+    +Object.keys(TIERS).map(k=>k+' '+TIERS[k].name+' '+fmt(TIERS[k].price)).join('\n')+'\n'
+    +'ocupadas: '+(OCCUPIED.size?[...OCCUPIED].join(', '):'ninguna')+'\n'
+    +'ventas con fecha: '+Object.keys(VENDIDA_EL).length+' · viendo: '+(SCRIPT_URL? (sheetEstado.viendo==null?'…':sheetEstado.viendo) : 'apagado (sin SCRIPT_URL)')
+    +(sheetEstado.errores.length?'\navisos:\n'+sheetEstado.errores.join('\n'):'');
+}
+
+let sheetCargando=false;
+async function cargarSheet(){
+  if(sheetCargando) return; sheetCargando=true;
+  sheetEstado.errores=[];
+  if(location.protocol==='file:') sheetEstado.errores.push('abierto como archivo (file://): Google no responde a ese origen; ábrelo por http://localhost o usa ?sheetTest');
+  try{
+    const [cats, mesas] = await Promise.all([leerTabla('categorias',['letra','precio']), leerTabla('mesas',['mesa','estado'])]);
+    if(cats===null && mesas===null){
+      sheetEstado.ultimoFallo=new Date();
+      if(sheetEstado.hora){
+        document.documentElement.dataset.sheet='stale:'+horaCorta(sheetEstado.hora);
+        console.warn('Sheet: falló la relectura; se mantienen los datos de las '+horaCorta(sheetEstado.hora), sheetEstado.errores);
+      }else{
+        document.documentElement.dataset.sheet='error';
+        console.warn('Sheet: no se pudo leer ninguna pestaña; se usan los valores del código', sheetEstado.errores);
+      }
+      return;
+    }
+    sheetEstado.ultimoFallo=null;
+    const firma=JSON.stringify([cats,mesas]);
+    if(firma!==sheetEstado.firma){ sheetEstado.n=applySheet(cats,mesas); sheetEstado.firma=firma; }
+    sheetEstado.hora=new Date();
+    renderAvailability();
+    document.documentElement.dataset.sheet='ok:'+sheetEstado.n+':'+(sheetEstado.fuente.categorias||'?')+'/'+(sheetEstado.fuente.mesas||'?')+':'+horaCorta(sheetEstado.hora);
+  }catch(e){
+    console.warn('Sheet: error inesperado', e);
+  }finally{ sheetCargando=false; pintarDebug(); }
+}
+cargarSheet();
+setInterval(()=>{ if(document.visibilityState==='visible') cargarSheet(); }, 60000);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') cargarSheet(); });
+window.addEventListener('pageshow', e=>{ if(e.persisted) cargarSheet(); });
+window.recargarSheet=cargarSheet;
+presencia();
+setInterval(()=>{ if(document.visibilityState==='visible') presencia(); }, 30000);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') presencia(); });
 
 render();
 </script>
