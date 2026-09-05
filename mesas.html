@@ -375,6 +375,7 @@ const TABLES = [
 
 const OCCUPIED = new Set([]);
 const VENDIDA_EL = {};            // mesa -> Date de la venta (columna `vendida_el` del Sheet, opcional)
+const PAX_CAT = {};               // pax por categoría cuando el Sheet lo trae (columna `pax` de categorias)
 
 /* ---- Apps Script opcional (ver oasis-apps-script.gs): presencia real + lectura en vivo sin hacer pública la hoja ---- */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfpCTmgZEHNMzamgdXquBXh_EqVmKzkvYCprse0nxGrZQKTJ_gbbfcJp5-nz_l4_Xm/exec';            // URL /exec de la aplicación web. Vacío = apagado.
@@ -563,7 +564,7 @@ function renderTiers(){
     const mn=paxs.length?Math.min(...paxs):0, mx=paxs.length?Math.max(...paxs):0;
     const rango=!paxs.length? '' : mn===mx ? mn+' pax · '+mn+' tickets' : mn+' a '+mx+' pax · tickets incluidos';
     return `<div class="tier"><span class="sw" style="background:${t.color}"></span>
-      <div><b>${esc(t.name)}</b><small>${ZONA_TIER[k]||''}${rango?' · '+rango:''} · mesas ${mesas.join(', ')}</small></div>
+      <div><b>${esc(t.name)}</b><small>${esc(ZONA_TIER[k]||'')}${rango?' · '+rango:''} · mesas ${mesas.join(', ')}</small></div>
       <span class="pr">${fmt(t.price)}</span></div>`;
   }).join('');
   const leg=document.getElementById('legend');
@@ -575,6 +576,7 @@ function renderTiers(){
     const t=TIERS[b.dataset.tier]; if(!t) return;
     b.querySelector('b').textContent='RD$'+Math.round(t.price/1000)+'k';
     b.querySelector('span').textContent=t.name;
+    const dot=b.querySelector('i'); if(dot) dot.style.background=t.color;
   });
 }
 renderTiers();
@@ -621,6 +623,9 @@ function applySheet(cats, mesas){
     if(!TIERS[k]) return;
     if(r.nombre) { TIERS[k].name=String(r.nombre).trim().slice(0,40); cambios++; }
     const p=numOf(r.precio); if(p!==null && p>=500 && p<=10000000){ TIERS[k].price=p; cambios++; }
+    const pc=numOf(r.pax); if(pc!==null && pc>=1 && pc<=30) PAX_CAT[k]=pc;
+    if(r.zona!==undefined && r.zona!=='') ZONA_TIER[k]=String(r.zona).trim().slice(0,40);
+    const col=String(r.color||'').trim(); if(/^#[0-9a-f]{6}$/i.test(col)) TIERS[k].color=col;
   });
   if(mesas && mesas.length){
     const nuevasOcupadas=new Set();
@@ -628,7 +633,7 @@ function applySheet(cats, mesas){
     mesas.forEach(r=>{
       const id=numOf(r.mesa); if(id===null || !TIER_OF[id]) return;
       const k=(r.categoria||'').toUpperCase().trim(); if(TIERS[k]) TIER_OF[id]=k;
-      const px=numOf(r.pax); if(px!==null && px>=1 && px<=30) PAX_OF[id]=px;
+      const px=numOf(r.pax); if(px!==null && px>=1 && px<=30) PAX_OF[id]=px; else if(PAX_CAT[TIER_OF[id]]) PAX_OF[id]=PAX_CAT[TIER_OF[id]];
       if(vendida(r.estado)){
         nuevasOcupadas.add(String(id));
         const f=fechaDe(r.vendida_el||r['vendida el']||r.fecha||r['fecha venta']); if(f) VENDIDA_EL[id]=f;
