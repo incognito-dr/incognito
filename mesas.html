@@ -67,7 +67,7 @@ h1 em{font-style:italic;color:var(--plaque)}
 .viewers{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-family:var(--body);font-size:11px;color:#777;letter-spacing:0.02em}
 .viewers .stamp{opacity:.65}
 /* mientras llega el Sheet, los precios y contadores se ven como placeholder, nunca como un número viejo */
-html.cargando .tier .pr,html.cargando .chips b,html.cargando #total,html.cargando #viewerCount,html.cargando #mbarSub,html.cargando #sellist .rt{color:transparent !important;background:rgba(1,49,49,.08);border-radius:4px;animation:skelPulse 1.2s ease-in-out infinite}
+html.cargando .tier .pr,html.cargando .tier .desg,html.cargando #pax,html.cargando .chips b,html.cargando #total,html.cargando #viewerCount,html.cargando #mbarSub,html.cargando #sellist .rt{color:transparent !important;background:rgba(1,49,49,.08);border-radius:4px;animation:skelPulse 1.2s ease-in-out infinite}
 @keyframes skelPulse{50%{opacity:.4}}
 .actividad{text-align:center;margin-top:6px;font-family:var(--body);font-size:11px;color:#5d716c;letter-spacing:0.02em}
 .viewers-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px #4ade80;animation:vPulse 1.6s ease-in-out infinite}
@@ -79,11 +79,19 @@ html.cargando .tier .pr,html.cargando .chips b,html.cargando #total,html.cargand
 .panel h2{font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-0.02em;margin-bottom:3px;color:#111}
 .panel .pnote{font-family:var(--body);font-size:11px;color:var(--turq);font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
 .tiers{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
-.tier{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:4px;background:#f5f5f3;font-size:12.5px;border:0.5px solid rgba(0,0,0,0.06);cursor:default;}
-.tier .sw{width:13px;height:13px;border-radius:50%}
+.tier{display:grid;grid-template-columns:14px 1fr auto;grid-template-areas:"sw hd pr" "sw desg desg" "sw nob nob";gap:2px 10px;align-items:start;padding:10px 12px;border-radius:4px;background:#f5f5f3;font-size:12.5px;border:0.5px solid rgba(0,0,0,0.06);cursor:default;}
+.tier .sw{grid-area:sw;width:13px;height:13px;border-radius:50%;margin-top:2px}
+.tier .hd{grid-area:hd;min-width:0}
+.tier .pr{grid-area:pr}
+.tier small.desg{grid-area:desg}
+.tier small.nob{grid-area:nob}
 .tier b{font-weight:500;display:block;font-size:13px;color:#111}
 .tier small{color:#888;font-size:11px;letter-spacing:0;font-family:var(--body)}
 .tier .pr{font-family:var(--display);font-weight:500;font-size:12.5px;white-space:nowrap;letter-spacing:0;color:#111}
+.tier .paxb{font-weight:400;font-size:11.5px;color:#5d716c;letter-spacing:.02em;white-space:nowrap}
+.tier small{display:block;line-height:1.35}
+.tier small.desg{margin-top:3px;color:#3d5c56}
+.tier small.nob{font-style:italic;opacity:.75;font-size:10.5px}
 .selbox{border-top:0.5px solid rgba(0,0,0,0.1);padding-top:18px;margin-top:6px}
 .selbox h3{font-family:var(--body);font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--turq);margin-bottom:14px}
 .selrow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:0.5px solid rgba(0,0,0,0.08);font-size:13px;animation:pop .25s ease;color:#111}
@@ -287,16 +295,18 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
   <div class="layout">
     <div>
       <div class="chips" id="chips" aria-label="Categorías y precios">
-        <button data-tier="A"><i style="background:#A67C00"></i><b>RD$120k</b><span>Stage VIP</span></button>
-        <button data-tier="B"><i style="background:#7A4E24"></i><b>RD$120k</b><span>Private Decks</span></button>
-        <button data-tier="C"><i style="background:#0F5F58"></i><b>RD$80k</b><span>Stage Lounge</span></button>
-        <button data-tier="D"><i style="background:#008E87"></i><b>RD$60k</b><span>Stage Table</span></button>
-        <button data-tier="E"><i style="background:#7D8B3A"></i><b>RD$55k</b><span>Deck Lounge</span></button>
-        <button data-tier="F"><i style="background:#3E6B45"></i><b>RD$40k</b><span>Garden Table</span></button>
+        <button data-tier="A"><i style="background:#A67C00"></i><b>RD$100k</b><span>Stage VIP</span></button>
+        <button data-tier="B"><i style="background:#7A4E24"></i><b>RD$100k</b><span>Private Decks</span></button>
+        <button data-tier="C"><i style="background:#0F5F58"></i><b>RD$70k</b><span>Stage Lounge</span></button>
+        <button data-tier="D"><i style="background:#008E87"></i><b>RD$50k</b><span>Stage Table</span></button>
+        <button data-tier="E"><i style="background:#7D8B3A"></i><b>RD$45k</b><span>Deck Lounge</span></button>
+        <button data-tier="F"><i style="background:#3E6B45"></i><b>RD$32k</b><span>Garden Table</span></button>
       </div>
       <div class="mapcard">
         <div class="map-stage" id="stage">
-          <img id="mapimg" width="3072" height="5504" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_1000,c_limit/v1788620278/cdshf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_npt7fh.webp" alt="Mapa Oasis 1800">
+          <img id="mapimg" width="3072" height="5504" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_1000,c_limit/v1788620278/cdshf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_npt7fh.webp"
+               srcset="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_1000,c_limit/v1788620278/cdshf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_npt7fh.webp 1000w, https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_1600,c_limit/v1788620278/cdshf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_npt7fh.webp 1600w, https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_2000,c_limit/v1788620278/cdshf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_npt7fh.webp 2000w"
+               sizes="(min-width:981px) 820px, 100vw" alt="Mapa Oasis 1800">
         </div>
       </div>
       <div class="legend" id="legend">
@@ -328,8 +338,8 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
           </div>
         </div>
         <div class="consumo">
-          <span class="c-yes">Cada mesa incluye los tickets de entrada de todas sus personas: 6 pax son 6 tickets.</span>
-          <span class="c-yes">Monto totalmente consumible en Menú de Bebida.</span>
+          <span class="c-yes" id="notaPlan">Cada plan incluye las entradas de mesa de sus personas (RD$2,000 por persona) más un monto consumible en botellas.</span>
+          <span class="c-no">*Las entradas de mesa no incluyen open bar.</span>
           <span class="c-no">No incluye crédito consumible en comida.</span>
         </div>
         <button class="cta" id="cta" disabled>Reservar por WhatsApp</button>
@@ -351,15 +361,22 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
 </div>
 
 <script>
-/* 6 categorías (5 sep 2026). El precio de cada mesa incluye los tickets de entrada de todas sus personas. */
+/* 6 planes (5 sep 2026). Cada plan = entradas de mesa (RD$2,000 por persona, sin open bar) + monto consumible en botellas.
+   El desglose se calcula: entradas = pax × ENTRADA_PP; consumible = precio − entradas. Así sigue correcto si cambias precio o pax en el Sheet. */
 const TIERS = {
-  A:{name:'Stage VIP',     price:120000, color:'#A67C00', desc:'Frente al DJ · 15 pax'},
-  B:{name:'Private Decks', price:120000, color:'#7A4E24', desc:'Deck privado · 15 pax'},
-  C:{name:'Stage Lounge',  price:80000,  color:'#0F5F58', desc:'Frente al DJ · 10 pax'},
-  D:{name:'Stage Table',   price:60000,  color:'#008E87', desc:'Frente al DJ · 8 pax'},
-  E:{name:'Deck Lounge',   price:55000,  color:'#7D8B3A', desc:'Cabañas y lounges · 8 pax'},
-  F:{name:'Garden Table',  price:40000,  color:'#3E6B45', desc:'Entre las palmas · 6 pax'},
+  A:{name:'Stage VIP',     price:100000, color:'#A67C00', desc:'Frente al DJ · 15 pax'},
+  B:{name:'Private Decks', price:100000, color:'#7A4E24', desc:'Deck privado · 15 pax'},
+  C:{name:'Stage Lounge',  price:70000,  color:'#0F5F58', desc:'Frente al DJ · 10 pax'},
+  D:{name:'Stage Table',   price:50000,  color:'#008E87', desc:'Frente al DJ · 8 pax'},
+  E:{name:'Deck Lounge',   price:45000,  color:'#7D8B3A', desc:'Cabañas y lounges · 8 pax'},
+  F:{name:'Garden Table',  price:32000,  color:'#3E6B45', desc:'Entre las palmas · 6 pax'},
 };
+const ENTRADA_PP  = 2000;   // entrada de mesa por persona (RD$). No incluye open bar.
+const ENTRADA_CAT = {};     // por categoría desde el Sheet (columna opcional `entrada`)
+const entradaPP = k => (ENTRADA_CAT[k]!==undefined ? ENTRADA_CAT[k] : ENTRADA_PP);
+// desglose de un plan: {entradas, consumible} para un precio y un pax dados
+const desglose = (k, price, pax) => { const e=Math.max(0,(pax||0)*entradaPP(k)); return {entradas:Math.min(e,price), consumible:Math.max(0,price-e), valido: e<=price && pax>0}; };
+const NOTA_OPEN_BAR = '*Las entradas de mesa no incluyen open bar';
 const TIER_OF = {1:'C',2:'D',3:'C',4:'A',5:'A',6:'D',7:'D',8:'D',9:'D',10:'D',11:'D',12:'D',13:'D',14:'E',15:'E',16:'F',17:'F',18:'F',19:'F',20:'F',21:'F',22:'B',23:'E',24:'B',25:'E'};
 const PAX_OF  = {1:10,2:8,3:10,4:15,5:15,6:8,7:8,8:8,9:8,10:8,11:8,12:8,13:8,14:8,15:8,16:6,17:6,18:6,19:6,20:6,21:6,22:15,23:8,24:15,25:8};
 const tierOf = id => Object.assign({}, TIERS[TIER_OF[id]], {pax:PAX_OF[id]});
@@ -449,8 +466,9 @@ function render(){
   }
   const tot=[...selected.values()].reduce((s,t)=>s+t.price,0);
   const pax=[...selected.values()].reduce((s,t)=>s+t.pax,0);
+  const dsel=[...selected.entries()].reduce((a,[id,t])=>{ const d=desglose(TIER_OF[id],t.price,t.pax); a.entradas+=d.entradas; a.consumible+=d.consumible; return a; },{entradas:0,consumible:0});
   document.getElementById('total').textContent=fmt(tot);
-  document.getElementById('pax').textContent=pax? pax+' personas · '+pax+' tickets incluidos' : '0 personas';
+  document.getElementById('pax').textContent=!pax ? '0 personas' : pax+' personas · '+pax+' entradas de mesa ('+fmt(dsel.entradas)+')'+(dsel.consumible>0?' + '+fmt(dsel.consumible)+' en botellas':'');
   document.getElementById('cta').disabled=selected.size===0;
 
   // barra fija de móvil: refleja la selección sin mover al usuario del mapa
@@ -464,7 +482,7 @@ function render(){
     }else{
       const [id,t]=[...selected.entries()][0];
       bt.textContent=selected.size===1 ? (id+' \u00b7 '+t.name) : (selected.size+' mesas');
-      bs2.textContent=fmt(tot)+' \u00b7 '+pax+' pax \u00b7 '+pax+' tickets';
+      bs2.textContent=fmt(tot)+' \u00b7 '+pax+' pax'+(dsel.consumible>0?' \u00b7 RD$'+Math.round(dsel.consumible/1000)+'k en botellas':'');
       bc.disabled=false; bc.textContent='Reservar';
     }
   }
@@ -472,10 +490,10 @@ function render(){
 
 function reservar(){
   if(selected.size===0) return;
-  const lines=[...selected.entries()].map(([id,t])=>`• ${id} — ${t.name} (${t.pax} pax · ${t.pax} tickets de entrada incluidos) — ${fmt(t.price)}`);
+  const lines=[...selected.entries()].map(([id,t])=>{ const d=desglose(TIER_OF[id],t.price,t.pax); return `• ${id} — ${t.name} (${t.pax} pax · ${t.pax} entradas de mesa ${fmt(d.entradas)} + ${fmt(d.consumible)} consumibles en botellas) — ${fmt(t.price)}`; });
   const tot=document.getElementById('total').textContent;
   const pax=document.getElementById('pax').textContent;
-  const msg=`¡Hola! Quiero reservar para Oasis 1800 (Neptuno's, Boca Chica — sábado 19 de septiembre):\n\n${lines.join('\n')}\n\nTotal: ${tot}\nCapacidad: ${pax}\n\n¿Me confirman disponibilidad?`;
+  const msg=`¡Hola! Quiero reservar para Oasis 1800 (Neptuno's, Boca Chica — sábado 19 de septiembre):\n\n${lines.join('\n')}\n\nTotal: ${tot}\nCapacidad: ${pax}\n${NOTA_OPEN_BAR}\n\n¿Me confirman disponibilidad?`;
   window.open(`https://wa.me/18495807998?text=${encodeURIComponent(msg)}`,'_blank');
 }
 document.getElementById('cta').onclick=reservar;
@@ -497,13 +515,19 @@ renderAvailability();
 
 /* ---- desktop: la altura del panel manda; el mapa la copia y saca su ancho de la foto ---- */
 (function(){
+  var prev=null;
   function sync(){
-    if(!window.matchMedia('(min-width:981px)').matches){document.documentElement.style.removeProperty('--mapH');return;}
-    var p=document.getElementById('panel'); if(!p) return;
-    document.documentElement.style.setProperty('--mapH', p.getBoundingClientRect().height+'px');
+    if(!window.matchMedia('(min-width:981px)').matches){document.documentElement.style.removeProperty('--mapH');prev=null;return;}
+    var p=document.getElementById('panel'), l=document.querySelector('.layout'); if(!p||!l) return;
+    // el mapa copia la altura del panel, pero nunca más de lo que cabe: ancho disponible − hueco (40) − panel mínimo (400)
+    var maxH=(l.clientWidth-40-400)*5504/3072;
+    var v=Math.max(300, Math.min(p.getBoundingClientRect().height, maxH));
+    if(prev!==null && Math.abs(v-prev)<1) return;
+    prev=v; document.documentElement.style.setProperty('--mapH', v+'px');
   }
   sync(); window.addEventListener('resize',sync); window.addEventListener('load',sync);
   if(document.fonts) document.fonts.ready.then(sync);
+  if(window.ResizeObserver){ var ro=new ResizeObserver(function(){ requestAnimationFrame(sync); }); ro.observe(document.getElementById('panel')); }
 })();
 
 /* ---- chips: filtrar por categoría y saltar a la primera mesa ---- */
@@ -561,19 +585,40 @@ function renderTiers(){
     const t=TIERS[k];
     const mesas=Object.keys(TIER_OF).filter(m=>TIER_OF[m]===k).map(Number).sort((a,b)=>a-b);
     const paxs=mesas.map(m=>PAX_OF[m]).filter(Boolean);
-    const mn=paxs.length?Math.min(...paxs):0, mx=paxs.length?Math.max(...paxs):0;
-    const rango=!paxs.length? '' : mn===mx ? mn+' pax · '+mn+' tickets' : mn+' a '+mx+' pax · tickets incluidos';
+    if(!mesas.length) return '';                                   // categoría sin mesas asignadas: no se pinta
+    const mn=Math.min(...paxs), mx=Math.max(...paxs);
+    const paxTxt = mn===mx ? mn+' PAX' : mn+' a '+mx+' PAX';
+    const d1 = desglose(k, t.price, mn), d2 = desglose(k, t.price, mx);
+    let desg='';
+    if(d1.valido && d2.valido){
+      desg = mn===mx
+        ? `Incluye ${mn} entradas de mesa (${fmt(d1.entradas)}) + ${fmt(d1.consumible)} consumibles en botellas`
+        : `Incluye ${mn} a ${mx} entradas de mesa (${fmt(d1.entradas)} a ${fmt(d2.entradas)}) + ${fmt(d2.consumible)} a ${fmt(d1.consumible)} consumibles en botellas`;
+    } else {
+      const aviso='categoria '+k+': '+mx+' pax × '+fmt(entradaPP(k))+' de entrada supera el precio '+fmt(t.price)+'; se oculta el desglose';
+      if(sheetEstado.errores.indexOf(aviso)<0) sheetEstado.errores.push(aviso);
+    }
     return `<div class="tier"><span class="sw" style="background:${t.color}"></span>
-      <div><b>${esc(t.name)}</b><small>${esc(ZONA_TIER[k]||'')}${rango?' · '+rango:''} · mesas ${mesas.join(', ')}</small></div>
-      <span class="pr">${fmt(t.price)}</span></div>`;
+      <div class="hd"><b>${esc(t.name)} <span class="paxb">| ${paxTxt}</span></b>
+        <small>${esc(ZONA_TIER[k]||'')} · mesas ${mesas.join(', ')}</small></div>
+      <span class="pr">${fmt(t.price)}</span>
+      ${desg?`<small class="desg">${desg}</small>`:''}
+      <small class="nob">${NOTA_OPEN_BAR}</small></div>`;
   }).join('');
+  const notaPlan=document.getElementById('notaPlan');
+  if(notaPlan){
+    const pps=[...new Set(Object.keys(TIERS).map(entradaPP))];
+    notaPlan.textContent='Cada plan incluye las entradas de mesa de sus personas'+(pps.length===1?' ('+fmt(pps[0])+' por persona)':'')+' más un monto consumible en botellas.';
+  }
   const leg=document.getElementById('legend');
-  if(leg) leg.innerHTML=Object.keys(TIERS).map(k=>`<span><i class="dot" style="background:${TIERS[k].color}"></i> ${esc(TIERS[k].name)}</span>`).join('')
+  const conMesas=k=>Object.keys(TIER_OF).some(m=>TIER_OF[m]===k);
+  if(leg) leg.innerHTML=Object.keys(TIERS).filter(conMesas).map(k=>`<span><i class="dot" style="background:${TIERS[k].color}"></i> ${esc(TIERS[k].name)}</span>`).join('')
     +'<span><i class="dot" style="background:var(--selected)"></i> Tu selección</span>'
     +'<span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>';
   const chips=document.getElementById('chips');
   if(chips) chips.querySelectorAll('button[data-tier]').forEach(b=>{
     const t=TIERS[b.dataset.tier]; if(!t) return;
+    b.hidden=!conMesas(b.dataset.tier);
     b.querySelector('b').textContent='RD$'+Math.round(t.price/1000)+'k';
     b.querySelector('span').textContent=t.name;
     const dot=b.querySelector('i'); if(dot) dot.style.background=t.color;
@@ -626,7 +671,9 @@ function applySheet(cats, mesas){
     const pc=numOf(r.pax); if(pc!==null && pc>=1 && pc<=30) PAX_CAT[k]=pc;
     if(r.zona!==undefined && r.zona!=='') ZONA_TIER[k]=String(r.zona).trim().slice(0,40);
     const col=String(r.color||'').trim(); if(/^#[0-9a-f]{6}$/i.test(col)) TIERS[k].color=col;
+    const ep=numOf(r.entrada); if(ep!==null && ep>=0 && ep<=100000) ENTRADA_CAT[k]=ep;
   });
+  Object.keys(TIER_OF).forEach(id=>{ const pc=PAX_CAT[TIER_OF[id]]; if(pc) PAX_OF[id]=pc; });
   if(mesas && mesas.length){
     const nuevasOcupadas=new Set();
     Object.keys(VENDIDA_EL).forEach(k=>delete VENDIDA_EL[k]);
