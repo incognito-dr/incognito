@@ -296,7 +296,7 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
       </div>
       <div class="mapcard">
         <div class="map-stage" id="stage">
-          <img id="mapimg" width="3072" height="5504" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_1000,c_limit/v1788492072/hf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_dxzmxh.webp" alt="Mapa Oasis 1800">
+          <img id="mapimg" width="3072" height="5504" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto:eco,w_1000,c_limit/v1788620278/cdshf_20260904_030309_dd6e7bf5-3e5a-48f6-9533-f41504b7023e_npt7fh.webp" alt="Mapa Oasis 1800">
         </div>
       </div>
       <div class="legend" id="legend">
@@ -354,7 +354,7 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
 /* 6 categorías (5 sep 2026). El precio de cada mesa incluye los tickets de entrada de todas sus personas. */
 const TIERS = {
   A:{name:'Stage VIP',     price:120000, color:'#A67C00', desc:'Frente al DJ · 15 pax'},
-  B:{name:'Private Decks', price:120000, color:'#7A4E24', desc:'Deck privado con jacuzzi · 15 pax'},
+  B:{name:'Private Decks', price:120000, color:'#7A4E24', desc:'Deck privado · 15 pax'},
   C:{name:'Stage Lounge',  price:80000,  color:'#0F5F58', desc:'Frente al DJ · 10 pax'},
   D:{name:'Stage Table',   price:60000,  color:'#008E87', desc:'Frente al DJ · 8 pax'},
   E:{name:'Deck Lounge',   price:55000,  color:'#7D8B3A', desc:'Cabañas y lounges · 8 pax'},
@@ -552,7 +552,7 @@ const SHEET = {
   mesas:      SHEET_PUB+'?gid='+SHEET_GID.mesas+'&single=true&output=csv',
 };
 const COLOR_TIER = {A:'#A67C00', B:'#7A4E24', C:'#0F5F58', D:'#008E87', E:'#7D8B3A', F:'#3E6B45'};
-const ZONA_TIER  = {A:'Frente al DJ', B:'Deck privado con jacuzzi', C:'Frente al DJ', D:'Frente al DJ', E:'Cabañas y lounges', F:'Entre las palmas'};
+const ZONA_TIER  = {A:'Frente al DJ', B:'Deck privado', C:'Frente al DJ', D:'Frente al DJ', E:'Cabañas y lounges', F:'Entre las palmas'};
 
 function renderTiers(){
   const cont=document.getElementById('tiers'); if(!cont) return;
