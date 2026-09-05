@@ -338,7 +338,7 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
           </div>
         </div>
         <div class="consumo">
-          <span class="c-yes" id="notaPlan">Cada plan incluye las entradas de mesa de sus personas (RD$2,000 por persona) más un monto consumible en botellas.</span>
+          <span class="c-yes" id="notaPlan">Cada plan incluye las entradas de mesa de sus personas (RD$2,000 por persona) más un monto en consumo.</span>
           <span class="c-no">*Las entradas de mesa no incluyen open bar.</span>
           <span class="c-no">No incluye crédito consumible en comida.</span>
         </div>
@@ -361,7 +361,7 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
 </div>
 
 <script>
-/* 6 planes (5 sep 2026). Cada plan = entradas de mesa (RD$2,000 por persona, sin open bar) + monto consumible en botellas.
+/* 6 planes (5 sep 2026). Cada plan = entradas de mesa (RD$2,000 por persona, sin open bar) + monto consumible en consumo.
    El desglose se calcula: entradas = pax × ENTRADA_PP; consumible = precio − entradas. Así sigue correcto si cambias precio o pax en el Sheet. */
 const TIERS = {
   A:{name:'Stage VIP',     price:100000, color:'#A67C00', desc:'Frente al DJ · 15 pax'},
@@ -468,7 +468,7 @@ function render(){
   const pax=[...selected.values()].reduce((s,t)=>s+t.pax,0);
   const dsel=[...selected.entries()].reduce((a,[id,t])=>{ const d=desglose(TIER_OF[id],t.price,t.pax); a.entradas+=d.entradas; a.consumible+=d.consumible; return a; },{entradas:0,consumible:0});
   document.getElementById('total').textContent=fmt(tot);
-  document.getElementById('pax').textContent=!pax ? '0 personas' : pax+' personas · '+pax+' entradas de mesa ('+fmt(dsel.entradas)+')'+(dsel.consumible>0?' + '+fmt(dsel.consumible)+' en botellas':'');
+  document.getElementById('pax').textContent=!pax ? '0 personas' : pax+' personas · '+pax+' entradas de mesa ('+fmt(dsel.entradas)+')'+(dsel.consumible>0?' + '+fmt(dsel.consumible)+' en consumo':'');
   document.getElementById('cta').disabled=selected.size===0;
 
   // barra fija de móvil: refleja la selección sin mover al usuario del mapa
@@ -482,7 +482,7 @@ function render(){
     }else{
       const [id,t]=[...selected.entries()][0];
       bt.textContent=selected.size===1 ? (id+' \u00b7 '+t.name) : (selected.size+' mesas');
-      bs2.textContent=fmt(tot)+' \u00b7 '+pax+' pax'+(dsel.consumible>0?' \u00b7 RD$'+Math.round(dsel.consumible/1000)+'k en botellas':'');
+      bs2.textContent=fmt(tot)+' \u00b7 '+pax+' pax'+(dsel.consumible>0?' \u00b7 RD$'+Math.round(dsel.consumible/1000)+'k en consumo':'');
       bc.disabled=false; bc.textContent='Reservar';
     }
   }
@@ -490,7 +490,7 @@ function render(){
 
 function reservar(){
   if(selected.size===0) return;
-  const lines=[...selected.entries()].map(([id,t])=>{ const d=desglose(TIER_OF[id],t.price,t.pax); return `• ${id} — ${t.name} (${t.pax} pax · ${t.pax} entradas de mesa ${fmt(d.entradas)} + ${fmt(d.consumible)} consumibles en botellas) — ${fmt(t.price)}`; });
+  const lines=[...selected.entries()].map(([id,t])=>{ const d=desglose(TIER_OF[id],t.price,t.pax); return `• ${id} — ${t.name} (${t.pax} pax · ${t.pax} entradas de mesa ${fmt(d.entradas)} + ${fmt(d.consumible)} en consumo) — ${fmt(t.price)}`; });
   const tot=document.getElementById('total').textContent;
   const pax=document.getElementById('pax').textContent;
   const msg=`¡Hola! Quiero reservar para Oasis 1800 (Neptuno's, Boca Chica — sábado 19 de septiembre):\n\n${lines.join('\n')}\n\nTotal: ${tot}\nCapacidad: ${pax}\n${NOTA_OPEN_BAR}\n\n¿Me confirman disponibilidad?`;
@@ -592,8 +592,8 @@ function renderTiers(){
     let desg='';
     if(d1.valido && d2.valido){
       desg = mn===mx
-        ? `Incluye ${mn} entradas de mesa (${fmt(d1.entradas)}) + ${fmt(d1.consumible)} consumibles en botellas`
-        : `Incluye ${mn} a ${mx} entradas de mesa (${fmt(d1.entradas)} a ${fmt(d2.entradas)}) + ${fmt(d2.consumible)} a ${fmt(d1.consumible)} consumibles en botellas`;
+        ? `Incluye ${mn} entradas de mesa (${fmt(d1.entradas)}) + ${fmt(d1.consumible)} en consumo`
+        : `Incluye ${mn} a ${mx} entradas de mesa (${fmt(d1.entradas)} a ${fmt(d2.entradas)}) + ${fmt(d2.consumible)} a ${fmt(d1.consumible)} en consumo`;
     } else {
       const aviso='categoria '+k+': '+mx+' pax × '+fmt(entradaPP(k))+' de entrada supera el precio '+fmt(t.price)+'; se oculta el desglose';
       if(sheetEstado.errores.indexOf(aviso)<0) sheetEstado.errores.push(aviso);
@@ -608,7 +608,7 @@ function renderTiers(){
   const notaPlan=document.getElementById('notaPlan');
   if(notaPlan){
     const pps=[...new Set(Object.keys(TIERS).map(entradaPP))];
-    notaPlan.textContent='Cada plan incluye las entradas de mesa de sus personas'+(pps.length===1?' ('+fmt(pps[0])+' por persona)':'')+' más un monto consumible en botellas.';
+    notaPlan.textContent='Cada plan incluye las entradas de mesa de sus personas'+(pps.length===1?' ('+fmt(pps[0])+' por persona)':'')+' más un monto en consumo.';
   }
   const leg=document.getElementById('legend');
   const conMesas=k=>Object.keys(TIER_OF).some(m=>TIER_OF[m]===k);
