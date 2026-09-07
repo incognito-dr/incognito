@@ -179,10 +179,10 @@ a{color:inherit}
         </form>
         <div class="ok" id="ok" hidden aria-live="polite"></div>
         <ul class="notas">
-          <li><b>Tus boletas llegan a ese correo</b> desde que estén listas, con tu código QR. Si no las ves, revisa spam y promociones.</li>
-          <li><b>Invitación personal e intransferible.</b> El QR es único y se valida en puerta con tu nombre.</li>
-        <li><b>Incluye +1 acompañante.</b> Entra contigo, con tu mismo QR.</li>
-          <li>Puertas a las 12 PM. Lo demás, allá.</li>
+          <li><b>Tus boletas llegan a ese correo</b> desde que estén listas, con tus códigos QR. Si no las ves, revisa spam y promociones.</li>
+          <li><b>Invitación personal e intransferible.</b> Cada QR es único y se valida en puerta con tu nombre.</li>
+        <li><b>Incluye +1 acompañante.</b> Llegarán dos códigos QR: el tuyo y el de tu acompañante.</li>
+          <li>Puertas abren desde las 12 PM.</li>
         </ul>
       </div>
     </div>
@@ -204,10 +204,14 @@ a{color:inherit}
   const movil=window.matchMedia('(max-width:820px)').matches || window.innerHeight>window.innerWidth;
   if(!movil) v.poster=v.dataset.posterDesktop;
   cine.style.backgroundImage='url("'+v.poster+'")';
-  const quieto=window.matchMedia('(prefers-reduced-motion:reduce)').matches || (navigator.connection && navigator.connection.saveData) || window.matchMedia('(prefers-reduced-data:reduce)').matches;
+  // solo se deja quieto si el usuario pidió ahorro de datos; "reducir movimiento" no apaga el fondo (hay botón para pausarlo)
+  const quieto=(navigator.connection && navigator.connection.saveData) || window.matchMedia('(prefers-reduced-data:reduce)').matches;
   const s=document.createElement('source'); s.src=movil? v.dataset.mobileMp4 : v.dataset.desktopMp4; s.type='video/mp4'; v.appendChild(s);
   const pinta=()=>{ if(!btn) return; const on=!v.paused; btn.textContent=on?'Pausar fondo':'Reproducir fondo'; btn.setAttribute('aria-pressed',on?'true':'false'); };
-  if(!quieto){ v.autoplay=true; v.load(); v.play().catch(()=>{}); } else { v.load(); }
+  const intenta=()=>{ if(!quieto && v.paused) v.play().catch(()=>{}); };
+  if(!quieto){ v.autoplay=true; v.load(); intenta(); v.addEventListener('canplay',intenta,{once:true}); } else { v.load(); }
+  // si el sistema bloquea el autoplay (ahorro de batería), arranca con el primer toque
+  ['touchstart','click','keydown'].forEach(ev=>window.addEventListener(ev,intenta,{once:true,passive:true}));
   v.addEventListener('play',pinta); v.addEventListener('pause',pinta); pinta();
   if(btn) btn.addEventListener('click',()=>{ if(v.paused) v.play().catch(()=>{}); else v.pause(); });
   let t=null; const move=()=>{ t=null; const max=Math.round(window.innerHeight*0.07); v.style.transform='translate3d(0,'+Math.min(max,Math.round(window.scrollY*0.18))+'px,0)'; };
@@ -252,11 +256,11 @@ function listo(nombre,correo,repetido,num){
   const primero=nombre.split(' ')[0];
   $('.t-title').innerHTML= repetido ? 'Ya estabas<br>en la lista.' : 'Confirmado,<br>'+esc(primero)+'.';
   $('.t-lead').textContent= repetido ? 'Este correo ya estaba registrado. Tus boletas llegan ahí desde que estén listas.' : 'Guardamos tu nombre tal como aparecerá en puerta. Tus boletas llegan a tu correo desde que estén listas.';
-  if(num){ $('#num').textContent=String(num).padStart(3,'0'); $('#numwrap').hidden=false; }
+  if(num){ if(num>=666) num+=1; $('#num').textContent=String(num).padStart(3,'0'); $('#numwrap').hidden=false; }
   ok.innerHTML=`<div class="sello">${repetido?'Ya registrado':'Registrado'}</div>
     <h3 tabindex="-1">${repetido?'Ya estabas en la lista.':'Listo, '+esc(primero)+'.'}</h3>
     <p class="puerta">En puerta: <b>${esc(nombre)}</b></p>
-    <p>Tus boletas con código QR llegarán a <b>${esc(correo)}</b> desde que estén listas. Si no las ves, revisa spam y promociones.</p>
+    <p>Tus dos boletas con código QR, la tuya y la de tu acompañante, llegarán a <b>${esc(correo)}</b> desde que estén listas. Si no las ves, revisa spam y promociones.</p>
     <p>Invitación personal e intransferible. Incluye +1 acompañante.</p>
     <p class="fecha">Sábado 19 de septiembre · Neptuno&rsquo;s, Boca Chica · Puertas 12 PM</p>
     <button type="button" class="otra" id="otra">¿Algo mal escrito o vas a registrar a otra persona?</button>`;
