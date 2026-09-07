@@ -320,7 +320,6 @@ body{background:var(--bg) url("https://res.cloudinary.com/dheiidsny/image/upload
         <span><i class="dot legend-x" style="background:#666"></i> Ocupada</span>
       </div>
       <div class="viewers"><span class="viewers-dot"></span><span id="viewerCount">8</span> de 27 mesas disponibles</div>
-      <div class="actividad" id="actividad" hidden></div>
     </div>
 
     <aside class="panel" id="panel">
@@ -768,6 +767,7 @@ const hora12 = d => { const h=d.getHours(), m=d.getMinutes(); return (((h+11)%12
 
 /* ---- actividad real: última reserva y reservas de la semana, según la columna vendida_el ---- */
 function renderActividad(){
+  return;   // la actividad de reservas (última reserva, cuántas esta semana) no se muestra al público
   const el=document.getElementById('actividad'); if(!el) return;
   const fechas=Object.keys(VENDIDA_EL).map(k=>VENDIDA_EL[k]).filter(Boolean).sort((a,b)=>b-a);
   if(!fechas.length){ el.hidden=true; el.textContent=''; return; }
