@@ -16,6 +16,10 @@
       "dest": "/oasis1800.html"
     },
     {
+      "src": "^/confirmar/?$",
+      "dest": "/confirmar.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
