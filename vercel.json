@@ -20,6 +20,10 @@
       "dest": "/confirmar.html"
     },
     {
+      "src": "^/menu/?$",
+      "dest": "/menu.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
