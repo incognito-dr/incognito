@@ -162,7 +162,7 @@ function render(filas){
     return `<div class="cat"><h3>${esc(c)}</h3>${out.join('')}</div>`;
   }).join('');
 }
-/* 1) pinta al instante: caché del teléfono (última lectura del Sheet) o la lista embebida */
+/* v2 · 1) pinta al instante: caché del teléfono (última lectura del Sheet) o la lista embebida */
 const CACHE='oasisMenu';
 let actual=BASE;
 try{ const c=JSON.parse(localStorage.getItem(CACHE)||'null'); if(c && Array.isArray(c.rows) && c.rows.length && 'producto' in c.rows[0]){ actual=c.rows; } }catch(_){}
