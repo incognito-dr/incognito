@@ -60,9 +60,6 @@ a{color:inherit}
 .c-foot{position:relative;padding:18px 24px 24px;border-top:1px solid rgba(1,49,49,.14)}
 .c-foot p{font-size:12.5px;line-height:1.55;color:#3d5c56;margin:0 0 10px}
 .c-foot a{color:var(--deep)}
-.btns{display:flex;gap:8px;flex-wrap:wrap}
-.btn{font-family:var(--body);font-weight:600;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;border-radius:10px;padding:13px 16px;text-decoration:none;cursor:pointer;border:1.5px solid var(--deep);background:transparent;color:var(--deep);-webkit-tap-highlight-color:transparent}
-.btn.solid{background:var(--deep);color:#fff}
 .stamp2{display:none}
 .datos{max-width:520px;margin:18px auto 0;padding:0 16px max(28px,env(safe-area-inset-bottom));text-align:center}
 .datos p{margin:0}
@@ -73,16 +70,6 @@ a{color:inherit}
 .datos .pie a{color:var(--cream);text-decoration:none;border-bottom:1px solid rgba(243,239,230,.3)}
 .stale{font-size:11.5px;color:#9aa8a5;margin-top:8px}
 /* políticas */
-.ov{position:fixed;inset:0;background:rgba(1,49,49,.82);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}
-.ov.on{display:flex}
-.pol{background:var(--paper);color:#151a19;width:100%;max-width:560px;max-height:88vh;border-radius:22px 22px 0 0;overflow:auto;padding:22px 22px max(28px,env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
-@media(min-width:700px){.ov{align-items:center;padding:24px}.pol{border-radius:22px;max-height:82vh}}
-.pol h2{font-family:var(--display);font-weight:900;font-size:22px;color:var(--deep);margin:0 0 4px}
-.pol .s{font-size:12.5px;color:#5d716c;margin:0 0 14px}
-.pol h3{font-family:var(--body);font-weight:600;font-size:13.5px;color:var(--deep);margin:16px 0 6px}
-.pol ul{margin:0;padding-left:18px}
-.pol li{font-size:13px;line-height:1.55;color:#3d5c56;margin:4px 0}
-.pol .x{position:sticky;top:0;float:right;margin:-6px -6px 0 0;font:inherit;font-size:22px;line-height:1;background:none;border:none;color:var(--deep);cursor:pointer;padding:6px}
 @media(prefers-reduced-motion:no-preference){.card{animation:up .8s cubic-bezier(.2,.8,.2,1) both}@keyframes up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}}
 </style>
 </head>
@@ -105,8 +92,7 @@ a{color:inherit}
     <div class="perf" aria-hidden="true"></div>
     <div class="menu" id="menu"></div>
     <div class="c-foot">
-      <p>Servicio en mesa durante todo el evento. Precios en pesos dominicanos.</p>
-      <div class="btns"><a class="btn solid" href="https://www.incognito.do/mesas.html">Reservar mesa</a><button class="btn" type="button" id="verPol">Políticas</button></div>
+      <p>Servicio en mesa durante todo el evento. Precios en pesos dominicanos, impuestos incluidos.</p>
       <p class="stale" id="stale" hidden></p>
     </div>
   </div>
@@ -116,20 +102,10 @@ a{color:inherit}
   <p class="pie"><a href="https://www.instagram.com/incognito.sdq/" target="_blank" rel="noopener">Instagram</a> &middot; <a href="https://wa.me/18495807998" target="_blank" rel="noopener">WhatsApp</a></p>
 </footer>
 
-<div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="polT">
-  <div class="pol">
-    <button class="x" type="button" id="cerrarPol" aria-label="Cerrar">&times;</button>
-    <h2 id="polT">Políticas Incognito</h2>
-    <p class="s">Aplican a todas las reservas de mesa.</p>
-    <div id="polBody"></div>
-  </div>
-</div>
-
 <script>
 /* La carta se lee de la pestaña `menu` del Sheet "OASIS — Mesas" (categoria, producto, detalle, precio, grupo). Si no responde, se usa la lista de abajo. */
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwfpCTmgZEHNMzamgdXquBXh_EqVmKzkvYCprse0nxGrZQKTJ_gbbfcJp5-nz_l4_Xm/exec';
 const BASE=[{"categoria": "Tequila & Mezcal", "producto": "1800 Silver", "detalle": "", "precio": 9000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "1800 Cristalino", "detalle": "", "precio": 12000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "1800 Cristalino", "detalle": "1750 ml", "precio": 20000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "1800 Reposado", "detalle": "", "precio": 11000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "1800 Milenio", "detalle": "Extra Añejo", "precio": 25000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "1800 Reserva", "detalle": "Guachimontón", "precio": 23000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "Maestro Dobel Diamante", "detalle": "", "precio": 13000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "Maestro Dobel Diamante", "detalle": "1750 ml", "precio": 21000, "grupo": ""}, {"categoria": "Tequila & Mezcal", "producto": "400 Conejos", "detalle": "Mezcal", "precio": 12000, "grupo": ""}, {"categoria": "Vodka", "producto": "SKYY Vodka", "detalle": "", "precio": 7000, "grupo": ""}, {"categoria": "Gin", "producto": "The Botanist", "detalle": "", "precio": 10000, "grupo": ""}, {"categoria": "Whiskey", "producto": "Glen Grant", "detalle": "12 años", "precio": 8000, "grupo": ""}, {"categoria": "Vinos & Espumantes", "producto": "Martín Códax", "detalle": "Albariño", "precio": 8000, "grupo": ""}, {"categoria": "Vinos & Espumantes", "producto": "Freixenet", "detalle": "Cordón Negro", "precio": 8000, "grupo": ""}, {"categoria": "Vinos & Espumantes", "producto": "Freixenet 0,0", "detalle": "Sin alcohol", "precio": 7000, "grupo": ""}, {"categoria": "Varios", "producto": "Red Bull", "detalle": "todas las variedades", "precio": 300, "grupo": "g1"}, {"categoria": "Varios", "producto": "Agua Tónica Britvic", "detalle": "", "precio": 300, "grupo": "g1"}, {"categoria": "Varios", "producto": "Refrescos", "detalle": "", "precio": 300, "grupo": "g1"}, {"categoria": "Varios", "producto": "Agua Ferrarelle", "detalle": "500 ml", "precio": 300, "grupo": "g2"}, {"categoria": "Varios", "producto": "Agua Ferrarelle con gas", "detalle": "330 ml", "precio": 300, "grupo": "g2"}, {"categoria": "Varios", "producto": "Sour Limón", "detalle": "", "precio": 800, "grupo": ""}];
-const POL=[["1. Reservas y Pagos", ["Las reservas se confirman únicamente tras la recepción del pago inicial correspondiente al 50% del valor total de la mesa o servicio.", "El saldo restante deberá ser pagado a más tardar 24 horas antes del evento.", "Las reservas son personales y no transferibles sin la autorización previa de Incognito.", "Incognito se reserva el derecho de verificar la identidad del titular de la reserva al momento de ingreso al evento."]], ["2. Política de Cancelación", ["Con más de 7 días de anticipación al evento: penalidad del 25% del monto total de la reserva.", "Entre 7 y 2 días de anticipación: penalidad del 50% del monto total.", "Con menos de 48 horas de anticipación: penalidad del 100% (no reembolsable).", "En caso de cancelación por causas atribuibles a Incognito (por ejemplo, fuerza mayor, problemas logísticos), se ofrecerá al cliente una reprogramación del evento o un reembolso completo."]], ["3. Modificaciones en Reservas", ["Los cambios en el tamaño de la mesa, ubicación o servicios adicionales estarán sujetos a disponibilidad y deberán ser solicitados con al menos 72 horas de anticipación.", "Cualquier modificación que implique una reducción en el valor de la reserva estará sujeta a una penalidad del 10% del monto inicial reservado."]], ["4. Políticas de Ingreso", ["Incognito se reserva el derecho de admisión y permanencia en el evento.", "Se denegará la entrada a cualquier persona que no cumpla con las normas del evento, incluyendo el código de vestimenta.", "El ingreso solo será permitido con la presentación de la lista de invitados confirmada o la pulsera entregada previamente."]], ["5. Responsabilidad y Daños", ["Los clientes son responsables de cualquier daño causado a la infraestructura, mobiliario o equipos durante el evento.", "Se aplicará un cargo adicional por reparaciones o reposiciones, según sea el caso.", "Incognito no se hace responsable por la pérdida o robo de objetos personales durante el evento."]], ["6. Políticas de Consumo Mínimo", ["Algunas mesas están sujetas a un consumo mínimo, el cual será informado al momento de la reserva.", "El cliente es responsable de cumplir con el monto mínimo establecido; cualquier diferencia deberá ser cubierta."]], ["7. Captación de Imágenes y Material Audiovisual", ["Los asistentes al evento aceptan que Incognito puede captar imágenes y videos durante el evento y utilizarlos con fines promocionales."]], ["8. Disposiciones Generales", ["Incognito se reserva el derecho de modificar estos términos y condiciones en cualquier momento, notificando con antelación a los clientes con reservas activas.", "Al realizar una reserva con Incognito, el cliente acepta estos términos y condiciones en su totalidad."]]];
 const $=s=>document.querySelector(s);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmt=n=>'RD$'+Number(n).toLocaleString('en-US');
@@ -183,14 +159,6 @@ render(actual);
   }catch(e){ document.documentElement.dataset.menu='local'; }
 })();
 setInterval(()=>{ if(document.visibilityState==='visible') location.reload(); }, 10*60*1000);
-/* políticas */
-$('#polBody').innerHTML=POL.map(([h,items])=>`<h3>${esc(h)}</h3><ul>${items.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul>`).join('');
-const ov=$('#ov');
-$('#verPol').addEventListener('click',()=>{ ov.classList.add('on'); document.body.style.overflow='hidden'; $('#cerrarPol').focus(); });
-const cerrar=()=>{ ov.classList.remove('on'); document.body.style.overflow=''; $('#verPol').focus(); };
-$('#cerrarPol').addEventListener('click',cerrar);
-ov.addEventListener('click',e=>{ if(e.target===ov) cerrar(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape' && ov.classList.contains('on')) cerrar(); });
 </script>
 </body>
 </html>
