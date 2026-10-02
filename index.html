@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Incognito · Noche Eterna</title>
-<meta name="description" content="Noche Eterna. Cierre de temporada de Incognito, octubre 2026 en Santo Domingo. Fecha y locación por confirmar.">
+<meta name="description" content="Noche Eterna, octubre 2026. Incognito, Santo Domingo.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Incognito">
 <meta property="og:locale" content="es_DO">
 <meta property="og:title" content="Noche Eterna · Octubre 2026">
-<meta property="og:description" content="Cierre de temporada. Una sola noche al año. Fecha y locación se anuncian primero a la lista.">
+<meta property="og:description" content="Octubre 2026. Fecha y lugar, solo a la lista.">
 <meta property="og:url" content="https://www.incognito.do/">
 <meta property="og:image" content="https://res.cloudinary.com/dheiidsny/image/upload/v1790965509/inc5-og_uolnrb.jpg">
 <meta property="og:image:width" content="1200">
@@ -18,6 +18,9 @@
 <meta name="twitter:image" content="https://res.cloudinary.com/dheiidsny/image/upload/v1790965509/inc5-og_uolnrb.jpg">
 <meta name="theme-color" content="#0b0b0b">
 <link rel="icon" href="https://res.cloudinary.com/dheiidsny/image/upload/v1779416400/favinco_inzodu.png">
+<link rel="preconnect" href="https://res.cloudinary.com">
+<link rel="preload" as="image" href="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-hero_bzwofw.jpg" media="(min-width:701px)">
+<link rel="preload" as="image" href="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-hero-m_njrktx.jpg" media="(max-width:700px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,800;1,400&display=swap" rel="stylesheet">
@@ -62,8 +65,14 @@ a{color:inherit}
 
 /* hero */
 .hero{position:relative;height:100svh;min-height:600px;overflow:hidden}
-.hero picture img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.06);transition:transform 6s cubic-bezier(.2,.6,.2,1)}
-.hero.on picture img{transform:none}
+.slices{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);--hero:url(https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-hero_bzwofw.jpg);--n:5}
+.sl{position:relative;overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1.5s cubic-bezier(.77,0,.18,1)}
+.sl i{position:absolute;left:0;right:0;top:-12%;height:124%;background:var(--hero) no-repeat;background-size:calc(var(--n)*100%) 100%;transform:scale(1.35);transition:transform 2.2s cubic-bezier(.16,1,.3,1);will-change:transform}
+.sl:nth-child(1) i{background-position:0 50%}.sl:nth-child(2) i{background-position:25% 50%}.sl:nth-child(3) i{background-position:50% 50%}.sl:nth-child(4) i{background-position:75% 50%}.sl:nth-child(5) i{background-position:100% 50%}
+.go .sl{clip-path:inset(0 0 0 0)}.go .sl i{transform:scale(1)}
+.sl:nth-child(2){transition-delay:.08s}.sl:nth-child(3){transition-delay:.16s}.sl:nth-child(4){transition-delay:.24s}.sl:nth-child(5){transition-delay:.32s}
+.sl:nth-child(2) i{transition-delay:.08s}.sl:nth-child(3) i{transition-delay:.16s}.sl:nth-child(4) i{transition-delay:.24s}.sl:nth-child(5) i{transition-delay:.32s}
+@media (max-width:700px){.slices{grid-template-columns:repeat(3,1fr);--hero:url(https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-hero-m_njrktx.jpg);--n:3}.sl:nth-child(n+4){display:none}.sl:nth-child(2) i{background-position:50% 50%}.sl:nth-child(3) i{background-position:100% 50%}}
 .hero .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,.05) 45%,rgba(0,0,0,.85) 100%)}
 .hero .mark{grid-column:1/-1;width:clamp(200px,30vw,440px);height:auto;fill:var(--bone);margin-bottom:clamp(14px,2vw,28px)}
 .hero .info{position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(32px,6vh,64px);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:20px 24px}
@@ -92,7 +101,8 @@ a{color:inherit}
 #gente .txt{padding:clamp(72px,10vw,140px) 0}
 #gente .lead{margin-bottom:0}
 #gente .body{color:#cfccc7}
-#gente img{width:100%;height:100%;object-fit:cover;max-height:1000px}
+#gente .gimg{height:min(100vh,1000px)}
+#gente .gimg img{width:100%;height:100%;object-fit:cover}
 
 /* lo que ya pasó */
 #pasado .head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:clamp(30px,4vw,56px)}
@@ -159,7 +169,7 @@ footer .logo{width:96px;color:var(--bone)}
   #noche,#nosotros,#gente,#guestlist,#contacto{grid-template-columns:1fr}
   #gente{padding-right:var(--gut);padding-bottom:clamp(72px,10vw,140px)}
   #gente .txt{padding:clamp(72px,10vw,140px) 0 0}
-  #gente img{max-height:620px}
+  #gente .gimg{height:620px}
   #pasado .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 20px}
   #nosotros .ph{order:-1}
 }
@@ -171,6 +181,43 @@ footer .logo{width:96px;color:var(--bone)}
   #galeria::after{background:radial-gradient(ellipse 70% 40% at 50% 50%,rgba(0,0,0,.88) 0%,rgba(0,0,0,.55) 50%,rgba(0,0,0,0) 100%)}
   #nextup{left:16px;right:16px;justify-content:center}
 }
+
+/* ===== motion ===== */
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}
+.ri{position:relative;overflow:hidden;clip-path:inset(100% 0 0 0);transition:clip-path 1.4s cubic-bezier(.77,0,.18,1)}
+.ri img{width:100%;transform:scale(1.25);transition:transform 1.8s cubic-bezier(.16,1,.3,1)}
+.ri.in{clip-path:inset(0 0 0 0)}.ri.in img{transform:scale(1.08)}
+.split .wd{display:inline-block;overflow:hidden;vertical-align:top;padding:.1em 0;margin:-.1em 0}
+.split .wd>span{display:inline-block;transform:translateY(110%);transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
+.split.in .wd>span{transform:none}
+.scrub .wd{opacity:.14;transition:opacity .25s linear}.scrub .wd.on{opacity:1}
+.hero .mark,.hero .when,.hero .acts{opacity:0;transform:translateY(24px);transition:opacity 1s,transform 1.2s cubic-bezier(.16,1,.3,1)}
+.hero .mark{clip-path:inset(0 0 100% 0);opacity:1;transform:none;transition:clip-path 1.3s cubic-bezier(.77,0,.18,1) .55s}
+.go .hero .mark{clip-path:inset(0 0 0 0)}
+.go .hero .when{opacity:1;transform:none;transition-delay:.8s}.go .hero .acts{opacity:1;transform:none;transition-delay:.95s}
+.nav{transform:translateY(-100%);transition:transform 1s cubic-bezier(.16,1,.3,1) .9s,background .4s}.go .nav{transform:none}
+#intro{position:fixed;inset:0;z-index:50;background:var(--ink);display:flex;align-items:center;justify-content:center;transition:transform 1.1s cubic-bezier(.77,0,.18,1)}
+#intro .logo{width:120px;clip-path:inset(0 100% 0 0);animation:lg 1s cubic-bezier(.77,0,.18,1) .15s forwards}
+@keyframes lg{to{clip-path:inset(0 0 0 0)}}
+#intro.out{transform:translateY(-100%)}
+.cta{position:relative;overflow:hidden;isolation:isolate}
+.cta::before{content:"";position:absolute;inset:0;background:#d8d4ce;transform:scaleY(0);transform-origin:bottom;transition:transform .5s cubic-bezier(.16,1,.3,1);z-index:-1}
+.paper .cta::before{background:#2a2826}
+.cta:hover::before{transform:scaleY(1)}
+.tl{background:linear-gradient(currentColor,currentColor) 0 100%/100% 1.5px no-repeat;border:0;transition:background-size .5s cubic-bezier(.16,1,.3,1)}
+.tl:hover{background-size:0 1.5px;background-position:100% 100%}
+.nav ul a:not(.gl){position:relative}
+.nav ul a:not(.gl)::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s cubic-bezier(.16,1,.3,1)}
+.nav ul a:not(.gl):hover::after{transform:scaleX(1);transform-origin:left}
+#galeria{overflow:hidden}
+#galeria picture img{transform:scale(1.25);will-change:transform}
+#galeria .lab{opacity:0;transition:opacity 1s}
+#galeria .lab.in{opacity:1}
+#cur{position:fixed;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--bone);mix-blend-mode:difference;z-index:60;pointer-events:none;transition:width .35s cubic-bezier(.16,1,.3,1),height .35s cubic-bezier(.16,1,.3,1),margin .35s cubic-bezier(.16,1,.3,1);display:none}
+#cur.big{width:56px;height:56px;margin:-28px 0 0 -28px}
+@media (pointer:fine){#cur{display:block}}
+.grain{position:fixed;inset:-50%;z-index:55;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:gr .8s steps(4) infinite}
+@keyframes gr{25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-2%)}}
 </style>
 </head>
 <body>
@@ -179,6 +226,9 @@ footer .logo{width:96px;color:var(--bone)}
   <symbol id="lg-noche" viewBox="0 0 339.94 216.19"> <g> <path fill="currentColor" d="M242.98,76.6c.44-.65.94-1.3.97-1.76l.08-1.18c.02-.24-.48,0-.86.18l.55-4.4c.37-2.71-.31-5.6-1.72-7.76l-6.17,1.34c-7.57,1.64-10.46-3.56-10.9,3.14l-.67,10.17-.78,17.87c-.11,2.41-1.62,5.51-4,6.01-1.6.33-4.08.3-5.61-.1-2.58-.68-3.6-4.09-3.49-6.45l.46-10.14.65-15.27.46-9.05.2-4.54v-14.78s.25-10.14.25-10.14l.08-5.93c.09-6.82-1.83-9.89,4.46-15.17l6.84,1.13c1.88,3.02,2.48,6.43,2.46,10.02l-.06,13.43-.67,7.35c-.19,2.11.49,4.43,1.25,6.53l15.45-.22c1.84-2.95,3.29-6.92,3.17-9.81l-.18-4.2c-.16-3.89-.81-8.05-.12-12.33-.53-1.82-.5-3.72.06-5.74-.04-.98-.08-2.54.35-3.34.84-1.56,6.45-3.78,7.72-2.6l3.1,2.88-.52,1.09c-.11.24.31.77.52,1.14-.02.32-.38,1.13-.09,1.28l1.55.82c-.29.76-.87,2.18-.4,2.63l.99.94c.25.24-.42.97-.67,1.24l.97,2.09c-.67,1.32-2.56,3.13-.7,5.01l.86-3.96.73.32-.25,6.05c-.04.93-.62,2.22-1.17,2.89l-.64.77c-.15.19.53.42,1.19.62l.09,5.52c.04,2.21.03,4.13-1.16,5.89l.29,2.22c-1.1.89-1.6,2.21-1.36,3.09l1.48-2.11c.16,5.97-.54,10.95-1.38,16.59l-.3,7.92c-.13,3.58-.64,6.66-.55,10.23l.24,9.56c.07,2.62-.18,5.62-2.44,7.19-4.18,2.92-11.5,3.01-12.09,1.23-.18-.53-.3-1.72-.29-2.39l.08-6.09c.03-2.01.14-3.8.63-5.8,1.54-6.32-.05-9.48,1.04-11.11ZM258.01,29.89l.2-1.56c.03-.21-.94-.43-.76-.29l-.52,2.06c-.07.26,1.05.04,1.08-.21ZM230.58,51.91c1.66-.34,2.24-1.6,1.46-2.76l-1.46,2.76ZM233.53,62.07l.79-1.78c.1-.23-.82-.27-.94-.05l-.51.93.66.9ZM250.19,100.61l1.15.61c.24.13,1.15-.52.94-.7l-.76-.67-1.33.76Z"/> <path fill="currentColor" d="M242.98,76.6l-.86-1.86c-.14-.31.69-.73,1.05-.9l-.19,2.76Z"/> </g> <path fill="currentColor" d="M323.67,57.08c-5.08,3.95-11.07-.94-17.67,4.45l-.71,7.12.2,12.95,3.09,3.6,18.47,1.52,7.27-.28c.28-.01,1.04,1.28,1.3,1.15l1.34-.67c.97.03,1.43,2.39.93,3.06l-2.67-.68,1.73,1.81c.27.28-.37,1.3-.68,1.69l1.54,1.69.31-2.95c2.12,1.35.25,2.83-.01,3.9-.66,2.72-1.88,4.2-4.9,4.19l-5.63-.02-13.12-.89c-3.3-.22-6.41.38-9.68.93-3.09.52-4.78-1.53-6.91.47l-2.54-2.71c-1.56-1.67-3.11-3.09-3.14-5.63l-.15-13.73v-11.53s.06-10.08.06-10.08l.16-21.75.14-6.76.06-10.65c0-.65.38-1.96.55-2.58-.45-1.91-1.06-5.81,1.33-7.01,2.06-1.03,5.49-1.53,8.07-1.46l24.78.65.69,1.3c.15.28,1.08-.78,1.4-.79l6.33-.18c2.07-.06,4.34,1.32,4.32,3.65l-.07,6.5c-1.78,1.78-4.56,3.86-7.12,4.08l-9.09.79-8.17.42-6.23.36c-1.98.11-2.7,1.72-2.73,3.44l-.15,9.61.23,8.45c.03.95,1.69,1.59,2.54,1.6l6.88.06c2.33.02,5.13-.59,7.16.98,1.23.95,1.44,3.62,1.36,5.13l-.23,4.31-.64.5ZM332.01,11.06l.76-1.54c.11-.23-.6-.58-1-.78l.24,2.32ZM323.65,56.41l-.02-3.89-1.07,2.78c0,.22.03.9.2,1.01l.59.38.3-.27Z"/> <g> <path fill="currentColor" d="M90.89,102.09c-10.36,2.17-18.49-4.07-20.81-14.57l-1.11-5.02c-.97-4.39-1.79-8.83-1.41-13.37.1-1.19,1.82-3.4-.48-4.27l.21-6.5c1.08.11.4-1.05-.24-1.24l-.1-8.2c-.01-1.19.41-2.64.91-3.91l-.85-.31-.13-7.11.22-3.05c-.31-6.53-.52-12.9,1.17-19.21.7-2.62,2.01-4.85,3.03-7.12,1.26-2.8,3.54-4.26,6.41-5.65l3.85-1.87c1.89-.92,4.79-.78,6.94-.45l3.16.49c5.16.6,10.29,2.31,14,6.33l3.13,8.16.83,9.56c.15,1.77-.11,3.13-.07,4.35l.41,13.91v14.17s-1,.31-1,.31c-.16.05-.17.68,0,.71l1.08.25.32,3.82v1.63c0,3.91-.37,7.77-.85,11.77-.51,4.19-.48,8.65-2.27,12.61-1.95,4.32-4.92,8.46-8.62,11.42-2.03,1.62-5.27,1.84-7.72,2.36ZM76.39,4.96c.08-.15-.28-.71-.48-.61l-.89.46c-.19.1-.35.59-.34.79s.58.53.72.39l.99-1.03ZM94.65,9.62c1.47-.55,2.3-1.57,2.3-3.06l-2.3,3.06ZM81.18,81.88c.9,2.77,4.14,4.69,7.05,4.71,1.76.02,3.24-1.88,4.43-2.8,2.24-1.73,3.15-3.64,3.21-6.53l.34-16.59c.25-12.34,1.27-24.43-.31-36.79l-1.12-4.54c-.54-2.19-2.26-3.91-4.02-4.42-2.17-.63-4.16-.27-6.05,1.03-3.93,2.69-4.82,9.51-4.81,14.61v2.06s.26,3.12.26,3.12l-.69,15.13-.18,14.23c-.05,3.78-1.04,7.79.13,11.39l1.75,5.38ZM75.95,24.45l.67-1.5c.1-.22-.37-.88-.32-.66l-.67,1.5c-.1.22.36.88.32.67Z"/> <path fill="currentColor" d="M181.93,75.75l-1.55.37,1.34,3.14c.89-1.46,1.02-.72.62.17,2.1,7.42-2.75,12.7-8.61,17.31-1.67,1.31-3.34,2.32-5.54,2.63l-4.51.65c-2.88.41-6.76-.63-9.41-2.1-10.35-5.75-13.5-16.99-15.09-28.14-.55-3.84-.65-7.09,0-10.93l.08-5.43c-2.81-3.52.02-6.45-1.4-9.01-.16-1.2,1.26-3.35,1.72-4.63.18-3.04.06-6.22,1.41-8.83,2.32-4.51.5-6.15,2.75-6.84l-.81-.91c-.23-.26.33-1.02.44-1.38,2.46-8.28,8.23-14.28,15.95-18.22,5.3-2.7,12.32-2.17,16.85,1.91,7.12,6.42,11.96,17.73,5.93,23.01l-4.35,2.56-1.94-1.59c-1.95-1.59-2.58-3.35-3.14-5.65-.84-3.48-4.78-5.4-7.95-5.05-3.44.38-6.22,2.51-7.25,6.13-.63,2.23-2.17,4.7-2.45,7.03l-1.41,11.69c-.46,3.79-.66,7.27-.11,11.19.2,1.45-.33,3.4-.57,4.72l.81,10.73,1.38,6.54c.63,2.97,1.34,5.45,3.5,7.71,1.93,2.01,5.28,3.21,8.04,1.71,6.46-3.52,5.35-8.26,8.72-12.75l1.53-2.04c.58.78,1.57,1.39,2.8,1.31s2.45,1.89,2.19,3ZM146.84,19.76l.74-2.89c-.78.94-1.03,1.97-.74,2.89ZM151.24,26.52l1.06-2.03c-1.16.44-1.46,1.46-1.06,2.03ZM142.24,33.66l.06-2.02-.96.89c-.19.17.41.72.91,1.13ZM141.57,37.42l.76-1.54c.11-.23-.6-.58-1-.78l.24,2.32ZM140.59,48.64c.71-1.55.65-3.16-.52-4.5-.44,1.65-.25,2.8.52,4.5ZM152.12,56.63l.08-3.01-.88,1.8c-.19.39.57,1.43.8,1.21ZM140.58,58l.9-1.58c.14-.25-.98-.94-.98-.66l.08,2.25ZM153.05,83.84c1.11-2,.89-2.59-.14-3.27l.14,3.27ZM156.19,93.7c1.08-.11,1.85-.56,1.93-1.32.08-.8-.39-1.41-1.44-1.9l-.49,3.22ZM161.8,92.89l-2.71-.23c.46.94,1.79,1.29,2.71.23Z"/> <path fill="currentColor" d="M44.3,58.39l-.5,13.84-1.26,12.94-.56,1.81c-.09.29.78.22,1.09.23.04,3.98-1.14,7.11-3.45,10.2l-3.96-.22-5.03-.85-3,.1c-.79.03-1.62-1.58-1.82-2.4l-2.55-10.4-3.52-15.17-3.69-11.18c-.64-1.93-.89-4.48-2.04-6.09-3.15-4.4.02-6.07-2.77-7.68l.17,5.51-.34,15.48-.34,16.01c-.13,6.11,2.02,10.92.27,14.51-2.22,1.26-5.23,2-7.78,1.3C1.82,95.72,0,92.79,0,91.17l.02-21.7c0-4.35-.15-8.51.23-12.86.55-6.34.6-12.58.61-19.02l.04-18.82c.01-6.68.06-14.9,6.2-14.74l3.31.08c2.18.39,2.7,3.88,2.39,5.43-.03.17.87.1.83-.06l-.22-.95.79-.11c.24-.03.55-.31,1.01-.67,1.14,2.99,2.06,5.54,2.87,8.69l-1.39-1.97c-.51,2.15.05,4.34,1.11,6.46l1.31,5.48.23-4.02c1.08.86,1.19,2.29,1.43,3.73,1.03,6.12,3.1,11.99,5.11,17.92l3.39,10.03c.63,1.87.85,3.73,2.27,5.29l1.83-28.05.56-11.27c.05-1.09-.61-3.14-.4-4.21l.76-3.81c.33-1.65.42-3.87,1.56-5.12s3.23,0,4.29-.08l3.75-.31,1.51.14c.39.04.24,1.12.14,1.55l1.12-.28c.24-.06.12,1.17.1,1.35-1.01,1.25-1.28,2.4-.69,3.69l-.82,8.76.27,3.28-.4,17.49-.83,15.91ZM15.43,12.19l.33-1.71c.05-.28-.54-.49-1.16-.75l.83,2.46Z"/> </g> <g> <g> <path fill="currentColor" d="M320.23,213.53l-1.15-1.04c-.17-.15-.47.27-.97.81l-1.98-1.99-.71-27.92c-.09-3.59-.76-6.71-1.81-10.21l-6.8.3-5.81-2.24c-1.65,3.32-1.05,6.48-1.42,10.05l-.71,6.85c-.02.23-1.24.96-1.03,1.07l1.38.67-.8,5.33-1.64,9.12-.17,4.4c-.09,2.35-1.94,4.84-4.74,4.87-2.64.03-6.06-.89-8.49-2.01-1.47-2.08-1.12-5.12-.7-7.38l1.36-7.37.91-6.34,2.12-14.7.15-7.8c0-.2.91-.66,1-.48.12.24-.47-.9-.64-1.22l1.31-19.48-.23-12.58c-.05-2.61,1.61-5.34,2.1-7.76.54-2.71,1-5.19,2.03-7.71l3.33-8.17c-1.5.24-2.24.59-3.36-.45l7.49-.23,10.64.92c-2.2.39-3.92.25-6.61.29.94.84,2.65,1.44,4.15,1.6l17.87,1.9c1.02.11,1.33,2.03,1.38,2.93l.24,4.22c-1.16,1.41-1.63,3.04-1.17,4.57l.64-2.23c2.41,2.53-1.71,3.34-.17,6.49l.75-2.23.95,11.21.19,12.17.19,2.23.74,17.14.48,5.71c.19,2.31.17,4.46-.94,6.45l.55,2.9,1.27-2.14-.54,5.37c-.58,5.73,1.48,8.46.33,10.2.78,4.26,1.18,8.91-1.15,12.9-.87,1.48-3.54.89-4.75.92l-5.06.12ZM312.5,157.79l2.56-1.74-.53-5.56c-.69-7.33-1.5-15.04-1.33-22.41.02-1.05-.56-3.18-.77-4.24-1.33-2.1-4.03-2.57-6.4-1.85-4.06,1.23-5.73,6.21-5.04,10.72-.63,3.66-.64,7.17.54,10.63-.42,2.95-.14,5.73.45,8.77-1.24,1.92-1.01,5,.87,6.2,3.44-.67,6.06-.75,9.64-.54Z"/> <path fill="currentColor" d="M225.07,212.36l-2.12-.68c-.5-.16-.8-1.59-.8-2.16l.02-12.97,1.14-38.07.57-11.72.06-9.67.78-4.69-.47-9.03-1.14-6.3c3.7-.91,7.53-.4,11.34-.43l3.75-.03,2.57,5.14,4.82,15.16,2.46,9.13,3.4,11.58c.57,1.93,1.92,4.8,1.59,6.59l-.81,4.46c.55.04,1.64.03,1.66-.31l.09-1.52.78-9.57.66-10.82.2-3.02.37-5.33c.15-2.11.22-4.13,0-6.3.49-1.44.61-3.12.1-4.78l.14-3.44.05-12.22c2.97-.2,5.23.99,7.89,1.76l4.57,1.33c.64,3.06.42,5.53-.85,8.32l-.35,26.05v16.54s.03,13.41.03,13.41l.53,14.45-.04,8.16-.03,3.8c-.01,1.62.1,4.25-1.21,5.31l-3.85,3.1-.3-1.05c-1.4,3.14-10.11.39-13.34-2.99-.96-1-.5-3.45-.74-4.67l-1.09-5.45-1.36-7.02-2.49-14.67-3.63-16.41-5.39-18.98-.15,12.65-1.12,17.16-.15,12.93-1.24,27.5c-2.4,1.32-4.57.53-6.9-.22ZM230.81,138.11c.44-.37,1.05-.97.86-1.14l-.91-.78.06,1.93Z"/> </g> <g> <path fill="currentColor" d="M86.12,181.99l-.81,20.4c-.03.79.37,2.16.59,2.66-1.69,3.1.02,6.74-1.22,10.92-3.16.77-5.11-.76-7.74-1.9l-2.95-1.27c-.72-.31-.99-2.38-.93-3.24l1.05-13.47-.64-13.4.76-20.62.93-16.86c.08-1.42-.02-2.39.05-3.65l.34-6.24-12.79-1.39c-2.18-.24-4.7-.49-6.4-1.88l-.21-8.27c-.1-4.12,3.98-8.69,4.95-7.32l.94,1.33c1.74-2.02,6.15-1.07,9.45-.82l11.3.84,4.96.32,10.28.41,6.41.29c2.91,3.8,3.99,8.29,2.8,12.85-.5,1.93-2.21,2.54-3.93,2.79l-7.07,1.02c-2.49.36-5.73.24-7.89,1.24-1.87,1.38-1.07,4.28-1.13,6.13l-.56,18.25.02,5.75-.04,5.13-.54,9.99Z"/> <path fill="currentColor" d="M21.19,185.78l.54,9.23c.02.33.41,1.39.72,1.39.39,0,1.05-.26,1.48-.39l5.2.06,3.42.35,16.14.41c2.08.39,2.21,4.12,1.8,5.58l-1.38,5.01c.21.87.49,2.06.2,2.75-.38.9-1.91,2.22-2.85,2.21l-12.8-.07-16.43,1.2c-5.94.44-12.29.8-12.43-3.61l-.49-15.22-.3-9.11.09-9.26.54-19.38-.31-7.78.08-26.39c0-1.44-.41-5.01,2.04-5.02l20.83-.14,13.63.14c.98,0,2.61,1.31,2.48,2.44l-.88,7.91c-.12,1.07-.49,3.81-1.7,3.81l-18.27.1c-.82,0-2.29.75-2.65,1.39-.51.9-.52,2.09-.49,3.3l.32,12.4c.05,1.75,1.46,2.95,3.32,3.02l12.95.49c.8.03,2.27.24,2.71.73.51.56.55,2.13.45,3.03l-.36,3.01c.57,1.85.62,4.29-.3,6.29-1.18.51-3.2.6-4.56.54l-11.34-.5c-.87-.04-1.98,1.69-2.05,2.53s.83,2.55,1.16,3.41l-.25,6.28-.25,7.9ZM19.09,174.94c1.27-.8,1.56-2.04,1.27-3.34l-1.27,3.34ZM34.81,210.69c-1.24-.99-2.11-1.29-2.43-.75-.19.33.95,1.14,1.31,1.05s1.73-.46,1.12-.3Z"/> </g> <path fill="currentColor" d="M190.97,177.47c-.45-2.29-1.1-3.83-1.37-6.18l-5.54-.31c-.9.92-1.55,3.12-1.53,4.47l.37,18.15.12,6.46c.08,4.36.45,10.11-2.02,12.08-.3.24-1.25-.66-1.48-.91l-5.97.39c-.41-1.18-1.13-2.77-1.12-3.65l.07-6.62-.14-25.54-.15-15.68-.06-36.22c-1.87-2.16-1.39-5.87,1.31-7.03,1.09-.47,3.72-.89,4.82-.51l2.64.91c9.27-2.28,17.57-2.4,25.09,3.79,1.87,1.54,3.31,3,4.3,5.38.83,1.99,1.74,4.12,1.66,6.36l-.35,10.11c-.09,2.61.03,5.34-.85,7.86l-3.24,9.31-1.07,3.75-7.02,4.39,2.16,7.49,1.92,8.62,2.84,12.47,2.58,10.82c-2.93,3.23-6.06,6-9.58,4.02l-3.6-10.3-2.77-13.6-2.03-10.27ZM197.12,154.57c4.84-4.35,5.12-14.3,1.52-20.29-2.51-4.18-6.08-5.64-11.02-4.57-1.27.27-4.13-.2-4.35,2.27l-.98,11,.65,12.04c.04.73.08,1.59.22,2.06s1.81-.03,2.3.02c3.8.38,10.27-1.28,11.66-2.53ZM180.48,210.58c1.14-.86,1.33-1.56,1.16-2.54-.78.64-1.36,1.81-1.16,2.54Z"/> <path fill="currentColor" d="M127.7,196.4l4.06.32,9.59.24,1.8-.71c1.49.99,3.1.54,4.33.16,2.63.98,5.54,1.19,8.52.73,1.31.99,1.51,3.29,1.61,4.98l.34,6.23h-1.9s.06,1.47.06,1.47c.02.4-1.25.82-1.69.82l-5.77.04-6.8.04c-3.11-.16-6.18-.04-9.19.49-2.66-.84-5.37-1.08-7.91-.13l-6.54-.46c-.54-.97-1.24-2.79-1.18-3.94l1.05-18.71.47-11.14.56-16.45.26-17.53.52-7.11-.19-12.09c-.03-2.05.16-5.97,3.01-6.21l14.82-1.25c.28-.02,1.04-1.16,1.28-.96l1.15.95,10.13-.21c2.32-1.15,7.83.08,8.86,1.14,1.85,1.91,1.09,4.44.93,6.69l-.38,5.7-2.94,1.64-1.38.77c-.31.17-1.13-1.12-1.49-1.09l-6.38.48-11.65-.55c-1.07-.05-2.45.21-3.11.72-1.09.84-1.39,2.28-1.51,3.63l-.5,5.53c-.19,2.1-.08,4.03.16,6.21l.5,4.55c.02.21-.5.78-.64.94-.72.83,4.34,1.98,8.81,2.27,2.93.19,6.54-.73,9.22.42s2.75,9.58.66,11.66c-.77.77-2.5.86-3.98.97-4.83.35-9.45.44-14.38-.07-.73.88-1.25,2.56-1.3,3.85l-.13,3.14-.71,16.58-1.05,5.25ZM144.63,166.97c.32-.37.94-1.22.66-1.29l-.74-.17-1.18.03,1.26,1.43Z"/> </g> </symbol>
 </svg>
 
+<div id="intro"><svg class="logo" viewBox="0 0 851.93 204.55"><use href="#inc"/></svg></div>
+<div class="grain" aria-hidden="true"></div>
+<div id="cur" aria-hidden="true"></div>
 <nav class="nav" id="nav">
   <a href="#top" aria-label="Incognito"><svg class="logo" viewBox="0 0 851.93 204.55"><use href="#inc"/></svg></a>
   <ul>
@@ -199,14 +249,13 @@ footer .logo{width:96px;color:var(--bone)}
 </div>
 
 <section class="hero" id="top">
-  <picture>
-    <source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-hero-m_njrktx.jpg">
-    <img src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-hero_bzwofw.jpg" alt="Invitados de Noche Eterna 2025">
-  </picture>
+  <div class="slices" role="img" aria-label="Invitados de Noche Eterna 2025">
+    <div class="sl"><i></i></div><div class="sl"><i></i></div><div class="sl"><i></i></div><div class="sl"><i></i></div><div class="sl"><i></i></div>
+  </div>
   <div class="shade"></div>
   <div class="info">
     <svg class="mark" viewBox="0 0 339.94 216.19" role="img" aria-label="Noche Eterna"><use href="#lg-noche"/></svg>
-    <p class="when"><b>Octubre 2026</b>Cierre de temporada. Fecha y locación se anuncian primero a la lista.</p>
+    <p class="when"><b class="split">Octubre 2026</b>Fecha y lugar, solo a la lista.</p>
     <div class="acts">
       <button class="cta" onclick="openM('noche')">Entrar a la lista &#8627;</button>
       <a class="tl" href="#noche">La edición 2025</a>
@@ -217,10 +266,10 @@ footer .logo{width:96px;color:var(--bone)}
 <section class="sec" id="noche">
   <div class="rv">
     <span class="lbl">Próximo evento</span>
-    <div class="t1 bison">Noche Eterna</div>
+    <div class="t1 bison split">Noche Eterna</div>
     <div class="body">
-      <p>Una sola noche al año. La de 2025 fue el 29 de octubre: Día de Muertos, un muro de cempasúchil, velas por todas partes y Alleh &amp; Yorghaki en vivo, con Don Julio 1942.</p>
-      <p>La de 2026 cierra la temporada. Entra a la lista y te avisamos antes que a nadie.</p>
+      <p>2025: 29 de octubre. Alleh &amp; Yorghaki en vivo. Don Julio 1942.</p>
+      <p>2026: octubre. El resto llega por correo.</p>
     </div>
     <div class="facts">
       <div><span>Fecha</span>Octubre 2026</div>
@@ -229,32 +278,32 @@ footer .logo{width:96px;color:var(--bone)}
       <div><span>Acceso</span>Guest list</div>
     </div>
   </div>
-  <figure class="ph rv d1">
-    <img src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-noche_hkvftj.jpg" alt="Noche Eterna 2025" loading="lazy">
+  <figure class="ph">
+    <div class="ri"><img data-px=".08" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-noche_hkvftj.jpg" alt="Noche Eterna 2025" loading="lazy"></div>
     <figcaption>Noche Eterna, 29 de octubre de 2025</figcaption>
   </figure>
 </section>
-<div class="noche2 rv"><img src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-noche-2_bnsmzr.jpg" alt="Noche Eterna 2025" loading="lazy"></div>
+<div class="noche2"><div class="ri"><img data-px=".06" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-noche-2_bnsmzr.jpg" alt="Noche Eterna 2025" loading="lazy"></div></div>
 
 <section class="sec paper" id="nosotros">
   <div class="rv">
     <span class="lbl">Nosotros</span>
-    <p class="lead">La puerta importa más que el lugar.</p>
+    <p class="lead split">Productora independiente. Santo Domingo.</p>
     <div class="body">
-      <p>Incognito es una productora independiente de eventos en Santo Domingo. Montamos cada noche desde cero: line-up, locación, luz y puerta. No tenemos venue fijo. Cada edición se monta donde tenga que montarse.</p>
-      <p>Curamos la entrada perfil por perfil, y esa curaduría es el producto.</p>
+      <p>Sin venue fijo. Cada edición se arma en un lugar distinto, con su line-up, su luz y su puerta.</p>
+      <p>La lista se revisa a mano.</p>
     </div>
     <button class="cta" onclick="openM('general')">Entrar a la lista &#8627;</button>
   </div>
-  <figure class="ph rv d1"><img src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965510/inc5-nosotros_zidv61.jpg" alt="Incognito" loading="lazy"></figure>
+  <figure class="ph"><div class="ri"><img data-px=".1" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965510/inc5-nosotros_zidv61.jpg" alt="Incognito" loading="lazy"></div></figure>
 </section>
 
 <section class="sec" id="gente">
   <div class="txt rv">
     <span class="lbl">Nuestro público</span>
-    <p class="lead">Nuestra insignia es la gente.</p>
+    <p class="lead split">Nuestra insignia es la gente.</p>
   </div>
-  <img class="rv d1" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-gente_kiexoj.jpg" alt="Invitados de eventos Incognito" loading="lazy">
+  <div class="ri gimg"><img data-px=".12" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-gente_kiexoj.jpg" alt="Invitados de eventos Incognito" loading="lazy"></div>
 </section>
 
 
@@ -270,9 +319,9 @@ footer .logo{width:96px;color:var(--bone)}
 </section>
 
 <section class="sec" id="guestlist">
-  <p class="lead rv">Todos aplican. No todos entran.</p>
+  <p class="lead scrub">Se entra por lista.</p>
   <div class="rv d1">
-    <p class="body">La lista se revisa perfil por perfil antes de cada edición. Registrarte no garantiza entrada: garantiza que te vamos a mirar. Si pasas, te llega el correo con tu nombre en puerta.</p>
+    <p class="body">Revisamos cada solicitud antes de cada edición. Si entras, te llega un correo con tu nombre en puerta.</p>
     <button class="cta" onclick="openM('noche')">Solicitar acceso &#8627;</button>
   </div>
 </section>
@@ -280,10 +329,10 @@ footer .logo{width:96px;color:var(--bone)}
 <section class="sec paper" id="contacto">
   <div class="rv">
     <span class="lbl">Contacto</span>
-    <p class="lead">Booking, prensa y producciones.</p>
+    <p class="lead split">Booking, prensa y producciones.</p>
   </div>
   <div class="rv d1">
-    <p class="body">Si quieres montar algo con nosotros, o traer un artista, escribe directo. Contestamos rápido cuando la idea vale.</p>
+    <p class="body">Escríbenos por WhatsApp o Instagram.</p>
     <div class="links">
       <a class="tl" href="https://wa.me/18495807998" target="_blank" rel="noopener">WhatsApp &#8599;</a>
       <a class="tl" href="https://www.instagram.com/incognito.sdq/" target="_blank" rel="noopener">Instagram &#8599;</a>
@@ -308,7 +357,7 @@ footer .logo{width:96px;color:var(--bone)}
     <div class="sheet-mark" id="sheetMark"></div>
     <span id="sheetLbl">Guest list</span>
     <h3 id="sheetTitle">Solicitar acceso</h3>
-    <p class="sub" id="sheetSub">Se revisa perfil por perfil. Si pasas, te llega el correo.</p>
+    <p class="sub" id="sheetSub">Revisamos cada solicitud. Si entras, te llega un correo.</p>
     <div class="fld"><label for="gl-nombre">Nombre y apellido *</label><input id="gl-nombre" type="text" autocomplete="name"></div>
     <div class="fld"><label for="gl-ig">Instagram</label><input id="gl-ig" type="text" placeholder="@"></div>
     <div class="fld"><label for="gl-email">Correo *</label><input id="gl-email" type="email" autocomplete="email"></div>
@@ -328,7 +377,6 @@ footer .logo{width:96px;color:var(--bone)}
   var els=[].slice.call(document.querySelectorAll('.rv'));
   function check(){var vh=innerHeight;els=els.filter(function(e){if(e.getBoundingClientRect().top<vh*.92){e.classList.add('in');return false}return true})}
   addEventListener('scroll',check,{passive:true});addEventListener('resize',check);check();setTimeout(check,400);
-  requestAnimationFrame(function(){document.querySelector('.hero').classList.add('on')});
 })();
 // nav + next up
 (function(){
@@ -349,10 +397,10 @@ footer .logo{width:96px;color:var(--bone)}
 var ENTRY_EVENTO = '';
 var EVENTOS_GL = {
   general: {lbl:'Guest list', titulo:'Solicitar acceso',
-            sub:'Se revisa perfil por perfil. Si pasas, te llega el correo.',
+            sub:'Revisamos cada solicitud. Si entras, te llega un correo.',
             marca:null, valor:'General'},
   noche:   {lbl:'Guest list · Noche Eterna', titulo:'Octubre 2026',
-            sub:'Cierre de temporada. Fecha y locación por confirmar. Te avisamos primero.',
+            sub:'Fecha y lugar se anuncian por correo a la lista.',
             marca:'#lg-noche', valor:'Noche Eterna · Oct 2026'}
 };
 var glEvento='general';
@@ -365,10 +413,10 @@ function openM(cual){
   var mk=document.getElementById('sheetMark');
   if(e.marca){mk.innerHTML='<svg class="mark" viewBox="0 0 339.94 216.19"><use href="'+e.marca+'"/></svg>';mk.classList.add('on')}
   else{mk.innerHTML='';mk.classList.remove('on')}
-  document.getElementById('mask').classList.add('open'); document.body.style.overflow='hidden';
+  document.getElementById('mask').classList.add('open'); document.body.style.overflow='hidden'; if(window.__lenis)window.__lenis.stop();
   document.getElementById('nextup').classList.remove('show');
 }
-function closeM(){document.getElementById('mask').classList.remove('open');document.body.style.overflow=''}
+function closeM(){document.getElementById('mask').classList.remove('open');document.body.style.overflow='';if(window.__lenis)window.__lenis.start()}
 document.getElementById('mask').addEventListener('click',function(e){if(e.target===this)closeM()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM()});
 function submitGL(){
@@ -392,6 +440,70 @@ function submitGL(){
         cons.checked=false},900);
     }).catch(function(){b.textContent='Error, intenta de nuevo';b.disabled=false});
 }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+/* ===== motion ===== */
+(function(){
+  var root=document.documentElement;
+  // intro
+  var intro=document.getElementById('intro'),seen=false;
+  try{seen=sessionStorage.getItem('inc5')==='1';sessionStorage.setItem('inc5','1')}catch(e){}
+  function start(){intro.classList.add('out');setTimeout(function(){root.classList.add('go')},seen?0:150);setTimeout(function(){intro.style.display='none'},1300)}
+  var heroSrc=getComputedStyle(document.querySelector('.slices')).getPropertyValue('--hero').trim().replace(/^url\(["']?|["']?\)$/g,''),
+      t0=performance.now(),done=false;
+  function go(){if(done)return;done=true;var wait=Math.max(0,(seen?120:1250)-(performance.now()-t0));if(seen)intro.style.transitionDuration='.6s';setTimeout(start,wait)}
+  var pre=new Image();pre.onload=go;pre.onerror=go;pre.src=heroSrc;setTimeout(go,3500);
+  // split words
+  document.querySelectorAll('.split,.scrub').forEach(function(el){
+    var i=0;el.innerHTML=el.textContent.trim().split(/\s+/).map(function(w){
+      return '<span class="wd"><span style="transition-delay:'+(i++*0.045).toFixed(3)+'s">'+w+'</span></span>'}).join(' ');
+  });
+  // reveal on view
+  var pend=[].slice.call(document.querySelectorAll('.split:not(.hero .split),.ri,#galeria .lab,.rv'));
+  function revealCheck(){if(!pend.length)return;var vh=innerHeight;
+    pend=pend.filter(function(e){var r=e.getBoundingClientRect();if(r.top<vh*.9&&r.bottom>0){e.classList.add('in');return false}if(r.bottom<=0){e.classList.add('in');return false}return true})}
+  document.querySelectorAll('.hero .split').forEach(function(e){setTimeout(function(){e.classList.add('in')},seen?900:2000)});
+  // smooth scroll
+  var lenis=null;
+  if(window.Lenis&&matchMedia('(pointer:fine)').matches){
+    lenis=new Lenis({duration:1.15,easing:function(t){return Math.min(1,1.001-Math.pow(2,-10*t))},smoothWheel:true});
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(a.getAttribute('href'));if(t&&!a.getAttribute('onclick')){e.preventDefault();lenis.scrollTo(t,{offset:-10})}})});
+    window.__lenis=lenis;
+  }
+  // scroll-linked
+  var sl=[].slice.call(document.querySelectorAll('.sl i')),sp=[.10,.24,.04,.18,.3],
+      info=document.querySelector('.hero .info'),px=[].slice.call(document.querySelectorAll('[data-px]')),
+      mos=document.querySelector('#galeria picture img'),gal=document.getElementById('galeria'),
+      scrub=[].slice.call(document.querySelectorAll('.scrub .wd')),scrubEl=document.querySelector('.scrub');
+  function frame(t){
+    if(lenis)lenis.raf(t);
+    revealCheck();
+    var y=scrollY,vh=innerHeight;
+    if(y<vh*1.2){sl.forEach(function(s,i){if(root.classList.contains('go'))s.style.transform='translateY('+(y*sp[i])+'px)'});
+      if(info){info.style.transform='translateY('+(y*.35)+'px)';info.style.opacity=String(Math.max(0,1-y/(vh*.6)))}}
+    px.forEach(function(im){var r=im.parentElement.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;
+      if(!im.parentElement.classList.contains('in'))return;
+      var p=(r.top+r.height/2-vh/2)/vh;im.style.transform='scale(1.08) translateY('+(p*-parseFloat(im.dataset.px)*100)+'%)'});
+    if(mos){var r=gal.getBoundingClientRect();if(r.bottom>0&&r.top<vh){var p=Math.min(1,Math.max(0,(vh-r.top)/(vh+r.height)));mos.style.transform='scale('+(1.25-p*.25)+')'}}
+    if(scrubEl){var r2=scrubEl.getBoundingClientRect(),p2=Math.min(1,Math.max(0,(vh*.85-r2.top)/(vh*.5)));
+      var n=Math.round(p2*scrub.length);scrub.forEach(function(w,i){w.classList.toggle('on',i<n)})}
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  // cursor
+  var cur=document.getElementById('cur');
+  if(matchMedia('(pointer:fine)').matches){
+    var mx=-100,my=-100,cx=-100,cy=-100;
+    addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY});
+    (function c(){cx+=(mx-cx)*.2;cy+=(my-cy)*.2;cur.style.transform='translate('+cx+'px,'+cy+'px)';requestAnimationFrame(c)})();
+    document.querySelectorAll('a,button').forEach(function(a){a.addEventListener('mouseenter',function(){cur.classList.add('big')});a.addEventListener('mouseleave',function(){cur.classList.remove('big')})});
+    // magnetic
+    document.querySelectorAll('.cta,.nav .gl').forEach(function(b){
+      b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.18)+'px,'+((e.clientY-r.top-r.height/2)*.3)+'px)'});
+      b.addEventListener('mouseleave',function(){b.style.transform=''})});
+  }
+})();
 </script>
 </body>
 </html>
