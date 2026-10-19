@@ -72,10 +72,11 @@ a{color:inherit}
 .fr{position:absolute;inset:0;visibility:hidden}
 .fr.on{visibility:visible}
 .fr img{width:100%;height:100%;object-fit:cover;filter:contrast(1.06) saturate(1.04) sepia(.06);transform:scale(1);will-change:transform}
-.fr.on img{animation:kb var(--dur,3600ms) linear forwards}
+.go .fr.on img{animation:kb var(--dur,3600ms) linear forwards}
 @keyframes kb{from{transform:scale(1)}to{transform:scale(1.08)}}
-.dust{position:absolute;inset:0;width:100%;height:100%;opacity:.35;mix-blend-mode:screen;pointer-events:none}
+.dust{position:absolute;inset:0;width:100%;height:100%;opacity:.4;pointer-events:none}
 .vig{position:absolute;inset:0;z-index:3;background:radial-gradient(ellipse 75% 70% at 50% 45%,rgba(0,0,0,0) 55%,rgba(0,0,0,.65) 100%);pointer-events:none}
+.fgrain{position:absolute;inset:-64px;z-index:5;pointer-events:none;background-size:192px 192px;mix-blend-mode:overlay;opacity:.55;will-change:transform}
 .flick{position:absolute;inset:0;z-index:4;background:#000;opacity:0;pointer-events:none}
 .hero .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.5) 0%,rgba(0,0,0,0) 20%,rgba(0,0,0,.08) 50%,rgba(0,0,0,.62) 78%,rgba(0,0,0,.85) 100%)}
 .hero .mark{grid-column:1/-1;width:clamp(200px,30vw,440px);height:auto;fill:var(--bone);margin-bottom:clamp(14px,2vw,28px)}
@@ -188,8 +189,9 @@ footer .logo{width:96px;color:var(--bone)}
 .sheet{position:relative;width:100%;max-width:520px;max-height:92svh;overflow:auto;background:var(--ink);color:var(--bone);padding:34px 30px 30px;border:1px solid rgba(239,237,234,.18)}
 .sheet .x{position:absolute;right:14px;top:12px;background:none;border:0;font-size:20px;cursor:pointer;color:var(--bone)}
 .sheet-mark{display:none;margin-bottom:16px}
-.sheet-mark.on{display:block}
+.sheet-mark.on{display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
 .sheet-mark img{width:170px;height:auto}
+.sheet-mark img.m2{width:92px;margin-bottom:4px}
 .sheet #sheetLbl{font-size:15px;font-weight:600;color:var(--grey)}
 .sheet h3{font-family:"bebas-neue-pro","Bebas Neue",Impact,sans-serif;font-size:54px;font-weight:600;font-synthesis:none;text-transform:uppercase;line-height:.9;margin:8px 0 10px}
 .sheet .sub{font-size:16px;line-height:1.45;margin-bottom:22px}
@@ -288,10 +290,10 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 <section class="hero" id="top">
   <div class="reel">
     <div class="weave">
-      <picture class="fr on"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp" alt="Puente de piedra con cempasúchil y velas" style="object-position:50% 55%"></picture>
-      <picture class="fr"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp" alt="Camino de velas entre agaves" style="object-position:50% 60%" loading="eager"></picture>
-      <picture class="fr"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444610/hf_20261019_211330_1e1d4e86-d4b0-458b-ac45-7968ab7c4a05_l04ooq.webp"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444610/hf_20261019_211330_1e1d4e86-d4b0-458b-ac45-7968ab7c4a05_l04ooq.webp" alt="Cempasúchil de cerca" style="object-position:55% 50%" loading="eager"></picture>
-      <picture class="fr"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444611/hf_20261019_211431_84169bdf-6591-4f8c-9776-fb9e10025cd7_gw1wyl.webp"><img src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444611/hf_20261019_211431_84169bdf-6591-4f8c-9776-fb9e10025cd7_gw1wyl.webp" alt="Puente cubierto de cempasúchil sobre el agua" style="object-position:40% 50%" loading="eager"></picture>
+      <picture class="fr on"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp"><img srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_1600,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp 1600w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp 2200w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2800,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp 2800w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_3456,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp 3456w" sizes="112vw" fetchpriority="high" src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444610/hf_20261019_030144_52b8c142-e7ef-474e-a127-9f408dc1a174_q0otzz.webp" alt="Puente de piedra con cempasúchil y velas" style="object-position:50% 55%"></picture>
+      <picture class="fr"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp"><img srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_1600,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp 1600w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp 2200w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2800,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp 2800w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_3840,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp 3840w" sizes="112vw" src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444611/hf_20261019_211355_88f65e29-b6e0-4c26-a217-96ed8898a9c6_wgmhxz.webp" alt="Camino de velas entre agaves" style="object-position:50% 60%" loading="eager" fetchpriority="low"></picture>
+      <picture class="fr"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444610/hf_20261019_211330_1e1d4e86-d4b0-458b-ac45-7968ab7c4a05_l04ooq.webp"><img srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_1600,f_auto,q_auto/v1792444610/hf_20261019_211330_1e1d4e86-d4b0-458b-ac45-7968ab7c4a05_l04ooq.webp 1600w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444610/hf_20261019_211330_1e1d4e86-d4b0-458b-ac45-7968ab7c4a05_l04ooq.webp 2200w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2688,f_auto,q_auto/v1792444610/hf_20261019_211330_1e1d4e86-d4b0-458b-ac45-7968ab7c4a05_l04ooq.webp 2688w" sizes="112vw" src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444610/hf_20261019_211330_1e1d4e86-d4b0-458b-ac45-7968ab7c4a05_l04ooq.webp" alt="Cempasúchil de cerca" style="object-position:55% 50%" loading="eager" fetchpriority="low"></picture>
+      <picture class="fr"><source media="(max-width:700px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_fill,ar_9:16,w_900,g_auto,f_auto,q_auto/v1792444611/hf_20261019_211431_84169bdf-6591-4f8c-9776-fb9e10025cd7_gw1wyl.webp"><img srcset="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_1600,f_auto,q_auto/v1792444611/hf_20261019_211431_84169bdf-6591-4f8c-9776-fb9e10025cd7_gw1wyl.webp 1600w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444611/hf_20261019_211431_84169bdf-6591-4f8c-9776-fb9e10025cd7_gw1wyl.webp 2200w, https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2688,f_auto,q_auto/v1792444611/hf_20261019_211431_84169bdf-6591-4f8c-9776-fb9e10025cd7_gw1wyl.webp 2688w" sizes="112vw" src="https://res.cloudinary.com/dheiidsny/image/upload/c_limit,w_2200,f_auto,q_auto/v1792444611/hf_20261019_211431_84169bdf-6591-4f8c-9776-fb9e10025cd7_gw1wyl.webp" alt="Puente cubierto de cempasúchil sobre el agua" style="object-position:40% 50%" loading="eager" fetchpriority="low"></picture>
     </div>
     <canvas class="dust" aria-hidden="true"></canvas>
     <div class="shade" aria-hidden="true"></div>
@@ -305,6 +307,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
     <div class="vig" aria-hidden="true"></div>
     <div class="flick" aria-hidden="true"></div>
+    <div class="fgrain" aria-hidden="true"></div>
   </div>
   <div class="info">
     <div class="meta">
@@ -328,7 +331,8 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
       <div><span>Fecha</span>29 de octubre</div>
       <div><span>Lugar</span>En la invitación</div>
       <div><span>Acceso</span>Solo por invitación</div>
-      <div><span>Con</span>Don Julio 1942</div>
+      <div><span>Dress code</span>Todo de negro</div>
+      <div style="grid-column:1/-1"><span>Con</span>Don Julio 1942</div>
     </div>
     <button class="cta" style="margin-top:34px" onclick="openM('puente')">Solicitar invitación &#8627;</button>
   </div>
@@ -442,7 +446,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 // menú móvil
 (function(){
   var bg=document.getElementById('burger'),mn=document.getElementById('mnav');
-  function close(){mn.classList.remove('open');bg.textContent='Menu';bg.setAttribute('aria-expanded','false');document.body.style.overflow=''}
+  function close(){mn.classList.remove('open');bg.textContent='Menu';bg.setAttribute('aria-expanded','false');document.body.style.overflow=document.getElementById('mask').classList.contains('open')?'hidden':''}
   bg.addEventListener('click',function(){var o=mn.classList.toggle('open');bg.textContent=o?'Cerrar':'Menu';bg.setAttribute('aria-expanded',String(o));document.body.style.overflow=o?'hidden':''});
   mn.querySelectorAll('a').forEach(function(a){a.addEventListener('click',close)});
 })();
@@ -455,7 +459,7 @@ var EVENTOS_GL = {
             marca:null, valor:'General'},
   puente:  {lbl:'Solicitud de invitación', titulo:'Octubre 29',
             sub:'Solo por invitación. Si te seleccionamos, te llega por correo.',
-            marca:'https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_400/v1792444150/csadcGroup_1_xaydpz.png', boton:'Solicitar invitación &#8627;', valor:'El Puente Eterno · 29 Oct 2026'}
+            marca:'https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_400/v1792444150/csadcGroup_1_xaydpz.png', marca2:'https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_400/v1792444200/LOGO_1942_lwg2fw.png', boton:'Solicitar invitación &#8627;', valor:'El Puente Eterno · 29 Oct 2026'}
 };
 var glEvento='general';
 function openM(cual){
@@ -465,14 +469,14 @@ function openM(cual){
   document.getElementById('sheetSub').innerHTML=e.sub;
   var bt=document.getElementById('send'); bt.innerHTML=e.boton||'Enviar solicitud &#8627;'; bt.disabled=false;
   var mk=document.getElementById('sheetMark');
-  if(e.marca){mk.innerHTML='<img src="'+e.marca+'" alt="">';mk.classList.add('on')}
+  if(e.marca){mk.innerHTML='<img src="'+e.marca+'" alt="El Puente Eterno">'+(e.marca2?'<img class="m2" src="'+e.marca2+'" alt="Don Julio 1942">':'');mk.classList.add('on')}
   else{mk.innerHTML='';mk.classList.remove('on')}
   document.getElementById('mask').classList.add('open'); document.body.style.overflow='hidden'; if(window.__lenis)window.__lenis.stop();
   document.getElementById('nextup').classList.remove('show');
 }
 function closeM(){document.getElementById('mask').classList.remove('open');document.body.style.overflow='';if(window.__lenis)window.__lenis.start()}
 document.getElementById('mask').addEventListener('click',function(e){if(e.target===this)closeM()});
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&document.getElementById('mask').classList.contains('open'))closeM()});
 function submitGL(){
   var nom=document.getElementById('gl-nombre').value.trim(),ig=document.getElementById('gl-ig').value.trim(),
       em=document.getElementById('gl-email').value.trim(),tel=document.getElementById('gl-tel').value.trim(),
@@ -533,7 +537,7 @@ function submitGL(){
     if(lenis)lenis.raf(t);
     revealCheck();
     var y=scrollY,vh=innerHeight;
-    if(y<vh*1.2){reel.style.transform='translateY('+(y*.3)+'px)';
+    if(y<Math.max(vh*1.2,reel.offsetHeight)){reel.style.transform='translateY('+(y*.3)+'px)';
       if(info){info.style.transform='translateY('+(y*.35)+'px)';info.style.opacity=String(Math.max(0,1-y/(vh*.6)))}}
     px.forEach(function(im){var r=im.parentElement.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;
       if(!im.parentElement.classList.contains('in'))return;
@@ -581,24 +585,35 @@ function submitGL(){
     tDone=setTimeout(function(){written=sb},260+base+90*(n-1)+250);
     tOut=setTimeout(function(){written=null;sb.style.removeProperty('--fk');sb.classList.add('out')},DUR[i]-200);
   }
+  function ready(k){var im=frs[k].querySelector('img');return im.complete&&im.naturalWidth>0}
+  frs.forEach(function(f){var im=f.querySelector('img');if(im.decode)im.decode().catch(function(){})});
   function next(){
     if(!visible){timer=setTimeout(next,300);return}
-    cur=(cur+1)%frs.length;show(cur);timer=setTimeout(next,DUR[cur]);
+    var n=(cur+1)%frs.length;
+    if(cur>=0&&!ready(n)){timer=setTimeout(next,250);return}   // no cortar a un cuadro sin cargar
+    cur=n;show(cur);timer=setTimeout(next,DUR[cur]);
   }
-  var w=setInterval(function(){if(root.classList.contains('go')&&!started){started=true;clearInterval(w);setTimeout(next,500)}},100);
+  var w=setInterval(function(){if(root.classList.contains('go')&&!started){started=true;clearInterval(w);next()}},50);
   // weave ±1px cada 80 ms, flicker de brillo, polvo, flicker del subtítulo
-  function size(){var r=hero.getBoundingClientRect();cv.width=Math.max(1,Math.round(r.width/2));cv.height=Math.max(1,Math.round(r.height/2))}
+  var CW=1,CH=1;function size(){var r=hero.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2),w=Math.max(1,Math.round(r.width*d)),h=Math.max(1,Math.round(r.height*d));if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}ctx.setTransform(d,0,0,d,0,0);CW=r.width;CH=r.height}
   size();addEventListener('resize',size);
   var seed=7;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
+  // grano de película: 4 texturas de ruido gaussiano generadas una vez
+  var fg=document.querySelector('.fgrain'),GR=[];
+  (function(){for(var t=0;t<4;t++){var c=document.createElement('canvas');c.width=c.height=192;var g=c.getContext('2d'),d=g.createImageData(192,192),a=d.data;
+    for(var q=0;q<a.length;q+=4){var v=(rnd()+rnd()+rnd()+rnd()-2)*58+128;v=v<0?0:v>255?255:v;a[q]=a[q+1]=a[q+2]=v;a[q+3]=255}
+    g.putImageData(d,0,0);GR.push('url('+c.toDataURL('image/png')+')')}fg.style.backgroundImage=GR[0]})();
+  var gi=0;
   setInterval(function(){
-    visible=scrollY<innerHeight*1.1&&document.visibilityState==='visible';
+    visible=hero.getBoundingClientRect().bottom>0&&document.visibilityState==='visible'&&!document.getElementById('mask').classList.contains('open');
     if(!visible)return;
     weave.style.transform='translate('+Math.round((rnd()-.5)*2)+'px,'+Math.round((rnd()-.5)*2)+'px)';
     flick.style.opacity=(rnd()*.06).toFixed(3);
+    gi=(gi+1)%4;fg.style.backgroundImage=GR[gi];fg.style.transform='translate('+Math.round(rnd()*-48)+'px,'+Math.round(rnd()*-48)+'px)';
     if(written&&rnd()<.55)written.style.setProperty('--fk',(.88+rnd()*.10).toFixed(3));
-    var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+    var W=CW,H=CH;ctx.clearRect(0,0,W,H);
     var n=Math.floor(rnd()*4);
-    for(var k=0;k<n;k++){ctx.fillStyle=rnd()<.5?'rgba(255,240,220,.6)':'rgba(0,0,0,.7)';
+    for(var k=0;k<n;k++){ctx.fillStyle=rnd()<.5?'rgba(255,240,220,.6)':'rgba(0,0,0,.55)';
       ctx.beginPath();ctx.arc(rnd()*W,rnd()*H,rnd()*1.4+.3,0,6.283);ctx.fill()}
     if(rnd()<.2){ctx.strokeStyle='rgba(255,240,220,.35)';ctx.lineWidth=.6;ctx.beginPath();
       var x=rnd()*W,y=rnd()*H;ctx.moveTo(x,y);ctx.quadraticCurveTo(x+(rnd()-.5)*24,y+(rnd()-.5)*24,x+(rnd()-.5)*30,y+(rnd()-.5)*30);ctx.stroke()}
