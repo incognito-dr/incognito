@@ -24,6 +24,10 @@
       "dest": "/menu.html"
     },
     {
+      "src": "^/mesas/?$",
+      "dest": "/mesas-puente.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/$1"
     }
