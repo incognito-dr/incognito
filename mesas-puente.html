@@ -301,11 +301,11 @@ body.hoja .pie{padding-bottom:300px}
   <section class="intro">
     <h2 class="titulo">Cada luz es una mesa.</h2>
     <p class="lede">29 de octubre. Una experiencia privada junto a Don&nbsp;Julio&nbsp;1942.</p>
-    <div class="precio"><p class="bb monto">RD$30,000</p><p class="resto">de consumo mínimo, igual en las 17 mesas.<br>Incluye 6 accesos.</p></div>
+    <div class="precio"><p class="bb monto">RD$30,000</p><p class="resto">de consumo mínimo, igual en las 15 mesas.<br>Incluye 6 accesos.</p></div>
   </section>
 
   <section class="mapa" aria-label="Mapa de mesas">
-    <svg id="plano" viewBox="216 247 864 783" preserveAspectRatio="xMidYMin meet" role="group" aria-label="Plano con las 17 mesas"></svg>
+    <svg id="plano" viewBox="216 247 864 783" preserveAspectRatio="xMidYMin meet" role="group" aria-label="Plano con las 15 mesas"></svg>
     <p class="hint" id="hint">Toca una mesa.</p>
   </section>
 
@@ -344,7 +344,10 @@ body.hoja .pie{padding-bottom:300px}
 
 <script>
 /* Mesas vendidas: escribir los números, ej. ['03','12'] o [3, 12]. Vacío = todas disponibles. */
-const VENDIDAS = ["05", "06", "07", "14", "17"];
+const VENDIDAS = ["07", "14", "17"];
+
+/* Mesas que ya no existen en el plano (05 y 06: su lugar lo ocupa la barra corta). */
+const QUITADAS = ["05", "06"];
 
 const GEO = {
  "viewBox": "216 247 864 783",
@@ -3599,8 +3602,10 @@ defs.innerHTML = `
   <radialGradient id="gMuro" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffc27a" stop-opacity=".46"/><stop offset=".18" stop-color="#f58a2c" stop-opacity=".27"/><stop offset=".5" stop-color="#e8571c" stop-opacity=".09"/><stop offset=".8" stop-color="#e8571c" stop-opacity=".02"/><stop offset="1" stop-color="#e8571c" stop-opacity="0"/></radialGradient>
   <linearGradient id="gCorte" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff"/><stop offset=".76" stop-color="#fff"/><stop offset=".97" stop-color="#000"/></linearGradient>
   <linearGradient id="gFadeH" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#000"/><stop offset=".08" stop-color="#fff"/><stop offset=".92" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+  <linearGradient id="gFadeV" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset=".1" stop-color="#fff"/><stop offset=".9" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
   <mask id="mMuro" maskUnits="userSpaceOnUse" x="660" y="330" width="200" height="480"><rect x="660" y="330" width="200" height="480" fill="url(#gCorte)"/></mask>
   <mask id="mBarra" maskUnits="userSpaceOnUse" x="470" y="900" width="420" height="120"><rect x="478" y="900" width="400" height="120" fill="url(#gFadeH)"/></mask>
+  <mask id="mBarra2" maskUnits="userSpaceOnUse" x="220" y="280" width="90" height="220"><rect x="220" y="282" width="90" height="216" fill="url(#gFadeV)"/></mask>
 `;
 
 /* fondo clicable para soltar la selección */
@@ -3627,15 +3632,21 @@ const wcx = f1(st.x + st.w - 4), wcy = f1(st.y + st.h / 2);
 mk('ellipse', { cx: wcx, cy: wcy, rx: 150, ry: 215, fill: 'url(#gMuro)' }, muro);
 mk('ellipse', { cx: wcx, cy: wcy, rx: 46, ry: 175, fill: 'url(#gMuro)', opacity: .8 }, muro);
 
-const barra = mk('g', { mask: 'url(#mBarra)' }, amb);
-const bx0 = 498, bx1 = 858, by = 956, puntos = [];
-mk('line', { x1: bx0 - 10, x2: bx1 + 10, y1: by, y2: by, stroke: '#f07a1f', 'stroke-opacity': '.10', 'stroke-width': 22, 'stroke-linecap': 'round' }, barra);
-for (let x = bx0, i = 0; x <= bx1; x += 12.4, i++) {
-  const y = by + (i % 2 ? 1.4 : -1.4);
-  const h = mk('circle', { cx: f1(x), cy: f1(y), r: 6.5, fill: 'url(#gDot)' }, barra);
-  const d = mk('circle', { cx: f1(x), cy: f1(y), r: 1.5, fill: '#ffe0b0' }, barra);
-  puntos.push({ h, d, n1: ruido(), s: .7 + Math.random() * 1.6 });
+/* barras: una fila de luces; la larga al fondo y una corta (mitad) contra el muro izquierdo */
+const puntos = [];
+function barraLuz(mask, horiz, a0, a1, fijo) {
+  const barra = mk('g', { mask: `url(#${mask})` }, amb);
+  const ln = horiz ? { x1: a0 - 10, x2: a1 + 10, y1: fijo, y2: fijo } : { y1: a0 - 10, y2: a1 + 10, x1: fijo, x2: fijo };
+  mk('line', Object.assign(ln, { stroke: '#f07a1f', 'stroke-opacity': '.10', 'stroke-width': 22, 'stroke-linecap': 'round' }), barra);
+  for (let v = a0, i = 0; v <= a1; v += 12.4, i++) {
+    const w = fijo + (i % 2 ? 1.4 : -1.4), x = horiz ? v : w, y = horiz ? w : v;
+    const h = mk('circle', { cx: f1(x), cy: f1(y), r: 6.5, fill: 'url(#gDot)' }, barra);
+    const d = mk('circle', { cx: f1(x), cy: f1(y), r: 1.5, fill: '#ffe0b0' }, barra);
+    puntos.push({ h, d, n1: ruido(), s: .7 + Math.random() * 1.6 });
+  }
 }
+barraLuz('mBarra', true, 498, 858, 956);
+barraLuz('mBarra2', false, 300, 480, 258);
 
 /* ---------- rótulos del plano ---------- */
 const lbl = mk('g', { class: 'lbl', 'pointer-events': 'none', 'text-anchor': 'middle' }, svg);
@@ -3644,6 +3655,7 @@ rot('ÁREA VIP', 606, 364);
 rot('ÁREA GENERAL', 470, 572);
 rot('STAGE', 774, 576);
 rot('BARRA', 678, 1003);
+rot('BARRA', 294, 390, null, { transform: 'rotate(-90 294 390)' });
 rot('ACCESO', 306, 670);
 rot('BAÑOS', 970, 576, 'd');
 rot('BAÑOS', 872, 568, 'm', { transform: 'rotate(90 872 568)' });
@@ -3670,7 +3682,7 @@ const OFR = {
 };
 
 const mesas = [];
-GEO.mesas.forEach(m => {
+GEO.mesas.filter(m => !QUITADAS.includes(m.n)).forEach(m => {
   const n = m.n, tipo = tipoDe[n] || m.tipo, c = m.caja;
   const bx = c.x + c.w / 2;
   const off = vendida(n);
