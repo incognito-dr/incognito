@@ -17,7 +17,7 @@
     },
     {
       "src": "^/confirmar/?$",
-      "dest": "/confirmar.html"
+      "dest": "/confirmar-puente.html"
     },
     {
       "src": "^/menu/?$",
