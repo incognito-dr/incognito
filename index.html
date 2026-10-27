@@ -11,14 +11,14 @@
 <meta property="og:title" content="El Puente Eterno · 29 de octubre">
 <meta property="og:description" content="Solo por invitación. An Incognito curated experience, con Don Julio 1942.">
 <meta property="og:url" content="https://www.incognito.do/">
-<meta property="og:image" content="https://res.cloudinary.com/dheiidsny/image/upload/v1792446215/vdsfUntitled-1_hufcgv.jpg">
-<meta property="og:image:secure_url" content="https://res.cloudinary.com/dheiidsny/image/upload/v1792446215/vdsfUntitled-1_hufcgv.jpg">
+<meta property="og:image" content="https://www.incognito.do/og-puente.jpg">
+<meta property="og:image:secure_url" content="https://www.incognito.do/og-puente.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:alt" content="El Puente Eterno. An Incognito curated experience, con Don Julio 1942.">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://res.cloudinary.com/dheiidsny/image/upload/v1792446215/vdsfUntitled-1_hufcgv.jpg">
+<meta name="twitter:image" content="https://www.incognito.do/og-puente.jpg">
 <meta name="theme-color" content="#0b0b0b">
 <link rel="icon" href="https://res.cloudinary.com/dheiidsny/image/upload/v1779416400/favinco_inzodu.png">
 <link rel="preconnect" href="https://res.cloudinary.com">
@@ -103,8 +103,9 @@ a{color:inherit}
 @keyframes wIn{from{opacity:0;filter:blur(6px)}to{opacity:1;filter:blur(0)}}
 @keyframes wIn1{0%{opacity:0;filter:blur(6px) brightness(1.8)}32%{opacity:.85;filter:blur(3px) brightness(1.8)}33%{filter:blur(3px) brightness(1)}100%{opacity:1;filter:blur(0) brightness(1)}}
 .cap.fin{--b:420ms}
-.cap .sublogo img{display:block;width:clamp(340px,44vw,640px);height:auto;margin:0 auto clamp(14px,2vh,24px)}
-.cap .tagm{display:none}
+.cap .sublogo img{display:block;width:clamp(320px,38vw,580px);height:auto;margin:0 auto clamp(12px,1.8vh,20px)}
+.cap .tagm{display:flex;align-items:center;gap:.4em;margin-bottom:clamp(14px,2vh,22px);font-family:"bebas-neue-pro","Bebas Neue",Impact,sans-serif;font-weight:600;font-synthesis:none;font-size:clamp(16px,1.25vw,21px);letter-spacing:.04em;color:#e9dcc3}
+.cap .tagm .logo{width:5.1em;height:auto;color:#e9dcc3;transform:translateY(.12em)}
 /* barra inferior del hero */
 .hero .info{position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(22px,4vh,40px);z-index:5;display:grid;grid-template-columns:1fr auto auto;align-items:end;gap:18px 26px}
 .hero .meta{display:contents}
@@ -120,9 +121,8 @@ a{color:inherit}
 @media (max-width:700px){
   .cap{bottom:max(22vh,186px)}
   .cap .line{font-size:clamp(28px,8vw,40px)}
-  .cap .sublogo img{width:min(64vw,260px);margin-bottom:12px}
-  .cap .tagm{display:flex;align-items:center;gap:.4em;margin-bottom:14px;font-family:"bebas-neue-pro","Bebas Neue",Impact,sans-serif;font-weight:600;font-synthesis:none;font-size:16px;letter-spacing:.12em;color:#e9dcc3}
-  .cap .tagm .logo{width:5.1em;height:auto;color:#e9dcc3;transform:translateY(.12em)}
+  .cap .sublogo img{width:min(80vw,330px);margin-bottom:10px}
+  .cap .tagm{font-size:16px;margin-bottom:14px}
   .hero .info{grid-template-columns:1fr auto;gap:14px}
   .hero .info .ctas{grid-column:1/-1}
   .hero .info .ctas{flex-wrap:nowrap;gap:10px}
@@ -133,6 +133,9 @@ a{color:inherit}
 }
 #noche .t1.bebas{font-size:clamp(64px,8.6vw,160px);margin-bottom:28px}
 #noche .dj{width:150px;margin:6px 0 30px}
+#noche .plogo{margin:8px 0 34px}
+#noche .plogo img{display:block;width:min(100%,420px);height:auto}
+@media (max-width:700px){#noche .plogo img{width:min(86%,320px)}}
 #noche{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,90px);align-items:start}
 #noche .t1{font-size:clamp(64px,9vw,170px);margin-bottom:28px}
 #noche .facts{display:grid;grid-template-columns:1fr 1fr;margin-top:36px;border-top:1px solid var(--line)}
@@ -190,7 +193,7 @@ footer .logo{width:96px;color:var(--bone)}
 /* next up */
 #nextup{position:fixed;right:18px;bottom:18px;z-index:15;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bone);border:1px solid rgba(239,237,234,.25);padding:10px 16px 10px 12px;text-decoration:none;font-size:14px;line-height:1.2;opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .4s,transform .4s var(--ease)}
 #nextup.show{opacity:1;transform:none;pointer-events:auto}
-#nextup img{width:64px;height:auto}
+#nextup img{width:96px;height:auto}
 #nextup em{font-style:normal;color:var(--grey);display:block}
 #nextup b{font-weight:700}
 
@@ -201,7 +204,7 @@ footer .logo{width:96px;color:var(--bone)}
 .sheet .x{position:absolute;right:14px;top:12px;background:none;border:0;font-size:20px;cursor:pointer;color:var(--bone)}
 .sheet-mark{display:none;margin-bottom:16px}
 .sheet-mark.on{display:flex;align-items:flex-end;justify-content:center;gap:20px;margin:6px 0 24px}
-.sheet-mark img{width:min(240px,62%);height:auto}
+.sheet-mark img{width:min(280px,72%);height:auto}
 .sheet-mark img.m2{width:50px;flex:none;margin-bottom:2px}
 .sheet #sheetLbl{font-size:15px;font-weight:600;color:var(--grey)}
 .sheet #sheetLbl,.sheet h3,.sheet .sub{display:block;text-align:center}
@@ -313,7 +316,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     <div class="cap" data-k="1"><p class="line">entre la vida y la muerte.</p></div>
     <div class="cap" data-k="2"><p class="line">Hecho de flores.</p></div>
     <div class="cap fin" data-k="3">
-      <picture class="sublogo"><source media="(min-width:701px)" srcset="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1792445141/el_punte_horizontal_inco_frney6.png"><img src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_700/v1792444150/csadcGroup_1_xaydpz.png" alt="El Puente Eterno"></picture>
+      <picture class="sublogo"><img src="/puente-logo-arco.png" alt="El Puente Eterno" width="1609" height="467"></picture>
       <p class="tagm">an <svg class="logo" viewBox="0 0 851.93 204.55" role="img" aria-label="incognito"><use href="#inc"/></svg> curated experience</p>
       <p class="line">Por amor.</p>
     </div>
@@ -336,8 +339,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 <section class="sec" id="noche">
   <div class="rv">
     <span class="lbl">Próximo evento</span>
-    <div class="t1 bebas split">El Puente Eterno</div>
-    <img class="dj" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_700/v1792444200/LOGO_1942_lwg2fw.png" alt="Don Julio 1942" loading="lazy">
+    <h2 class="plogo"><img src="/puente-logo-1942.png" alt="El Puente Eterno, con Don Julio 1942" width="1633" height="606" loading="lazy"></h2>
     <div class="body">
       <p>29 de Octubre. Una experiencia privada junto a Don Julio 1942.</p>
       <p>Las invitaciones serán enviadas de forma personal. La ubicación será revelada exclusivamente a los invitados.</p>
@@ -420,7 +422,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 </footer>
 
 <a id="nextup" href="#guestlist" onclick="openM('puente');return false">
-  <img src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_200/v1792444150/csadcGroup_1_xaydpz.png" alt="">
+  <img src="/puente-logo-arco.png" alt="" width="1609" height="467">
   <span><em>29 de octubre</em><b>Solicitar invitación</b></span>
 </a>
 
@@ -474,7 +476,7 @@ var EVENTOS_GL = {
             marca:null, valor:'General'},
   puente:  {lbl:'Solicitud de invitación', titulo:'Octubre 29',
             sub:'Solo por invitación. Si te seleccionamos, te llega por correo.',
-            marca:'https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1792445141/el_punte_horizontal_inco_frney6.png', marca2:'https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto,w_400/v1792444200/LOGO_1942_lwg2fw.png', boton:'Solicitar invitación &#8627;', valor:'El Puente Eterno · 29 Oct 2026'}
+            marca:'/puente-logo-1942.png', marca2:null, boton:'Solicitar invitación &#8627;', valor:'El Puente Eterno · 29 Oct 2026'}
 };
 var glEvento='general';
 function openM(cual){
