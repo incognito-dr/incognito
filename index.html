@@ -49,6 +49,7 @@ a{color:inherit}
 .cta{display:inline-flex;align-items:center;gap:10px;background:var(--bone);color:var(--ink);border:0;font:600 17px Inter;padding:16px 22px;text-decoration:none;cursor:pointer;transition:transform .3s var(--ease)}
 .cta:hover{transform:translateY(-2px)}
 .paper .cta{background:var(--ink);color:var(--bone)}
+.cerrado{display:inline-flex;align-items:center;justify-content:center;font:600 17px Inter;padding:16px 22px;color:rgba(239,237,234,.6);border:1.5px solid rgba(239,237,234,.24);cursor:default;white-space:nowrap}
 .tl{font-weight:600;text-decoration:none;border-bottom:1.5px solid currentColor;padding-bottom:2px}
 .rv{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform 1.1s var(--ease)}
 .rv.in{opacity:1;transform:none}
@@ -126,8 +127,8 @@ a{color:inherit}
   .hero .info{grid-template-columns:1fr auto;gap:14px}
   .hero .info .ctas{grid-column:1/-1}
   .hero .info .ctas{flex-wrap:nowrap;gap:10px}
-  .hero .info .ctas .cta,.hero .info .ctas .cta2{justify-content:center;padding:15px 12px;font-size:15px;white-space:nowrap}
-  .hero .info .ctas .cta{flex:1 1 auto}
+  .hero .info .ctas .cta,.hero .info .ctas .cta2,.hero .info .ctas .cerrado{justify-content:center;padding:15px 12px;font-size:15px;white-space:nowrap}
+  .hero .info .ctas .cta,.hero .info .ctas .cerrado{flex:1 1 auto}
   .hero .info .ctas .cta2{flex:0 0 auto;padding-left:16px;padding-right:16px}
   .hero .dj{width:74px}
 }
@@ -193,6 +194,7 @@ footer .logo{width:96px;color:var(--bone)}
 /* next up */
 #nextup{position:fixed;right:18px;bottom:18px;z-index:15;display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bone);border:1px solid rgba(239,237,234,.25);padding:10px 16px 10px 12px;text-decoration:none;font-size:14px;line-height:1.2;opacity:0;transform:translateY(16px);pointer-events:none;transition:opacity .4s,transform .4s var(--ease)}
 #nextup.show{opacity:1;transform:none;pointer-events:auto}
+#nextup[hidden]{display:none!important}
 #nextup img{width:96px;height:auto}
 #nextup em{font-style:normal;color:var(--grey);display:block}
 #nextup b{font-weight:700}
@@ -290,7 +292,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     <li><a href="#nosotros">Nosotros</a></li>
     <li><a href="#galeria">Galería</a></li>
     <li><a href="#contacto">Contacto</a></li>
-    <li><a class="gl" href="#guestlist" onclick="openM('puente');return false">Solicitar invitación</a></li>
+    <li><a class="gl" href="#guestlist">Registro cerrado</a></li>
   </ul>
   <button id="burger" aria-expanded="false" aria-controls="mnav">Menu</button>
 </nav>
@@ -299,7 +301,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
   <a href="#nosotros">Nosotros</a>
   <a href="#galeria">Galería</a>
   <a href="#contacto">Contacto</a>
-  <a href="#guestlist" onclick="openM('puente');return false">Solicitar invitación</a>
+  <a href="#guestlist">Registro cerrado</a>
 </div>
 
 <section class="hero" id="top">
@@ -331,7 +333,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
     </div>
     <div class="ctas">
       <a class="cta2" href="/mesas">Ver mesas</a>
-      <button class="cta" onclick="openM('puente')">Solicitar invitación &#8627;</button>
+      <span class="cerrado" role="status">Registro cerrado</span>
     </div>
   </div>
 </section>
@@ -351,7 +353,7 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
       <div><span>Dress code</span>Black with a twist</div>
       <div style="grid-column:1/-1"><span>Con</span>Don Julio 1942</div>
     </div>
-    <div class="ctas" style="margin-top:34px"><button class="cta" onclick="openM('puente')">Solicitar invitación &#8627;</button><a class="cta2" href="/mesas">Ver mesas</a></div>
+    <div class="ctas" style="margin-top:34px"><a class="cta2" href="/mesas">Ver mesas</a><span class="cerrado" role="status">Registro cerrado</span></div>
   </div>
   <figure class="ph">
     <div class="ri"><img data-px=".08" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965509/inc5-noche_hkvftj.jpg" alt="Noche Eterna 2025" loading="lazy"></div>
@@ -368,7 +370,6 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
       <p>Sin venue fijo. Cada edición se arma en un lugar distinto, con su line-up, su luz y su puerta.</p>
       <p>La lista se revisa a mano.</p>
     </div>
-    <button class="cta" onclick="openM('puente')">Solicitar invitación &#8627;</button>
   </div>
   <figure class="ph"><div class="ri"><img data-px=".1" src="https://res.cloudinary.com/dheiidsny/image/upload/f_auto,q_auto/v1790965510/inc5-nosotros_zidv61.jpg" alt="Incognito" loading="lazy"></div></figure>
 </section>
@@ -394,10 +395,9 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
 </section>
 
 <section class="sec" id="guestlist">
-  <p class="lead scrub">Solo por invitación.</p>
+  <p class="lead scrub">Registro cerrado.</p>
   <div class="rv d1">
-    <p class="body">Revisamos cada solicitud. Si te seleccionamos, la invitación te llega por correo.</p>
-    <button class="cta" onclick="openM('puente')">Solicitar invitación &#8627;</button>
+    <p class="body">Ya no recibimos solicitudes para El Puente Eterno. Si te seleccionamos, la invitación te llega por correo.</p>
   </div>
 </section>
 
@@ -421,9 +421,9 @@ html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!
   <span>Incognito © 2026. A company of PLSO</span>
 </footer>
 
-<a id="nextup" href="#guestlist" onclick="openM('puente');return false">
+<a id="nextup" href="#guestlist" hidden>
   <img src="/puente-logo-arco.png" alt="" width="1609" height="467">
-  <span><em>29 de octubre</em><b>Solicitar invitación</b></span>
+  <span><em>29 de octubre</em><b>Registro cerrado</b></span>
 </a>
 
 <div class="mask" id="mask">
